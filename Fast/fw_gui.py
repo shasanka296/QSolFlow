@@ -6,6 +6,10 @@ from fireworks import LaunchPad
 import datetime as dat
 from solflow.workflows.wf_writer import *
 from solflow.workflows.envwf import meta_dir
+import sys
+from pathlib import Path
+
+
 
 
 class GUI:
@@ -372,11 +376,6 @@ class GUI:
     def run(self):
         BASE_DIR = Path(__file__).resolve().parent.parent
 
-        parser = argparse.ArgumentParser(description='Launch MD calculations')
-        parser.add_argument('-f', '--filename', type=str, help='filepath for a JSON nlp data file', default="")
-        parser.add_argument('-p', '--priority', type=int, help='jobs priority', default=5)
-        args = parser.parse_args()
-
         def populate_md_wf(**kwargs):
 
             lpad_file = os.path.join(BASE_DIR.parent, 'launch', 'md_launchpad.yaml')
@@ -385,235 +384,229 @@ class GUI:
             fw_id = list(info.values())[0]
             return fw_id
 
-        if not os.path.isfile(args.filename):
-            self.systems = []
-            self.solute_titrants=[]
-            self.solvent_titratnts=[]
+        self.systems = []
+        self.solute_titrants=[]
+        self.solvent_titratnts=[]
 
-            if self.check_titration.get() !=0:
-                print("in the titration")
+        if self.check_titration.get() !=0:
+            print("in the titration")
 
-                for i in range(number):
-                    self.subnamemat = []
-
-                    print(" in loop 1")
-                    self.solute_matrix = self.entries[f"solutename{i + 1}"].get().split(",")
-                    print(self.solute_matrix)
-                    solvent = self.entries[f"solventname{i + 1}"].get().strip()
-                    self.typematrix.append("Solvent")
-                    self.nameMatrix.append(solvent)
-                    self.subnamemat.append(solvent)
-                    print(self.titration_list)
-                    for _ in self.titration_list:
-                        print("in loop 2")
-                        titration_name= solvent
-                        self.solvent_titratnts.append(titration_name)
-
-                    for iteams in self.solute_matrix:
-                        print(self.solute_matrix)
-                        print("in loop 3")
-                        self.typematrix.append("Solute1")
-                        self.nameMatrix.append(iteams.strip())
-                        self.subnamemat.append(iteams.strip())
-
-                        for _ in self.titration_list:
-                            print("in loop 4")
-                            self.solute_titrants.append(iteams.strip() + str(_))
-                    self.systemNamemat.append(self.subnamemat)
-                    print(f"this is the subname mat at {i+1} iteration : {self.subnamemat}")
-
-                for i, iteams in enumerate(self.solvent_titratnts):
-                    print("in loop 5")
-                    self.systems.append(f"{iteams}_{self.solute_titrants[i]}")
-                for _ in range(number):
-                    self.submatsmiles = []
-                    a = self.entries[f"solvetsmiles{_ + 1}"].get().strip()
-                    self.submatsmiles.append(a)
-                    self.smilesMatrix.append(a)
-                    b = self.entries[f"solutesmiles{_ + 1}"].get().split(",")
-                    for iteams in b:
-                        self.submatsmiles.append(iteams.strip())
-                        self.smilesMatrix.append(iteams.strip())
-                    self.systemsmilesmat.append(self.submatsmiles)
-
-
-                print(self.systems)
-                print(self.nameMatrix)
-
-
-
-            else:
-                for _ in range(number):
-                    self.subnamemat = []
-                    string_to_append = ""
-                    a = self.entries[f"solventname{_ + 1}"].get().strip()
-                    self.typematrix.append("Solvent")
-                    self.subnamemat.append(a)
-                    self.nameMatrix.append(a)
-                    string_to_append += f'{a}'
-                    b = self.entries[f"solutename{_ + 1}"].get().split(",")
-                    for iteams in b:
-                        self.subnamemat.append(iteams.strip())
-                        string_to_append += f'_{iteams}'
-                        self.typematrix.append("Solute1")
-                        self.nameMatrix.append(iteams.strip())
-                    self.systems.append(string_to_append)
-                    self.systemNamemat.append(self.subnamemat)
-                for _ in range(number):
-                    self.submatsmiles = []
-                    a = self.entries[f"solvetsmiles{_ + 1}"].get().strip()
-                    self.submatsmiles.append(a)
-                    self.smilesMatrix.append(a)
-                    b = self.entries[f"solutesmiles{_ + 1}"].get().split(",")
-                    for iteams in b:
-                        self.submatsmiles.append(iteams.strip())
-                        self.smilesMatrix.append(iteams.strip())
-                    self.systemsmilesmat.append(self.submatsmiles)
-                    print(f"submat: {self.submatsmiles}")
-                    print(f'systemmat: {self.systemsmilesmat}')
-
-
-
-            if self.check_titration.get() !=0:
-
-                number_sys = len(self.systems)
-                key_dic = {}
-                darte = (str(dat.datetime.now()).split()[0]).split("-")
-                date = ""
-                for iteams in darte:
-                    date += f"_{str(iteams)}"
-
-                titration_list = []
-                titration_list[:] = self.titration_list
-                titration_list.pop(self.titration_list.index(1.0))
-
-                global number_of_titration
-                number_of_titration = len(self.titration_list)
-                outer_system=number_sys/(number_of_titration)
-                print(int(outer_system))
-                for j in range(int(outer_system)):
-                    current_index=j*number_of_titration
-                    print(current_index)
-                    key_number=random.randint(1, 30000000)
-                    key_dic[self.systems[current_index]] = key_number
-                    for i in range(number_of_titration-1):
-                        key_dic[self.systems[current_index+(i+1)]] = f'{key_number}_{titration_list[i]}'
-
-                print(f"the key looks like this:{key_dic} ")
-
-                md_kwargs = {"date_sumbit":date,
-                    "smiles_list": self.smilesMatrix,
-                    "name_list": self.nameMatrix,  # "cons": 0,
-                    "type_list": self.typematrix,
-                    "dir": self.meta_dir,
-                    "num_systems": f"{number_sys}", "titartion_list":self.titration_list, "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":True, "own":False, "inital_sys":False}
-                print(f"The titrationlist:{self.titration_list}")
-            else:
-                number_sys = number
-
-                key_dic = {}
-                darte = (str(dat.datetime.now()).split()[0]).split("-")
-                date = ""
-                for iteams in darte:
-                    date += f"_{str(iteams)}"
-                for _ in range(number_sys):
-                     key_dic[self.systems[_]] = random.randint(1, 3000000000)
-
-
-
-
-                md_kwargs = {"date_sumbit": date,
-                             "smiles_list": self.smilesMatrix,
-                             "name_list": self.nameMatrix,  # "cons": 0,
-                             "type_list": self.typematrix,
-                             "dir": self.meta_dir,
-                             "num_systems": f"{number_sys}", "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":False, "own":False, "inital_sys":False}
-            if self.check_titration.get() !=0:
-
-                self.iterator_for_wf = Tnumber
-            else:
-
-
-                self.iterator_for_wf=  number
-
-            for _ in range(self.iterator_for_wf):
-                md_kwargs[f"WF_name{_ + 1}"] = self.systems[_]
-            if self.check_titration.get() !=0:
-                for a in range(number):
-                    md_kwargs[f"Average_den{list(key_dic.values())[a*number_of_titration]}"] = []
-            if self.check_titration.get() ==0:
-                for a in range(number):
-                    md_kwargs[f"Average_den{list(key_dic.values())[a]}"] = []
-            for _ in range(number):
-                md_kwargs[f"den{_ + 1}"] = float(self.entries[f'Density{_ + 1}'].get().strip())
-            for _ in range(number):
-                try:
-                    md_kwargs[f'MM{_ + 1}'] = float(self.entries[f'molarmass{_ + 1}'].get().strip())
-                except ValueError:
-                    md_kwargs[f'MM{_ + 1}'] = int(self.entries[f'molarmass{_ + 1}'].get().strip())
-            for _ in range(number):
-                md_kwargs[f'x{_ + 1}'] = float(self.entries[f'xdim{_ + 1}'].get().strip())
-                md_kwargs[f'y{_ + 1}'] = float(self.entries[f'ydim{_ + 1}'].get().strip())
-                md_kwargs[f'z{_ + 1}'] = float(self.entries[f'zdim{_ + 1}'].get().strip())
-            for _ in range(number):
-                spliter = lambda x: [i.strip() for i in x.split(",")]
-                conamt = spliter(self.entries[f'concentration{_ + 1}'].get())
-                multi_mat=spliter( self.entries[f'multiplicity{_ + 1}'].get())
-                le = len(self.entries[f"charges{_ + 1}"].get())
-                number_of_molecules=len(spliter(self.entries[f'multiplicity{_ + 1}'].get()))
-                self.charge=[]
-                self.charge.extend(
-                    ['0'] + [j for j in spliter(self.entries[f"charges{_ + 1}"].get())] if le != 0 else ['0' for _ in
-                                                                                                         range(
-                                                                                                             number_of_molecules)])
-                md_kwargs[f"charge{_+1}"] = self.charge
-                md_kwargs[f'multiplicity{_ + 1}'] = multi_mat
-                md_kwargs[f'conmatrix{_ + 1}'] = conamt
-
-            index = 0
-            for j in self.systemNamemat:
-
-                solventmat = []
-                solutemat = j[1:]
-                solventmat.append(j[0])
-                md_kwargs[f'solvent_name{index + 1}'] = solventmat
-                md_kwargs[f'solute_name{index + 1}'] = solutemat
-                index += 1
-            index=0
-            for j in self.systemsmilesmat:
-                solventmat = []
-                solutemat = j[1:]
-                solventmat.append(j[0])
-                md_kwargs[f'solvent_smiles{index + 1}'] = solventmat
-                md_kwargs[f'solute_smiles{index + 1}'] = solutemat
-                print(index,solutemat,solventmat)
-                index +=1
-            spliter= lambda x: [i.strip() for i in x.split(',')]
-            self.charge = []
             for i in range(number):
-                le= len(self.entries[f"charges{i + 1}"].get())
-                number_of_molecules=len(spliter(self.entries[f'multiplicity{i + 1}'].get()))
-                self.charge.extend(['0']+[j for j in spliter( self.entries[f"charges{i + 1}"].get())] if le != 0 else ['0' for _ in range(number_of_molecules)])
-            md_kwargs["charge_list"] = self.charge
-            print(md_kwargs)
+                self.subnamemat = []
 
-            if self.own:
-                md_kwargs["own_path"] = self.path_to_user_input
-                md_kwargs["own"] = True
-                print("User provided the parameters")
-            if self.intial.get() !=0:
-                md_kwargs["own_path"] = self.path_to_user_input
-                md_kwargs["inital_sys"] = True
-                print("User provided the inital system")
+                print(" in loop 1")
+                self.solute_matrix = self.entries[f"solutename{i + 1}"].get().split(",")
+                print(self.solute_matrix)
+                solvent = self.entries[f"solventname{i + 1}"].get().strip()
+                self.typematrix.append("Solvent")
+                self.nameMatrix.append(solvent)
+                self.subnamemat.append(solvent)
+                print(self.titration_list)
+                for _ in self.titration_list:
+                    print("in loop 2")
+                    titration_name= solvent
+                    self.solvent_titratnts.append(titration_name)
 
-            all_ids = {"test_md_fw": populate_md_wf(**md_kwargs)}
-            sys.exit()
+                for iteams in self.solute_matrix:
+                    print(self.solute_matrix)
+                    print("in loop 3")
+                    self.typematrix.append("Solute1")
+                    self.nameMatrix.append(iteams.strip())
+                    self.subnamemat.append(iteams.strip())
+
+                    for _ in self.titration_list:
+                        print("in loop 4")
+                        self.solute_titrants.append(iteams.strip() + str(_))
+                self.systemNamemat.append(self.subnamemat)
+                print(f"this is the subname mat at {i+1} iteration : {self.subnamemat}")
+
+            for i, iteams in enumerate(self.solvent_titratnts):
+                print("in loop 5")
+                self.systems.append(f"{iteams}_{self.solute_titrants[i]}")
+            for _ in range(number):
+                self.submatsmiles = []
+                a = self.entries[f"solvetsmiles{_ + 1}"].get().strip()
+                self.submatsmiles.append(a)
+                self.smilesMatrix.append(a)
+                b = self.entries[f"solutesmiles{_ + 1}"].get().split(",")
+                for iteams in b:
+                    self.submatsmiles.append(iteams.strip())
+                    self.smilesMatrix.append(iteams.strip())
+                self.systemsmilesmat.append(self.submatsmiles)
+
+
+            print(self.systems)
+            print(self.nameMatrix)
+
+
 
         else:
-            all_md_data = loadfn(args.filename)
-            all_ids = {}
-            for mol_name, md_kwargs in all_md_data.items():
-                all_ids[mol_name] = populate_md_wf(path=None,**md_kwargs)
+            for _ in range(number):
+                self.subnamemat = []
+                string_to_append = ""
+                a = self.entries[f"solventname{_ + 1}"].get().strip()
+                self.typematrix.append("Solvent")
+                self.subnamemat.append(a)
+                self.nameMatrix.append(a)
+                string_to_append += f'{a}'
+                b = self.entries[f"solutename{_ + 1}"].get().split(",")
+                for iteams in b:
+                    self.subnamemat.append(iteams.strip())
+                    string_to_append += f'_{iteams}'
+                    self.typematrix.append("Solute1")
+                    self.nameMatrix.append(iteams.strip())
+                self.systems.append(string_to_append)
+                self.systemNamemat.append(self.subnamemat)
+            for _ in range(number):
+                self.submatsmiles = []
+                a = self.entries[f"solvetsmiles{_ + 1}"].get().strip()
+                self.submatsmiles.append(a)
+                self.smilesMatrix.append(a)
+                b = self.entries[f"solutesmiles{_ + 1}"].get().split(",")
+                for iteams in b:
+                    self.submatsmiles.append(iteams.strip())
+                    self.smilesMatrix.append(iteams.strip())
+                self.systemsmilesmat.append(self.submatsmiles)
+                print(f"submat: {self.submatsmiles}")
+                print(f'systemmat: {self.systemsmilesmat}')
+
+
+
+        if self.check_titration.get() !=0:
+
+            number_sys = len(self.systems)
+            key_dic = {}
+            darte = (str(dat.datetime.now()).split()[0]).split("-")
+            date = ""
+            for iteams in darte:
+                date += f"_{str(iteams)}"
+
+            titration_list = []
+            titration_list[:] = self.titration_list
+            titration_list.pop(self.titration_list.index(1.0))
+
+            global number_of_titration
+            number_of_titration = len(self.titration_list)
+            outer_system=number_sys/(number_of_titration)
+            print(int(outer_system))
+            for j in range(int(outer_system)):
+                current_index=j*number_of_titration
+                print(current_index)
+                key_number=random.randint(1, 30000000)
+                key_dic[self.systems[current_index]] = key_number
+                for i in range(number_of_titration-1):
+                    key_dic[self.systems[current_index+(i+1)]] = f'{key_number}_{titration_list[i]}'
+
+            print(f"the key looks like this:{key_dic} ")
+
+            md_kwargs = {"date_sumbit":date,
+                "smiles_list": self.smilesMatrix,
+                "name_list": self.nameMatrix,  # "cons": 0,
+                "type_list": self.typematrix,
+                "dir": self.meta_dir,
+                "num_systems": f"{number_sys}", "titartion_list":self.titration_list, "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":True, "own":False, "inital_sys":False}
+            print(f"The titrationlist:{self.titration_list}")
+        else:
+            number_sys = number
+
+            key_dic = {}
+            darte = (str(dat.datetime.now()).split()[0]).split("-")
+            date = ""
+            for iteams in darte:
+                date += f"_{str(iteams)}"
+            for _ in range(number_sys):
+                 key_dic[self.systems[_]] = random.randint(1, 3000000000)
+
+
+
+
+            md_kwargs = {"date_sumbit": date,
+                         "smiles_list": self.smilesMatrix,
+                         "name_list": self.nameMatrix,  # "cons": 0,
+                         "type_list": self.typematrix,
+                         "dir": self.meta_dir,
+                         "num_systems": f"{number_sys}", "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":False, "own":False, "inital_sys":False}
+        if self.check_titration.get() !=0:
+
+            self.iterator_for_wf = Tnumber
+        else:
+
+
+            self.iterator_for_wf=  number
+
+        for _ in range(self.iterator_for_wf):
+            md_kwargs[f"WF_name{_ + 1}"] = self.systems[_]
+        if self.check_titration.get() !=0:
+            for a in range(number):
+                md_kwargs[f"Average_den{list(key_dic.values())[a*number_of_titration]}"] = []
+        if self.check_titration.get() ==0:
+            for a in range(number):
+                md_kwargs[f"Average_den{list(key_dic.values())[a]}"] = []
+        for _ in range(number):
+            md_kwargs[f"den{_ + 1}"] = float(self.entries[f'Density{_ + 1}'].get().strip())
+        for _ in range(number):
+            try:
+                md_kwargs[f'MM{_ + 1}'] = float(self.entries[f'molarmass{_ + 1}'].get().strip())
+            except ValueError:
+                md_kwargs[f'MM{_ + 1}'] = int(self.entries[f'molarmass{_ + 1}'].get().strip())
+        for _ in range(number):
+            md_kwargs[f'x{_ + 1}'] = float(self.entries[f'xdim{_ + 1}'].get().strip())
+            md_kwargs[f'y{_ + 1}'] = float(self.entries[f'ydim{_ + 1}'].get().strip())
+            md_kwargs[f'z{_ + 1}'] = float(self.entries[f'zdim{_ + 1}'].get().strip())
+        for _ in range(number):
+            spliter = lambda x: [i.strip() for i in x.split(",")]
+            conamt = spliter(self.entries[f'concentration{_ + 1}'].get())
+            multi_mat=spliter( self.entries[f'multiplicity{_ + 1}'].get())
+            le = len(self.entries[f"charges{_ + 1}"].get())
+            number_of_molecules=len(spliter(self.entries[f'multiplicity{_ + 1}'].get()))
+            self.charge=[]
+            self.charge.extend(
+                ['0'] + [j for j in spliter(self.entries[f"charges{_ + 1}"].get())] if le != 0 else ['0' for _ in
+                                                                                                     range(
+                                                                                                         number_of_molecules)])
+            md_kwargs[f"charge{_+1}"] = self.charge
+            md_kwargs[f'multiplicity{_ + 1}'] = multi_mat
+            md_kwargs[f'conmatrix{_ + 1}'] = conamt
+
+        index = 0
+        for j in self.systemNamemat:
+
+            solventmat = []
+            solutemat = j[1:]
+            solventmat.append(j[0])
+            md_kwargs[f'solvent_name{index + 1}'] = solventmat
+            md_kwargs[f'solute_name{index + 1}'] = solutemat
+            index += 1
+        index=0
+        for j in self.systemsmilesmat:
+            solventmat = []
+            solutemat = j[1:]
+            solventmat.append(j[0])
+            md_kwargs[f'solvent_smiles{index + 1}'] = solventmat
+            md_kwargs[f'solute_smiles{index + 1}'] = solutemat
+            print(index,solutemat,solventmat)
+            index +=1
+        spliter= lambda x: [i.strip() for i in x.split(',')]
+        self.charge = []
+        for i in range(number):
+            le= len(self.entries[f"charges{i + 1}"].get())
+            number_of_molecules=len(spliter(self.entries[f'multiplicity{i + 1}'].get()))
+            self.charge.extend(['0']+[j for j in spliter( self.entries[f"charges{i + 1}"].get())] if le != 0 else ['0' for _ in range(number_of_molecules)])
+        md_kwargs["charge_list"] = self.charge
+        print(md_kwargs)
+
+        if self.own:
+            md_kwargs["own_path"] = self.path_to_user_input
+            md_kwargs["own"] = True
+            print("User provided the parameters")
+        if self.intial.get() !=0:
+            md_kwargs["own_path"] = self.path_to_user_input
+            md_kwargs["inital_sys"] = True
+            print("User provided the inital system")
+
+        all_ids = {"test_md_fw": populate_md_wf(**md_kwargs)}
+        sys.exit()
+
 
 
 GUI()
