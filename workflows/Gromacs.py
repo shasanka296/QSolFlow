@@ -2,24 +2,17 @@ import subprocess
 import os
 import multiprocessing
 import datetime
-import sys
-import time
-from rdkit import Chem
-from rdkit.Chem import AllChem
-import d3tales_fw.Fast.ASMD_1 as run
-import d3tales_fw.Fast.scriptMaker as m
-import d3tales_fw.Fast.lig as l
-import d3tales_fw.Fast.dft as dft
-import d3tales_fw.Fast.waiting as wait
-import d3tales_fw.Fast.chargeTrasnfer as transfer
-import d3tales_fw.Fast.packmol as pack
-import d3tales_fw.Fast.make_gro as gro
-import d3tales_fw.Fast.titration as titrate
-import d3tales_fw.Fast.titrationPlotter as plotter
-from d3tales_fw.workflows.envwf import meta_dir
+import solflow.Fast.ASMD_1 as run
+import solflow.Fast.lig as l
+import solflow.Fast.chargeTrasnfer as transfer
+import solflow.Fast.packmol as pack
+import solflow.Fast.make_gro as gro
+import solflow.Fast.titration as titrate
+import solflow.Fast.titrationPlotter as plotter
+from solflow.workflows.envwf import meta_dir
 
 
-from atomate.utils.utils import get_logger, env_chk
+from atomate.utils.utils import get_logger
 from fireworks import FiretaskBase, explicit_serialize, FWAction
 logger = get_logger(__name__)
 cpus = [multiprocessing.cpu_count() if multiprocessing.cpu_count() < 16 else 16]

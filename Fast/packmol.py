@@ -1,7 +1,7 @@
 import subprocess
 import os
 import time
-import d3tales_fw.Fast.topology as top
+import solflow.Fast.topology as top
 
 class Solvate:
     def __init__(self, solvent, solute, con, density, solvent2, den2, x, y, z, di, ratio, key):

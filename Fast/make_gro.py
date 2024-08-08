@@ -1,8 +1,8 @@
 import subprocess
 import os
-import d3tales_fw.Fast.reorg as g
-import d3tales_fw.Fast.topology as top
-from d3tales_fw.workflows.envwf import MDP_Location,meta_dir,CONDAPATH
+import solflow.Fast.reorg as g
+import solflow.Fast.topology as top
+from solflow.workflows.envwf import MDP_Location,meta_dir,CONDAPATH
 
 class gro:
     def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system,path_to_file):

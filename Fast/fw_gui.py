@@ -4,8 +4,8 @@ import argparse
 import random
 from fireworks import LaunchPad
 import datetime as dat
-from d3tales_fw.workflows.wf_writer import *
-from d3tales_fw.workflows.envwf import meta_dir
+from solflow.workflows.wf_writer import *
+from solflow.workflows.envwf import meta_dir
 
 
 class GUI:

@@ -3,7 +3,7 @@ from rdkit.Chem import AllChem, Descriptors
 import rdkit as rd
 import subprocess
 import os
-from d3tales_fw.workflows.envwf import CONDAPATH
+from solflow.workflows.envwf import CONDAPATH
 
 
 def run_on_terminla(name, q, smiles, direc=None, mul=None):

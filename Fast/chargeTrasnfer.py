@@ -1,5 +1,5 @@
 import subprocess
-from d3tales_fw.Fast.new_dft import run_on_terminla
+from solflow.Fast.new_dft import run_on_terminla
 import os
 class trans:
     def __init__(self,name,smiles,key,own,di,charg,Titration, mult=None):
