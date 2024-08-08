@@ -1,9 +1,0 @@
-name: test
-category: ["gromacs"]
-query: '{}'
-env:
-    path: <Path to launch>/launch
-    runfile_log: <paht for the run log>/<runfilenmae>
-
- 
-

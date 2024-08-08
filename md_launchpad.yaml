@@ -1,3 +1,0 @@
-host: mongodb+srv://<username>:<password>@<copied from the db>/<databasename>?retryWrites=true&w=majority&appName=<from db>
-logdir: null
-uri_mode: true
