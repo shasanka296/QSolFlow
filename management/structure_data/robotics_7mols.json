@@ -1,0 +1,12 @@
+{
+  "origin": "Risko_Robotics",
+
+  "DMPZ": "CN1C2=C(C=CC=C2)N(C)C3=C1C=CC=C3",
+  "Ferrocene": "[CH-]1C=CC=C1.[CH-]1C=CC=C1.[Fe+2]",
+  "Decamethylferrocene": "C[c-]1c(c(c(c1C)C)C)C.C[c-]1c(c(c(c1C)C)C)C.[Fe+2]",
+  "TEMPO": "CC1(C)CCCC(C)(C)N1[O]",
+  "MEEPT": "COCCOCCN1C2=C(C=CC=C2)SC3=C1C=CC=C3",
+  "DTBDMB": "CC(C)(C)C1=C(OC)C=C(C(C)(C)C)C(OC)=C1",
+  "DBBB": "CC(C)(C)C1=C(OCCOC)C=C(C(C)(C)C)C(OCCOC)=C1",
+  "ECz": "CCN1C2=C(C=CC=C2)C3=C1C=CC=C3"
+}

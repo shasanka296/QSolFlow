@@ -1,0 +1,122 @@
+{
+    "name": "Huckaba_mols",
+
+    "opt_groundState": {
+        "route_parameters":{
+            "opt": "",
+            "scf(maxcyc=512)" : ""
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 0,
+        "multiplicity": 1
+    },
+
+    "opt_anion1": {
+        "route_parameters":{
+            "opt": "",
+            "scf(maxcyc=512)" : ""
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": -1,
+        "multiplicity": 1
+    },
+
+    "opt_cation1": {
+        "route_parameters":{
+            "opt": "",
+            "scf(maxcyc=512)" : ""
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 1,
+        "multiplicity": 1
+    },
+
+    "opt_cation2": {
+        "route_parameters":{
+            "opt": "",
+            "scf(maxcyc=512)" : ""
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 2,
+        "multiplicity": 1
+    },
+
+    "nmr_groundState": {
+        "route_parameters":{
+            "nmr": "GIAO"
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 0,
+        "multiplicity": 1
+    },
+
+    "nmr_cation1": {
+        "route_parameters":{
+            "nmr": "GIAO"
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 1,
+        "multiplicity": 1
+    },
+
+    "nmr_cation2": {
+        "route_parameters":{
+            "nmr": "GIAO"
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 2,
+        "multiplicity": 1
+    },
+
+    "wtuning": {
+        "functional": "LC-wHPBE",
+        "basis_set": "TZVP",
+        "charge": 0
+    },
+
+    "tddft_groundState": {
+        "route_parameters": {
+          "td": {
+            "50-50": "",
+            "nstates": 15
+          }
+        },
+          "charge": 0,
+          "multiplicity": 1,
+          "basis_set": "TZVP",
+          "functional": "LC-wHPBE"
+    },
+
+    "tddft_cation1": {
+        "route_parameters": {
+          "td": {
+            "50-50": "",
+            "nstates": 15
+          }
+        },
+          "charge": 1,
+          "multiplicity": 1,
+          "basis_set": "TZVP",
+          "functional": "LC-wHPBE"
+    },
+
+    "tddft_cation2": {
+        "route_parameters": {
+          "td": {
+            "50-50": "",
+            "nstates": 15
+          }
+        },
+          "charge": 2,
+          "multiplicity": 1,
+          "basis_set": "TZVP",
+          "functional": "LC-wHPBE"
+    }
+}

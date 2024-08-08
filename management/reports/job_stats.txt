@@ -1,0 +1,54 @@
+------------------------------ 11-21-2022 -----------------------------------------
+
+Opt  Calculations:
+Total Average Runtime for 28148 jobs on MCC:            179.687 min  (2.995 hr)
+Total Average Runtime for 5048 jobs on Stampede:        51.115 min  (0.852 hr)
++--------------------------------------------------------------------------+
+|   Average Opt Runtime for 33196 jobs:         160.136 min  (2.669 hr)    |
++--------------------------------------------------------------------------+
+Energy  Calculations:
+Total Average Runtime for 42074 jobs on MCC:            6.399 min  (0.107 hr)
+Total Average Runtime for 6711 jobs on Stampede:        2.054 min  (0.034 hr)
++--------------------------------------------------------------------------+
+|   Average Energy Runtime for 48785 jobs:      5.801 min  (0.097 hr)      |
++--------------------------------------------------------------------------+
+Tddft  Calculations:
+Total Average Runtime for 22531 jobs on MCC:            62.736 min  (1.046 hr)
+Total Average Runtime for 3396 jobs on Stampede:        13.824 min  (0.23 hr)
++--------------------------------------------------------------------------+
+|   Average Tddft Runtime for 25927 jobs:       56.33 min  (0.939 hr)      |
++--------------------------------------------------------------------------+
+Wtuning  Calculations:
+Total Average Runtime for 4987 jobs on MCC:             89.832 min  (1.497 hr)
+Total Average Runtime for 978 jobs on Stampede:         20.87 min  (0.348 hr)
++--------------------------------------------------------------------------+
+|   Average Wtuning Runtime for 5965 jobs:      78.525 min  (1.309 hr)     |
++--------------------------------------------------------------------------+
+
+------------------------------ 11-21-2022 -----------------------------------------
+
+Opt  Calculations:
+Total Average Runtime for 25634 jobs on MCC:            156.556 min  (2.609 hr)
+Total Average Runtime for 18942 jobs on Stampede:       62.77 min  (1.046 hr)
++--------------------------------------------------------------------------+
+|   Average Opt Runtime for 44576 jobs:         116.703 min  (1.945 hr)    |
++--------------------------------------------------------------------------+
+Energy  Calculations:
+Total Average Runtime for 37625 jobs on MCC:            5.32 min  (0.089 hr)
+Total Average Runtime for 29176 jobs on Stampede:       2.121 min  (0.035 hr)
++--------------------------------------------------------------------------+
+|   Average Energy Runtime for 66801 jobs:      3.923 min  (0.065 hr)      |
++--------------------------------------------------------------------------+
+Tddft  Calculations:
+Total Average Runtime for 19480 jobs on MCC:            54.706 min  (0.912 hr)
+Total Average Runtime for 17442 jobs on Stampede:       13.423 min  (0.224 hr)
++--------------------------------------------------------------------------+
+|   Average Tddft Runtime for 36922 jobs:       35.203 min  (0.587 hr)     |
++--------------------------------------------------------------------------+
+Wtuning  Calculations:
+Total Average Runtime for 4336 jobs on MCC:             151.66 min  (2.528 hr)
+Total Average Runtime for 3086 jobs on Stampede:        54.342 min  (0.906 hr)
++--------------------------------------------------------------------------+
+|   Average Wtuning Runtime for 7422 jobs:      111.196 min  (1.853 hr)    |
++--------------------------------------------------------------------------+
+

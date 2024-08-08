@@ -1,0 +1,14 @@
+{
+  "origin": "Other",
+  "mol_huck44_p0": "c4cc(c3ccc(c2ccc(c1ccncc1)s2)s3)ccn4",
+  "mol_huck44_p1": "c4cc(c3ccc(c2ccc(c1cc[nH+]cc1)s2)s3)ccn4",
+  "mol_huck44_p2": "c4cc(c3ccc(c2ccc(c1cc[nH+]cc1)s2)s3)cc[nH+]4",
+  "mol_huck34_p0": "c4cncc(c3ccc(c2ccc(c1ccncc1)s2)s3)c4",
+  "mol_huck34_p1_pyr4": "c4cncc(c3ccc(c2ccc(c1cc[nH+]cc1)s2)s3)c4",
+  "mol_huck34_p1_pyr3": "c4c[nH+]cc(c3ccc(c2ccc(c1ccncc1)s2)s3)c4",
+  "mol_huck34_p2": "c4c[nH+]cc(c3ccc(c2ccc(c1cc[nH+]cc1)s2)s3)c4",
+  "mol_huck33_p0": "c4cncc(c3ccc(c2ccc(c1cccnc1)s2)s3)c4",
+  "mol_huck33_p1": "c4cncc(c3ccc(c2ccc(c1ccc[nH+]c1)s2)s3)c4",
+  "mol_huck_ta_p0": "O=S(=O)([O-])C(F)(F)F",
+  "mol_huck_ta_p1": "OS(=O)(=O)C(F)(F)F"
+}

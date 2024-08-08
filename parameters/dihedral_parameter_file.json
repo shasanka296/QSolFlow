@@ -1,0 +1,27 @@
+{
+    "name": "dihedral_mols",
+
+    "semi_empirical": {
+        "functional": "PM6",
+        "basis_set": "",
+        "charge": 0,
+        "multiplicity": 1
+    },
+
+    "opt_groundState": {
+        "route_parameters":{
+            "opt": "",
+            "scf(maxcyc=512)" : ""
+        },
+        "functional": "LC-wHPBE",
+        "basis_set": "cc-pVDZ",
+        "charge": 0,
+        "multiplicity": 1
+    },
+
+    "wtuning": {
+        "functional": "LC-wHPBE",
+        "basis_set": " cc-pVDZ",
+        "charge": 0
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "origin": "Odom_hussein",
+
+  "mol_bp_ma_whol": "c1c(ccc(c1)c1ccc(cc1)N(c1ccc(cc1)OC)c1ccc(cc1)OC)N(c1ccc(cc1)OC)c1ccc(cc1)OC",
+  "mol_bp_fm2_whol": "Cc1ccc(C(F)(F)F)cc1N(c5ccc(c4ccc(N(c2cc(C(F)(F)F)ccc2C)c3cc(C(F)(F)F)ccc3C)cc4)cc5)c6cc(C(F)(F)F)ccc6C",
+
+  "mol_ph_ma_whol": "COc5ccc(N(c1ccc(OC)cc1)c4ccc(N(c2ccc(OC)cc2)c3ccc(OC)cc3)cc4)cc5",
+  "mol_ph_fm2_whol": "Cc1ccc(C(F)(F)F)cc1N(c4ccc(N(c2cc(C(F)(F)F)ccc2C)c3cc(C(F)(F)F)ccc3C)cc4)c5cc(C(F)(F)F)ccc5C"
+}

@@ -1,0 +1,29 @@
+{
+  "origin": "Risko_Aman",
+
+  "amol_f1_nn": "FC(C(C=CC=C1)=C1N(C2=CC=CC=C2C(F)(F)F)C3=CC=C(N(C4=C(C(F)(F)F)C=CC=C4)C5=CC=CC=C5C(F)(F)F)C=C3)(F)F",
+  "amol_f2_nn": "FC(C1=CC=CC(N(C2=CC(C(F)(F)F)=CC=C2)C3=CC=C(N(C4=CC=CC(C(F)(F)F)=C4)C5=CC=CC(C(F)(F)F)=C5)C=C3)=C1)(F)F",
+  "amol_f3_nn": "FC(C(C=C1)=CC=C1N(C2=CC=C(C(F)(F)F)C=C2)C3=CC=C(N(C4=CC=C(C(F)(F)F)C=C4)C5=CC=C(C(F)(F)F)C=C5)C=C3)(F)F",
+
+  "amol_f2_m5": "CC(C=CC(C(F)(F)F)=C1)=C1N(C2=C(C)C=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=C(C)C=CC(C(F)(F)F)=C4)C5=C(C)C=CC(C(F)(F)F)=C5)C=C3",
+  "amol_f2_m4": "CC1=CC(C(F)(F)F)=CC(N(C2=CC(C)=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=CC(C)=CC(C(F)(F)F)=C4)C5=CC(C)=CC(C(F)(F)F)=C5)C=C3)=C1",
+  "amol_f2_m3": "CC(C(C(F)(F)F)=C1)=CC=C1N(C2=CC=C(C)C(C(F)(F)F)=C2)C3=CC=C(N(C4=CC=C(C)C(C(F)(F)F)=C4)C5=CC=C(C)C(C(F)(F)F)=C5)C=C3",
+  "amol_f2_m1": "CC1=C(C(F)(F)F)C=CC=C1N(C2=CC=CC(C(F)(F)F)=C2C)C3=CC=C(N(C4=CC=CC(C(F)(F)F)=C4C)C5=CC=CC(C(F)(F)F)=C5C)C=C3",
+
+  "amol_f2_f5": "FC(C1=CC(N(C2=C(C(F)(F)F)C=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=C(C(F)(F)F)C=CC(C(F)(F)F)=C4)C5=C(C(F)(F)F)C=CC(C(F)(F)F)=C5)C=C3)=C(C(F)(F)F)C=C1)(F)F",
+  "amol_f2_f4": "FC(C1=CC(N(C2=CC(C(F)(F)F)=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=CC(C(F)(F)F)=CC(C(F)(F)F)=C4)C5=CC(C(F)(F)F)=CC(C(F)(F)F)=C5)C=C3)=CC(C(F)(F)F)=C1)(F)F",
+  "amol_f2_f3": "FC(C1=CC(N(C2=CC=C(C(F)(F)F)C(C(F)(F)F)=C2)C3=CC=C(N(C4=CC=C(C(F)(F)F)C(C(F)(F)F)=C4)C5=CC=C(C(F)(F)F)C(C(F)(F)F)=C5)C=C3)=CC=C1C(F)(F)F)(F)F",
+  "amol_f2_f1": "FC(C1=C(C(F)(F)F)C(N(C2=CC=CC(C(F)(F)F)=C2C(F)(F)F)C3=CC=C(N(C4=CC=CC(C(F)(F)F)=C4C(F)(F)F)C5=CC=CC(C(F)(F)F)=C5C(F)(F)F)C=C3)=CC=C1)(F)F",
+
+  "amol_f2_F5": "FC(C=CC(C(F)(F)F)=C1)=C1N(C2=C(F)C=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=C(F)C=CC(C(F)(F)F)=C4)C5=C(F)C=CC(C(F)(F)F)=C5)C=C3",
+  "amol_f2_F4": "FC1=CC(C(F)(F)F)=CC(N(C2=CC(F)=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=CC(F)=CC(C(F)(F)F)=C4)C5=CC(F)=CC(C(F)(F)F)=C5)C=C3)=C1",
+  "amol_f2_F3": "FC(C(C(F)(F)F)=C1)=CC=C1N(C2=CC=C(F)C(C(F)(F)F)=C2)C3=CC=C(N(C4=CC=C(F)C(C(F)(F)F)=C4)C5=CC=C(F)C(C(F)(F)F)=C5)C=C3",
+  "amol_f2_F1": "FC1=C(C(F)(F)F)C=CC=C1N(C2=CC=CC(C(F)(F)F)=C2F)C3=CC=C(N(C4=CC=CC(C(F)(F)F)=C4F)C5=CC=CC(C(F)(F)F)=C5F)C=C3",
+
+  "amol_f2_o5": "COC(C=CC(C(F)(F)F)=C1)=C1N(C2=C(OCC)C=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=C(OC)C=CC(C(F)(F)F)=C4)C5=C(OC)C=CC(C(F)(F)F)=C5)C=C3",
+  "amol_f2_o4": "COC1=CC(C(F)(F)F)=CC(N(C2=CC(OC)=CC(C(F)(F)F)=C2)C3=CC=C(N(C4=CC(OC)=CC(C(F)(F)F)=C4)C5=CC(OC)=CC(C(F)(F)F)=C5)C=C3)=C1",
+  "amol_f2_o3": "COC(C(C(F)(F)F)=C1)=CC=C1N(C2=CC=C(OC)C(C(F)(F)F)=C2)C3=CC=C(N(C4=CC=C(OC)C(C(F)(F)F)=C4)C5=CC=C(OC)C(C(F)(F)F)=C5)C=C3",
+  "amol_f2_o1": "COC1=C(C(F)(F)F)C=CC=C1N(C2=CC=CC(C(F)(F)F)=C2OC)C3=CC=C(N(C4=CC=CC(C(F)(F)F)=C4OC)C5=CC=CC(C(F)(F)F)=C5OC)C=C3",
+
+  "amol_FF_FF": "FC1=C(F)C(N(C2=C(F)C(F)=C(F)C(F)=C2F)C3=CC=C(N(C4=C(F)C=C(F)C(F)=C4F)C5=C(F)C(F)=C(F)C(F)=C5F)C=C3)=C(F)C(F)=C1F"
+}
