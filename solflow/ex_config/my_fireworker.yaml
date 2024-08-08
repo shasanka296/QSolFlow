@@ -1,0 +1,11 @@
+name: test
+category: ["processing"]
+query: '{}'
+env:
+    path: BASE_PATH/runfiles
+    g16_cmd: GAUSSIAN_COMMAND
+    processing_vm_key: /home/USER/.ssh/processing_vm_key.pem
+    runfile_log: BASE_PATH/runfiles/runfile_log.txt
+    storage_key: /home/USER/.ssh/storage_key.pem
+    storage_base_loc: /home/USER/data_storage3/
+

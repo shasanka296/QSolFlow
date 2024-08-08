@@ -1,0 +1,29 @@
+import subprocess
+import os
+import time
+class Solvate:
+    def __init__(self, solvent, solute, con):
+        self.solvent= solvent
+        self.solute =solute
+        self.con= int(con)
+
+        numberMolcues = con
+        numberSolvent = 500
+        subprocess.run(f"mkdir {solvent}_{solute}Packmol", shell = True) 
+
+
+        with open(f'{solvent}_{solute}Packmol/mixture.inp', 'a') as m:
+            info = ["#", f"# A mixture of {self.solvent} and {self.solute}", "#", "tolerance 2.0", "filetype pdb", f"output {solvent}_{solute}Packmol/{self.solvent}_and_{self.solute}Mixture.pdb",
+                    "", f"structure Solvent_{self.solvent}/Solvent_{self.solvent}-debug.pdb", f"  number {numberSolvent}", "  inside box 0. 0. 0. 40. 40. 40.", "end structure",
+                    "", f"structure Solute_{self.solute}/Solute_{self.solute}-debug.pdb", f"  number {numberMolcues}", "  inside box 0. 0. 0. 40. 40. 40.", "end structure"]
+            for lines in info:
+                m.writelines(lines +"\n")
+
+        while not os.path.isfile(f"{solvent}_{solute}Packmol/mixture.inp"):
+            time.sleep(1)
+        conda_activate = "source /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/miniconda3/bin/activate"
+        packmol_cmd =f"packmol < {solvent}_{solute}Packmol/mixture.inp"
+
+        cmd = ["bash", "-c",
+               f'{conda_activate} && {packmol_cmd}']
+        subprocess.Popen(cmd).wait()

@@ -1,0 +1,3 @@
+source /project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/miniconda3/bin/activate
+conda activate ASMD
+
