@@ -52,7 +52,7 @@ class MDPrep(FiretaskBase):
     def run_task(self, fw_spec):
         self.initial_system= self["inital_sys"]
         self.own=self.get("own_path") or fw_spec.get("own_path")
-        self.is_own= True if len(self.own.strip())!=0 else False
+        self.is_own= True if self.own else False
         print(self.initial_system)
         print(self["inital_sys"])
         print(self.get("inital_sys"))
