@@ -105,6 +105,7 @@ my_firework = [
 
 
 
+
 with open(f"{os.path.join(QSOl_flow_dir,'QSolFlow','solflow','workflows','envwf.py')}","w") as f:
     f.writelines(envlines)
 
@@ -117,6 +118,39 @@ with open(f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','my_fireworker.yaml'
 
 with open(config_solflow_file,'w') as file:
     file.writelines(to_write)
+
+
+
+
+
+
+desktop_file_path = os.path.join(QSOl_flow_dir, 'QSF.desktop')
+
+source_file = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','CONFIG')}"
+python_script = f"{os.path.join(QSOl_flow_dir,'solflow','Fast','fw_gui.py')}"
+icon_path = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','conda_env','QSF5.png')}"
+
+command = f'bash -c "source {source_file} && python {python_script}"'
+
+desktop_file_content = f"""[Desktop Entry]
+Name=QSF
+Comment=For help email sla296@uky.edu
+Exec={command}
+Icon={icon_path}
+Terminal=true
+Type=Application
+Categories=Utility
+"""
+
+with open(desktop_file_path, 'w') as file:
+    file.write(desktop_file_content)
+
+os.chmod(desktop_file_path, 0o755)
+
+print(f'Desktop launcher created at {QSOl_flow_dir}')
+
+
+
 
 
 
