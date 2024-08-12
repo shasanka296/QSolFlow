@@ -25,9 +25,9 @@ To get started with SolFlow, follow these steps:
    - Use the following commands to create the necessary Conda environments:
      ```bash
      git clone https://github.com/shasanka296/QSolFlow.git
-     conda env create -f launch/conda_env/main_env.yml
-     conda env create -f launch/conda_env/DFT.yml
-     conda env create -f launch/conda_env/LIG.yml
+     conda env create -f QSolFlow/launch/conda_env/main_env.yml
+     conda env create -f QSolFlow/launch/conda_env/DFT.yml
+     conda env create -f QSolFlow/launch/conda_env/LIG.yml
      ```
 
    - Download ligpargen:
