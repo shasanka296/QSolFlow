@@ -41,7 +41,12 @@ To get started with SolFlow, follow these steps:
 
 6. **Run the Configuration Script**
    - Execute the configuration script located in the `launch` directory.
-
+      ```bash
+     conda activate base
+     cd launch
+     python config.py
+     
+     ```
 
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
