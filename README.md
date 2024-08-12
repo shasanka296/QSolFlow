@@ -22,13 +22,13 @@ To get started with SolFlow, follow these steps:
      conda env create -f launch/conda_env/DFT.yml
      conda env create -f launch/conda_env/LIG.yml
      ```
-   - If you are using the classic solver, switch to the newer libmamba solver using the following command:
+   - If you are using the classic solver, switch to the new libmamba solver using the following command:
      ```bash
      conda update -n base conda --solver=classic
      conda install -n base conda-libmamba-solver
      y
      conda config --set solver libmamba
-    ```
+     ```
 6. **Run the Configuration Script**
    - Execute the configuration script located in the `launch` directory.
 
