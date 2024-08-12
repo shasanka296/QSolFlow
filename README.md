@@ -20,6 +20,7 @@ To get started with SolFlow, follow these steps:
      conda update -n base conda --solver=classic
      conda install -n base conda-libmamba-solver -y
      conda config --set solver libmamba
+     
      ```
    - Use the following commands to create the necessary Conda environments:
      ```bash
@@ -27,13 +28,15 @@ To get started with SolFlow, follow these steps:
      conda env create -f QSolFlow/launch/conda_env/main_env.yml
      conda env create -f QSolFlow/launch/conda_env/DFT.yml
      conda env create -f QSolFlow/launch/conda_env/LIG.yml
+     
      ```
 
    - Inside the QSolFLow directory download ligpargen:
      ```bash
-     conda activate ligpg
      git clone https://github.com/Isra3l/ligpargen.git
+     conda activate ligpg
      pip install -e ligpargen
+     
      ```
 
 6. **Run the Configuration Script**
