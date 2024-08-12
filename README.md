@@ -30,11 +30,11 @@ To get started with SolFlow, follow these steps:
      conda config --set solver libmamba
      ```
  - Download ligpargen:
-    '''bash
-    conda activate ligpg
-    git clone https://github.com/Isra3l/ligpargen.git
-    pip install -e ligpargen
-    '''
+   ```bash
+   conda activate ligpg
+   git clone https://github.com/Isra3l/ligpargen.git
+   pip install -e ligpargen
+   ```
 6. **Run the Configuration Script**
    - Execute the configuration script located in the `launch` directory.
 
