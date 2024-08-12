@@ -15,13 +15,6 @@ To get started with SolFlow, follow these steps:
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
 
 4. **Set Up the Conda Environments**
-   - Use the following commands to create the necessary Conda environments:
-     ```bash
-     git clone https://github.com/shasanka296/QSolFlow.git
-     conda env create -f launch/conda_env/main_env.yml
-     conda env create -f launch/conda_env/DFT.yml
-     conda env create -f launch/conda_env/LIG.yml
-     ```
    - If you are using the classic solver, switch to the new libmamba solver using the following command:
      ```bash
      conda update -n base conda --solver=classic
@@ -29,6 +22,14 @@ To get started with SolFlow, follow these steps:
      y
      conda config --set solver libmamba
      ```
+   - Use the following commands to create the necessary Conda environments:
+     ```bash
+     git clone https://github.com/shasanka296/QSolFlow.git
+     conda env create -f launch/conda_env/main_env.yml
+     conda env create -f launch/conda_env/DFT.yml
+     conda env create -f launch/conda_env/LIG.yml
+     ```
+
    - Download ligpargen:
      ```bash
      conda activate ligpg
