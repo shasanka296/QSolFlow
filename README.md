@@ -40,6 +40,7 @@ To get started with SolFlow, follow these steps:
      ```
 
 6. **Run the Configuration Script**
+
    - Execute the configuration script located in the `launch` directory.
       ```bash
      conda activate base
@@ -47,7 +48,9 @@ To get started with SolFlow, follow these steps:
      python config.py
      
      ```
-
+7. **Download the singularity container and MDP files through here along with some example files***
+   - [
+](https://www.dropbox.com/scl/fo/bcmwn6ufjk6k5qrt58s36/AC3_o6bwXv0xvVED3PitmX0?rlkey=mt82tc7ampn2ts1tui6gsx5ti&st=tcf2vngr&dl=0)
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
 For any questions email sla296@uky.edu
