@@ -1,5 +1,4 @@
-
-![QSF5](https://github.com/user-attachments/assets/69eac423-3c0e-4209-898f-1825ab612ac4)
+<img src="https://github.com/user-attachments/assets/69eac423-3c0e-4209-898f-1825ab612ac4" alt="QSF5" width="300"/>
 
 ## Setting Up and Running SolFlow
 
@@ -29,12 +28,13 @@ To get started with SolFlow, follow these steps:
      y
      conda config --set solver libmamba
      ```
- - Download ligpargen:
-   ```bash
-   conda activate ligpg
-   git clone https://github.com/Isra3l/ligpargen.git
-   pip install -e ligpargen
-   ```
+   - Download ligpargen:
+     ```bash
+     conda activate ligpg
+     git clone https://github.com/Isra3l/ligpargen.git
+     pip install -e ligpargen
+     ```
+
 6. **Run the Configuration Script**
    - Execute the configuration script located in the `launch` directory.
 
