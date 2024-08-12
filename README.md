@@ -29,7 +29,7 @@ To get started with SolFlow, follow these steps:
      conda env create -f QSolFlow/launch/conda_env/LIG.yml
      ```
 
-   - Download ligpargen:
+   - Inside the QSolFLow directory download ligpargen:
      ```bash
      conda activate ligpg
      git clone https://github.com/Isra3l/ligpargen.git
