@@ -17,6 +17,7 @@ To get started with SolFlow, follow these steps:
 4. **Set Up the Conda Environments**
    - Use the following commands to create the necessary Conda environments:
      ```bash
+     git clone https://github.com/shasanka296/QSolFlow.git
      conda env create -f launch/conda_env/main_env.yml
      conda env create -f launch/conda_env/DFT.yml
      conda env create -f launch/conda_env/LIG.yml
