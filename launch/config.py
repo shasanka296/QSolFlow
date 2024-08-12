@@ -13,6 +13,7 @@ Boss_dir = input("Path to boss dir: ")
 singularity_path= input("Where is the f.sif file: ")
 MDP_or_not=input("Do you have your MDP files? [y/n]")
 MDP_path=None
+Automatic=input("Do you want to automatically run the system after it is run[y/n]")
 if MDP_or_not.strip() =="y":
     MDP_path=input("What is the path: ")
 if MDP_or_not.strip()=="n":
@@ -130,12 +131,13 @@ source_file = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','CONFIG')}"
 python_script = f"{os.path.join(QSOl_flow_dir,'QSolFlow','solflow','Fast','fw_gui.py')}"
 icon_path = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','conda_env','QSF5.png')}"
 
-command = f'bash -c "source {source_file} && python {python_script}"'
+command1 = f'bash -c "source {source_file} && python {python_script}"'
+command2=  f'bash -c "source {source_file} && python {python_script} && cd QSolFlow/launch && rlaunch rapidfire"'
 
 desktop_file_content = f"""[Desktop Entry]
 Name=QSF
 Comment=For help email sla296@uky.edu
-Exec={command}
+Exec={command1 if Automatic.strip()=="n"else command2 }
 Icon={icon_path}
 Terminal=true
 Type=Application
