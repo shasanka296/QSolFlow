@@ -11,7 +11,7 @@ def run_on_terminla(name, q, smiles, direc=None, mul=None):
     command = (
     f"source {CONDAPATH} && "
     f"conda activate vlxenv && "
-    f"python -c \"import d3tales_fw.Fast.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
+    f"python -c \"import solflow.Fast.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
 
     subprocess.run(command, shell=True,check=True)
     with open (f"{os.path.join(direc,'charge.txt')}", 'r') as file:
@@ -27,7 +27,6 @@ def get_charge(name, ch, smiles, direc=None, mul=None):
         import veloxchem as vlx
     except:
         raise Exception("cannot load the module")
-    path_to_mol = f"{name}.pdb"
     path_to_xyz = f"{name}.xyz"
     tr_mol = rd.Chem.MolFromSmiles(smiles)  # I found that if I just use the xyz file RDKIT
     # cannot count num of unpaired e, so I am defining the molecule using smiles first
