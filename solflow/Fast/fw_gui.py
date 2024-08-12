@@ -47,7 +47,7 @@ class GUI:
     def __init__(self):
         self.meta_dir=meta_dir
         self.window = tk.Tk()
-        self.window.title('ASMD')
+        self.window.title('QSolFlow')
         self.window.geometry('850x650')
         self.nameMatrix = []
         self.systemNamemat = []
