@@ -40,6 +40,7 @@ To get started with SolFlow, follow these steps:
      ```
 
 6. **Run the Configuration Script**
+   - When setting the output directory make sure that the total path is less than 80 characters
 
    - Execute the configuration script located in the `launch` directory.
       ```bash
@@ -48,7 +49,7 @@ To get started with SolFlow, follow these steps:
      python config.py
      
      ```
-7. **Download the singularity container and MDP files through here along with some example files***
+8. **Download the singularity container and MDP files through here along with some example files***
    - [DropBox link](https://www.dropbox.com/scl/fo/bcmwn6ufjk6k5qrt58s36/AC3_o6bwXv0xvVED3PitmX0?rlkey=mt82tc7ampn2ts1tui6gsx5ti&st=flshzr1w&dl=0)
      
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
