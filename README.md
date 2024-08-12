@@ -9,7 +9,7 @@ To get started with SolFlow, follow these steps:
    - For those needing to install Singularity, follow the instructions [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 
 2. **Set Up and Configure MongoDB**
-   - Detailed instructions, including a video tutorial, can be found [here](#) (need to add link).
+   - Detailed instructions, including a video tutorial, can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
 
 3. **Install Miniconda**
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
