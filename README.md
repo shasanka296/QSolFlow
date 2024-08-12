@@ -18,8 +18,7 @@ To get started with SolFlow, follow these steps:
    - If you are using the classic solver, switch to the new libmamba solver using the following command:
      ```bash
      conda update -n base conda --solver=classic
-     conda install -n base conda-libmamba-solver
-     y
+     conda install -n base conda-libmamba-solver -y
      conda config --set solver libmamba
      ```
    - Use the following commands to create the necessary Conda environments:
@@ -40,15 +39,6 @@ To get started with SolFlow, follow these steps:
 6. **Run the Configuration Script**
    - Execute the configuration script located in the `launch` directory.
 
-7. **Run SolFlow**
-   - Ensure the `SolFlow.sh` script has the correct permissions:
-     ```bash
-     chmod 777 SolFlow.sh
-     ```
-   - Run the script:
-     ```bash
-     ./SolFlow.sh
-     ```
 
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
