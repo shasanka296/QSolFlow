@@ -1,8 +1,8 @@
 <img src="https://github.com/user-attachments/assets/69eac423-3c0e-4209-898f-1825ab612ac4" alt="QSF5" width="300"/>
 
-## Setting Up and Running SolFlow
+## Setting Up and Running QSolFlow
 
-To get started with SolFlow, follow these steps:
+To get started with QSolFlow, follow these steps:
 
 1. **Download and Install Singularity**
    - If you're using a High-Performance Computing (HPC) environment that already has a Singularity module, you may skip this step.
