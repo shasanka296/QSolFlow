@@ -24,9 +24,13 @@ class gro:
 
             print(f"in the gro solutes: {self.solute}")
 
-            command = f'gmx_mpi editconf -f {os.path.join(self.dir, f"Packmol{key}", "Mixture.pdb")} -box {self.x} {self.y} {self.z} -o {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")}'
-
-            subprocess.run(command, shell=True, check=True)
+            command_main = f'gmx_mpi editconf -f {os.path.join(self.dir, f"Packmol{key}", "Mixture.pdb")} -box {self.x} {self.y} {self.z} -o {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")}'
+            command_alt = f'gmx editconf -f {os.path.join(self.dir, f"Packmol{key}", "Mixture.pdb")} -box {self.x} {self.y} {self.z} -o {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")}'
+            try:
+               subprocess.run(command_main, shell=True, check=True)
+            except subprocess.CalledProcessError as E:
+               print("Looks like there is no MPI")
+               subprocess.run(command_alt, shell=True, check=True)
 
             print("gro file made")
 
