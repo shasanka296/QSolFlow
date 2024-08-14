@@ -13,7 +13,7 @@ def run_on_terminla(name, q, smiles, direc=None, mul=None):
     f"conda activate vlxenv && "
     f"python -c \"import solflow.Fast.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
 
-    subprocess.run(command, shell=True,executable="/bin/bash",check=True)
+    subprocess.run([command], shell=True,executable="/bin/bash",check=True)
     with open (f"{os.path.join(direc,'charge.txt')}", 'r') as file:
         lines= file.readlines()
         for a in lines:
@@ -72,4 +72,5 @@ def get_charge(name, ch, smiles, direc=None, mul=None):
         for i in esp_charges.tolist():
             file.write(f"{str(i)}\n")
     return None
+
 
