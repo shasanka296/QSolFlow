@@ -20,6 +20,13 @@ if MDP_or_not.strip()=="n":
     print("Go to {add_link} to see how to make one.")
 Automatic=input("Do you want to automatically run the system after it is run[y/n]")
 monog_host= input("Paste the server host replacing in your password and adding the name of your DB: ")
+GMX_HPC=input("Is this a HPC where gromacs modules can be loaded in [y/n]")
+
+if GMX_HPC.strip()=='y':
+    gmx_source=input("File with the modules you want to source for Gromacs")
+if GMX_HPC.strip()=='n':
+    gmx_source=input("GMXRC path: ")
+        
 
 mdp_path=os.path.join(MDP_path,"MDP")
 source_conda_path=os.path.join(path_to_conda,"bin","activate")
@@ -32,11 +39,8 @@ envlines = [
 ]
 to_write = [f'source {os.path.join(path_to_conda, "bin", "activate")}\n',
             'conda activate ASMD\n',
-            'module load ccs/singularity\n',
-            'module load gnu/5.4.0\n',
-            'module load openmpi/1.10.7\n',
-            'module load ccs/gromacs/skylake-gpu/2019\n',
-            'source /opt/ohpc/pub/libs/gnu/openmpi/ccs/gromacs/2019/skylake-gpu/bin/GMXRC\n',
+            f'{loading_command if  is_this_HPC.strip() =="y" else ""}\n',
+            f'source {gmx_source}',
             f'export PYTHONPATH={os.path.join(QSOl_flow_dir,"QSolFlow")}:$PYTHONPATH']
 
 Fw_config_lines = [
