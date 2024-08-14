@@ -49,7 +49,13 @@ class ASMD:
         self.nmol_itp = os.path.join(self.input_dir,"nmol.itp")
         self.gro_file =os.path.join(self.output_dir,f"production.gro")
         self.edr_file = os.path.join(self.output_dir,f"equilibration.edr")
-
+        self.MPI=True
+        try:
+           subprocess.run(['gmx_mpi'], shell=True, check=True)
+        except subprocess.CalledProcessError as E:
+           self.MPI=False
+           
+        self.GMX_prefix="gmx_mpi" if self.MPI else "gmx"
 
         # Copy MDP files to output directory
         subprocess.run(["cp", "-r", f"{self.mdp_dir}/.", self.output_dir])
@@ -121,36 +127,37 @@ class ASMD:
         return max_warn
 #2
     def EnergyMin(self):
-        command = ["gmx_mpi", "grompp", "-f", os.path.join(self.mdp_dir, "em.mdp"), "-c", self.initial_coordinates, "-p", self.topology_file,
+        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "em.mdp"), "-c", self.initial_coordinates, "-p", self.topology_file,
                    "-o", os.path.join(self.output_dir, "em.tpr")]
+        print(command)
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
         available_threads = self.get_available_cpu_threads()
         available_gpus = self.get_available_gpus()
 
-        command = ["gmx_mpi", "mdrun", "-deffnm", "em", "-v"]
+        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "em", "-v"]
         if available_threads is not None:
             command += ["-ntomp", str(available_threads)]
         subprocess.run(command, cwd=self.output_dir)
 #3
     def NVT(self):
-        command = ["gmx_mpi", "grompp", "-f", os.path.join(self.mdp_dir, "nvt.mdp"), "-c", os.path.join(self.output_dir, "em.gro"), "-p",
+        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "nvt.mdp"), "-c", os.path.join(self.output_dir, "em.gro"), "-p",
                    self.topology_file, "-o", os.path.join(self.output_dir, "nvt.tpr")]
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
-        command = ["gmx_mpi", "mdrun", "-deffnm", "nvt", "-v"]
+        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "nvt", "-v"]
         if self.get_available_cpu_threads() is not None:
             command += ["-ntomp", str(self.get_available_cpu_threads())]
         subprocess.run(command, cwd=self.output_dir)
 #4
     def NPT(self):
-        command = ["gmx_mpi", "grompp", "-f", os.path.join(self.mdp_dir, "equilibration.mdp"), "-c",
+        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "equilibration.mdp"), "-c",
                    os.path.join(self.output_dir, "nvt.gro"), "-t", os.path.join(self.output_dir, "nvt.cpt"), "-p", self.topology_file, "-o",
                    os.path.join(self.output_dir, "equilibration.tpr")]
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
-        command = ["gmx_mpi", "mdrun", "-deffnm", "equilibration", "-v"]
+        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v"]
         # if available_gpus > 0:
-        # command = ["mpirun", "-np", str(available_gpus), "gmx_mpi", "mdrun", "-deffnm", "equilibration", "-v", "-nb", "gpu"]
+        # command = ["mpirun", "-np", str(available_gpus), f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v", "-nb", "gpu"]
         if self.get_available_cpu_threads() is not None:
             command += ["-ntomp", str(self.get_available_cpu_threads())]
         subprocess.run(command, cwd=self.output_dir)
@@ -203,14 +210,14 @@ class ASMD:
     def production_run(self,topology_file, output_dir):
         max_warn = 10
         threshold = 100
-        command = ["gmx_mpi", "grompp", "-f", os.path.join(self.mdp_dir, "production.mdp"), "-c",
+        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "production.mdp"), "-c",
                    os.path.join(output_dir, "equilibration.gro"), "-t", os.path.join(output_dir, "equilibration.cpt"), "-p",
                    topology_file, "-o",
                    os.path.join(output_dir, "production.tpr")]
         self.run_gromacs_simulation(command, max_warn, threshold)
-        command = ["gmx_mpi", "mdrun", "-deffnm", "production", "-v"]
+        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "production", "-v"]
         # if available_gpus > 0:
-        # command = ["mpirun", "-np", str(available_gpus), "gmx_mpi", "mdrun", "-deffnm", "production", "-v", "-nb", "gpu"]
+        # command = ["mpirun", "-np", str(available_gpus), f'{self.GMX_prefix}', "mdrun", "-deffnm", "production", "-v", "-nb", "gpu"]
         if self.get_available_cpu_threads() is not None:
             command += ["-ntomp", str(self.get_available_cpu_threads())]
         subprocess.run(command, cwd= self.output_dir)
@@ -248,10 +255,10 @@ class ASMD:
     # MSD
 
     def index_file(self):
-        subprocess.run(["gmx_mpi", "make_ndx", "-f", self.gro_file, "-o", f"{self.output_dir}/index.ndx"], input=b"q\n")
+        subprocess.run([f'{self.GMX_prefix}', "make_ndx", "-f", self.gro_file, "-o", f"{self.output_dir}/index.ndx"], input=b"q\n")
     def msd_mkaer(self):
         subprocess.run(
-            ["gmx_mpi", "msd", "-f", self.xtc_file, "-s", self.tpr_file, "-n", f"{self.output_dir}/index.ndx", "-o", f"{self.output_dir}/msd.xvg"],
+            [f'{self.GMX_prefix}', "msd", "-f", self.xtc_file, "-s", self.tpr_file, "-n", f"{self.output_dir}/index.ndx", "-o", f"{self.output_dir}/msd.xvg"],
             input=b"0\n")
 
 
@@ -417,7 +424,6 @@ class ASMD:
 
     # def available_threads(self):
     #     pass
-
 
 
 
