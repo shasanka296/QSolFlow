@@ -33,6 +33,7 @@ To get started with QSolFlow, follow these steps:
 
    - Inside the QSolFLow directory download ligpargen:
      ```bash
+     conda activate ASMD
      git clone https://github.com/Isra3l/ligpargen.git
      conda activate ligpg
      pip install -e ligpargen
