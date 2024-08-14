@@ -13,12 +13,12 @@ Boss_dir = input("Path to boss dir: ")
 singularity_path= input("Where is the f.sif file: ")
 MDP_or_not=input("Do you have your MDP files? [y/n]")
 MDP_path=None
-Automatic=input("Do you want to automatically run the system after it is run[y/n]")
+
 if MDP_or_not.strip() =="y":
     MDP_path=input("What is the path: ")
 if MDP_or_not.strip()=="n":
     print("Go to {add_link} to see how to make one.")
-
+Automatic=input("Do you want to automatically run the system after it is run[y/n]")
 monog_host= input("Paste the server host replacing in your password and adding the name of your DB: ")
 
 mdp_path=os.path.join(MDP_path,"MDP")
