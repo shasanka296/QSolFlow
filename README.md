@@ -8,9 +8,9 @@ To get started with QSolFlow, follow these steps:
    - If you're using a High-Performance Computing (HPC) environment that already has a Singularity module, you may skip this step.
    - For those needing to install Singularity, follow the instructions [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 
-2. **Set Up and Configure MongoDB**
+2. **Set Up and Configure MongoDB, plus video instructions**
    - Detailed instructions, including a video tutorial, can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
-
+   - Video instructions for the download process can be found [here](https://www.dropbox.com/scl/fi/5anxgmcrh07idj4h1w9yi/Download-QSolFLow.mp4?rlkey=tah2rtelcvm5bqowcbgb6sa87&st=kyiy4w4n&dl=0)
 3. **Install Miniconda**
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
 
