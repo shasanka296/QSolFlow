@@ -2,7 +2,7 @@
    <img src="https://github.com/user-attachments/assets/693cd197-f5df-48bb-9741-17f37b7aeacc" alt="QSF_web" width="400">
 </div>
 
-### QSolFlow: Charged(Q) Solution(Sol) Dynamics Workflow(Flow) Automator
+# QSolFlow: Charged (Q) Solution (Sol) Dynamics Workflow (Flow) Automator
 
 ## Setting Up and Running QSolFlow
 
