@@ -16,7 +16,7 @@ To get started with QSolFlow, follow these steps:
 
 2. **Set Up and Configure MongoDB, plus video instructions**
    - Detailed instructions, including a video tutorial, to set up MongoDB can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
-   - 
+     
 3. **Install Miniconda**
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
 
