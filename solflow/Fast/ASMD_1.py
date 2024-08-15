@@ -173,11 +173,16 @@ class ASMD:
         # Run gmx_mpi energy to extract density.
         density_xvg_file = f"{self.output_dir}/density.xvg"
         # command = f'gmx_mpi energy -s {os.path.abspath(eqtpr_file)} -f {os.path.abspath(edr_file)} -o {output_dir}/{density_xvg_file}'
-        energy_mpi = gromacs.tools.Energy_mpi(s=os.path.abspath(self.eqtpr_file),
+        try:
+           energy = gromacs.tools.Energy_mpi(s=os.path.abspath(self.eqtpr_file),
+                                              f=os.path.abspath(self.edr_file),
+                                              o=f'{density_xvg_file}')
+        except AttributeError:
+           energy= gromacs.tools.Energy(s=os.path.abspath(self.eqtpr_file),
                                               f=os.path.abspath(self.edr_file),
                                               o=f'{density_xvg_file}')
 
-        energy_mpi.run(input="Density")
+        energy.run(input="Density")
         # subprocess.run(command)
 
         densities = []
