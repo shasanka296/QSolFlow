@@ -1,5 +1,5 @@
 from fireworks import Firework
-from solflow.workflows.Gromacs import *
+from QSFlow.workflows.Gromacs import *
 
 # Copyright 2021-2022, University of Kentucky
 
