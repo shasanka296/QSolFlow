@@ -39,7 +39,7 @@ To get started with QSolFlow, follow these steps:
 
    - Inside the QSolFLow directory download ligpargen:
      ```bash
-     cd ligpargen
+     cd QSolFlow
      conda activate ASMD
      git clone https://github.com/Isra3l/ligpargen.git
      conda activate ligpg
@@ -64,3 +64,4 @@ To get started with QSolFlow, follow these steps:
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
 For any questions email sla296@uky.edu or antonsperea@uky.edu
+
