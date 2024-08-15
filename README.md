@@ -1,4 +1,6 @@
-<img src="https://github.com/user-attachments/assets/69eac423-3c0e-4209-898f-1825ab612ac4" alt="QSF5" width="300"/>
+<div style="text-align: center;">
+   <img src="https://github.com/user-attachments/assets/693cd197-f5df-48bb-9741-17f37b7aeacc" alt="QSF_web" width="400">
+</div>
 
 ## Setting Up and Running QSolFlow
 
