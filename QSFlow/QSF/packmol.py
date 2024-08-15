@@ -42,7 +42,7 @@ class Solvate:
                 self.mol = int(
                     float(con[i].strip()) * (6.4e-20) * 6.02214e23 * (((self.x / 10) * (self.y / 10) * (self.z / 10)) / (40 * 40 * 40)))
                 info_all.append(" ")
-                info_all.append(f"structure {os.path.join(self.dir, f'{solute[i].strip()[:3]}_Solute{i + 1}',f'{solute[i].strip()[:3]}_Solute{i + 1}.pdb')}")
+                info_all.append(f"structure {os.path.join(self.dir, f'{solute[i].strip()[:3]}_Solute{1}',f'{solute[i].strip()[:3]}_Solute{1}.pdb')}")
                 info_all.append(f"  number {self.mol}")
                 info_all.append(f"  inside box 0. 0. 0. {self.x} {self.y} {self.z}")
                 info_all.append("end structure")
@@ -54,7 +54,7 @@ class Solvate:
                 self.molnum = int(
                     float(con[i].strip()) * (6.4e-20) * 6.02214e23 * (((self.x / 10) * (self.y / 10) * (self.z / 10)) / (40 * 40 * 40)))
                 info_none.append(" ")
-                info_none.append(f"structure {os.path.join(self.dir, f'{solute[i].strip()[:3]}_Solute{i + 1}',f'{solute[i].strip()[:3]}_Solute{i + 1}.pdb')}")
+                info_none.append(f"structure {os.path.join(self.dir, f'{solute[i].strip()[:3]}_Solute{1}',f'{solute[i].strip()[:3]}_Solute{1}.pdb')}")
                 info_none.append(f"  number {self.molnum}")
                 info_none.append(f"  inside box 0. 0. 0. {self.x} {self.y} {self.z}")
                 info_none.append("end structure")
