@@ -4,13 +4,15 @@
 
 To get started with QSolFlow, follow these steps:
 
+***A Video guide to assist with the download process and setup can be found [here](https://www.dropbox.com/scl/fi/5anxgmcrh07idj4h1w9yi/Download-QSolFLow.mp4?rlkey=tah2rtelcvm5bqowcbgb6sa87&st=kyiy4w4n&dl=0)***
+
 1. **Download and Install Singularity**
    - If you're using a High-Performance Computing (HPC) environment that already has a Singularity module, you may skip this step.
    - For those needing to install Singularity, follow the instructions [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 
 2. **Set Up and Configure MongoDB, plus video instructions**
-   - Detailed instruction, including a video tutorial, to set up MongoDB can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
-   - Video instruction for the download process can be found [here](https://www.dropbox.com/scl/fi/5anxgmcrh07idj4h1w9yi/Download-QSolFLow.mp4?rlkey=tah2rtelcvm5bqowcbgb6sa87&st=kyiy4w4n&dl=0)
+   - Detailed instructions, including a video tutorial, to set up MongoDB can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
+   - 
 3. **Install Miniconda**
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
 
@@ -52,7 +54,8 @@ To get started with QSolFlow, follow these steps:
      ```
 8. **Download the singularity container, MDP files and boss through here along with some example files***
    - [DropBox link](https://www.dropbox.com/scl/fo/bcmwn6ufjk6k5qrt58s36/AC3_o6bwXv0xvVED3PitmX0?rlkey=mt82tc7ampn2ts1tui6gsx5ti&st=flshzr1w&dl=0)
-     
+
+
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
-For any questions email sla296@uky.edu
+For any questions email sla296@uky.edu or antonsperea@uky.edu
