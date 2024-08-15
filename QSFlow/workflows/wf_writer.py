@@ -1,6 +1,6 @@
 from fireworks import Workflow
-from solflow.workflows.D3TaLES_FW import *
-from solflow.workflows.envwf import meta_dir
+from QSFlow.workflows.FW_classes import *
+from QSFlow.workflows.envwf import meta_dir
 
 
 

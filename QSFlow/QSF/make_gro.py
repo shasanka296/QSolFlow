@@ -1,8 +1,8 @@
 import subprocess
 import os
-import solflow.Fast.reorg as g
-import solflow.Fast.topology as top
-from solflow.workflows.envwf import MDP_Location,meta_dir,CONDAPATH
+import QSFlow.QSF.reorg as g
+import QSFlow.QSF.topology as top
+from QSFlow.workflows.envwf import MDP_Location,meta_dir,CONDAPATH
 
 class gro:
     def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system,path_to_file):

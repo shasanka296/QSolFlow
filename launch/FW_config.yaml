@@ -3,9 +3,9 @@ ECHO_TEST: FW_config.yaml is loaded for QSolFlow
 #ADD_USER_PACKAGES:
 #  -workflows.python
 
-LAUNCHPAD_LOC: /Users/Screen_share_account/PycharmProjects/solflow/launch/md_launchpad.yaml
+LAUNCHPAD_LOC: /Users/Screen_share_account/PycharmProjects/QSFlow/launch/md_launchpad.yaml
 
-FWORKER_LOC: /Users/Screen_share_account/PycharmProjects/solflow/launch/my_fireworker.yaml
+FWORKER_LOC: /Users/Screen_share_account/PycharmProjects/QSFlow/launch/my_fireworker.yaml
 
 
 

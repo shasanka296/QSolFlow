@@ -2,7 +2,7 @@ import os
 import subprocess
 import time
 import rdkit as rd
-from solflow.workflows.envwf import BOSSDIR, CONDAPATH,SINGPATH
+from QSFlow.workflows.envwf import BOSSDIR, CONDAPATH,SINGPATH
 
 class lig:
     def __init__(self, smiles, regular_name, molecule, charge, di, own, own_path):

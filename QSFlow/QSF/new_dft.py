@@ -3,7 +3,7 @@ from rdkit.Chem import AllChem, Descriptors
 import rdkit as rd
 import subprocess
 import os
-from solflow.workflows.envwf import CONDAPATH
+from QSFlow.workflows.envwf import CONDAPATH
 
 
 def run_on_terminla(name, q, smiles, direc=None, mul=None):
@@ -11,7 +11,7 @@ def run_on_terminla(name, q, smiles, direc=None, mul=None):
     command = (
     f"source {CONDAPATH} && "
     f"conda activate vlxenv && "
-    f"python -c \"import solflow.Fast.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
+    f"python -c \"import QSFlow.QSF.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
 
     subprocess.run([command], shell=True,executable="/bin/bash",check=True)
     with open (f"{os.path.join(direc,'charge.txt')}", 'r') as file:

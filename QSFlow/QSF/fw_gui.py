@@ -4,8 +4,8 @@ import argparse
 import random
 from fireworks import LaunchPad
 import datetime as dat
-from solflow.workflows.wf_writer import *
-from solflow.workflows.envwf import meta_dir
+from QSFlow.workflows.wf_writer import *
+from QSFlow.workflows.envwf import meta_dir
 import sys
 from pathlib import Path
 

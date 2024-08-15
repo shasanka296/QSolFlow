@@ -2,14 +2,14 @@ import subprocess
 import os
 import multiprocessing
 import datetime
-import solflow.Fast.ASMD_1 as run
-import solflow.Fast.lig as l
-import solflow.Fast.chargeTrasnfer as transfer
-import solflow.Fast.packmol as pack
-import solflow.Fast.make_gro as gro
-import solflow.Fast.titration as titrate
-import solflow.Fast.titrationPlotter as plotter
-from solflow.workflows.envwf import meta_dir
+import QSFlow.QSF.ASMD_1 as run
+import QSFlow.QSF.lig as l
+import QSFlow.QSF.chargeTrasnfer as transfer
+import QSFlow.QSF.packmol as pack
+import QSFlow.QSF.make_gro as gro
+import QSFlow.QSF.titration as titrate
+import QSFlow.QSF.titrationPlotter as plotter
+from QSFlow.workflows.envwf import meta_dir
 
 
 from atomate.utils.utils import get_logger

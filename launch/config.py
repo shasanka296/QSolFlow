@@ -111,7 +111,7 @@ my_firework = [
 
 
 
-with open(f"{os.path.join(QSOl_flow_dir,'QSolFlow','solflow','workflows','envwf.py')}","w") as f:
+with open(f"{os.path.join(QSOl_flow_dir,'QSolFlow','QSFlow','workflows','envwf.py')}","w") as f:
     f.writelines(envlines)
 
 with open(f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','FW_config.yaml')}","w") as f:
@@ -132,7 +132,7 @@ with open(config_solflow_file,'w') as file:
 desktop_file_path = os.path.join(QSOl_flow_dir, 'QSF.desktop')
 
 source_file = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','CONFIG')}"
-python_script = f"{os.path.join(QSOl_flow_dir,'QSolFlow','solflow','Fast','fw_gui.py')}"
+python_script = f"{os.path.join(QSOl_flow_dir,'QSolFlow','QSFlow','QSF','fw_gui.py')}"
 icon_path = f"{os.path.join(QSOl_flow_dir,'QSolFlow','launch','conda_env','QSF5.png')}"
 
 command1 = f'bash -c "source {source_file} && python {python_script}"'
