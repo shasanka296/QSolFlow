@@ -2,6 +2,8 @@
    <img src="https://github.com/user-attachments/assets/693cd197-f5df-48bb-9741-17f37b7aeacc" alt="QSF_web" width="400">
 </div>
 
+# QSolFlow: Charged (Q) Solution (Sol) Dynamics Workflow (Flow) Automator
+
 ## Setting Up and Running QSolFlow
 
 To get started with QSolFlow, follow these steps:
@@ -9,12 +11,12 @@ To get started with QSolFlow, follow these steps:
 ***A Video guide to assist with the download process and setup can be found [here](https://www.dropbox.com/scl/fi/5anxgmcrh07idj4h1w9yi/Download-QSolFLow.mp4?rlkey=tah2rtelcvm5bqowcbgb6sa87&st=kyiy4w4n&dl=0)***
 
 1. **Download and Install Singularity**
-   - If you're using a High-Performance Computing (HPC) environment that already has a Singularity module, you may skip this step.
+   - If you're using a high-performance computing (HPC) environment that already has a Singularity module, you may skip this step.
    - For those needing to install Singularity, follow the instructions [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 
 2. **Set Up and Configure MongoDB, plus video instructions**
    - Detailed instructions, including a video tutorial, to set up MongoDB can be found [here](https://www.dropbox.com/scl/fi/pw6toktp4jyqye7qqr684/Database.mp4?rlkey=wh1ecsenzzqpruppruwksrren&st=1mev4rpr&dl=0).
-   - 
+     
 3. **Install Miniconda**
    - Download and install Miniconda by following the instructions provided [here](https://docs.anaconda.com/miniconda/miniconda-install/).
 
@@ -26,7 +28,7 @@ To get started with QSolFlow, follow these steps:
      conda config --set solver libmamba
      
      ```
-   - Use the following commands to create the necessary Conda environments:
+   - Use the following commands to create the necessary conda environments:
      ```bash
      git clone https://github.com/shasanka296/QSolFlow.git
      conda env create -f QSolFlow/launch/conda_env/main_env.yml
@@ -37,6 +39,7 @@ To get started with QSolFlow, follow these steps:
 
    - Inside the QSolFLow directory download ligpargen:
      ```bash
+     cd QSolFlow
      conda activate ASMD
      git clone https://github.com/Isra3l/ligpargen.git
      conda activate ligpg
@@ -61,3 +64,4 @@ To get started with QSolFlow, follow these steps:
 Follow these steps carefully to ensure SolFlow is set up and running correctly.
 
 For any questions email sla296@uky.edu or antonsperea@uky.edu
+
