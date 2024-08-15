@@ -11,7 +11,7 @@ To get started with QSolFlow, follow these steps:
 ***A Video guide to assist with the download process and setup can be found [here](https://www.dropbox.com/scl/fi/5anxgmcrh07idj4h1w9yi/Download-QSolFLow.mp4?rlkey=tah2rtelcvm5bqowcbgb6sa87&st=kyiy4w4n&dl=0)***
 
 1. **Download and Install Singularity**
-   - If you're using a High-Performance Computing (HPC) environment that already has a Singularity module, you may skip this step.
+   - If you're using a high-performance computing (HPC) environment that already has a Singularity module, you may skip this step.
    - For those needing to install Singularity, follow the instructions [here](https://docs.sylabs.io/guides/3.0/user-guide/installation.html).
 
 2. **Set Up and Configure MongoDB, plus video instructions**
@@ -28,7 +28,7 @@ To get started with QSolFlow, follow these steps:
      conda config --set solver libmamba
      
      ```
-   - Use the following commands to create the necessary Conda environments:
+   - Use the following commands to create the necessary conda environments:
      ```bash
      git clone https://github.com/shasanka296/QSolFlow.git
      conda env create -f QSolFlow/launch/conda_env/main_env.yml
@@ -39,6 +39,7 @@ To get started with QSolFlow, follow these steps:
 
    - Inside the QSolFLow directory download ligpargen:
      ```bash
+     cd ligpargen
      conda activate ASMD
      git clone https://github.com/Isra3l/ligpargen.git
      conda activate ligpg
