@@ -18,7 +18,7 @@ class lig:
         else:
             tr_mol = rd.Chem.MolFromSmiles(smiles)
             b = rd.Chem.AddHs(tr_mol)
-            rd.Chem.AllChem.EmbedMolecule(b)
+            rd.Chem.AllChem.EmbedMolecule(b, randomSeed=0xf00d)
             rd.Chem.MolToPDBFile(b,self.path_to_pdb)
             conda_activate = f"source {CONDAPATH} && conda activate ligpg"
             export_bossdir = f" export BOSSdir={BOSSDIR}"
