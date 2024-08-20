@@ -71,6 +71,7 @@ class ASMD:
     def count_warnings(self,filename):
         # Read the simulation output log file and count the number of warnings
         if os.path.isfile(self.output_dir + "/em.log") == True:
+            print("log is made")
             with open(filename, 'r') as file:
                 log_data = file.read()
 
@@ -89,7 +90,8 @@ class ASMD:
             max_warn *= 2  # Double the max_warn value
             print(f"Warning count ({warning_count}) exceeded threshold. Updating max_warn to: {max_warn}")
         else:
-            print(f"Simulation completed successfully with {warning_count} warnings.")
+            max_warn= self.threshold
+            print(f"Simulation running  with {warning_count} warnings.")
 
         return max_warn
 
@@ -116,10 +118,12 @@ class ASMD:
 
     def run_gromacs_simulation(self,command, max_warn, threshold):
         # Execute the GROMACS simulation command
-        subprocess.run(command + ["-maxwarn", str(max_warn)])
+        subprocess.run(command + ["-maxwarn", str(self.threshold)]) ############## CHANGE THISSS!!!!
+        print("executed run command")
 
         # Check the warning count and update max_warn if needed
         while True:
+            print("trying to update max war")
             max_warn = self.update_maxwarn(max_warn, threshold)
             if self.count_warnings(os.path.join(self.output_dir, "em.log")) <= threshold:
                 break
@@ -313,6 +317,7 @@ class ASMD:
 
     # Function to count the number of atoms in a residue
     def count_atoms_in_residue(self, universe, resname):
+        print(resname)
         residue = universe.select_atoms(f"resname {resname}")[0].residue
         return len(residue.atoms)
 
@@ -366,6 +371,7 @@ class ASMD:
     def rdf(self, residue_names, rcut):
         universe = mda.Universe(self.gro_file, self.xtc_file)
         atoms_in_residues = {resname: self.count_atoms_in_residue(universe, resname) for resname in residue_names}
+        print(atoms_in_residues)
         with PdfPages(f'{self.output_dir}/RDF_plots2CordinationNum.pdf') as pdf:
             coordination_numbers = {}
             # Calculate RDF for each residue type as reference

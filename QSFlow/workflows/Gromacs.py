@@ -244,6 +244,9 @@ class cord(FiretaskBase):
 class key_gen(FiretaskBase):
 
     def run_task(self, fw_spec):
+        self.own= self.get("own_path" ) or fw.get("own_path") or ""
+        self.names= self.get("name_list") or fw.get("name_list")
+        self.type=self.get("type_list") or fw.get("type_list")
         key = fw_spec.get("key_dic")
         self.dir = self.get("dir") or fw_spec.get("dir")
         with open(f"{self.dir}/key", 'a') as k:
@@ -264,6 +267,14 @@ class key_gen(FiretaskBase):
         os.makedirs(run_dir, exist_ok=True)
 
         subprocess.run([f"mv {os.path.join(dir, 'key')} {run_dir}"], shell=True, check=True)
+        if self.own.strip():
+            for i,j in zip(self.names,self.type):
+                repeat=0
+                try:
+                    subprocess.run([f"rm -rf {os.path.join(dir, f'{i[:3]}_{j}')}"], shell=True, check=True)
+                except subprocess.CalledProcessError as E:
+                    repeat+=1
+                    print(f"{repeat} name and type combination is repeated: {(i,j)}")
         print(key)
         for iteam in key:
             subprocess.run([f"mv {os.path.join(dir, f'InputGrofiles{key[iteam]}')} {run_dir}"], shell=True)

@@ -34,13 +34,13 @@ class gro:
 
             print("gro file made")
 
-            command4 = f'mv {os.path.join(self.dir, f"{solvent[:3]}_Solvent", f"{solvent[:3]}_Solvent.pdb")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
+            command4 = f'cp {os.path.join(self.dir, f"{solvent[:3]}_Solvent", f"{solvent[:3]}_Solvent.pdb")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
 
-            command5 = f'mv {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
+            command5 = f'cp {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
 
-            command6 = f'rm -r {os.path.join(self.dir, f"{solvent[:3]}_Solvent")} && rm -r {os.path.join(self.dir, f"Packmol{key}")}'
+            command6 = f'rm -r {os.path.join(self.dir, f"Packmol{key}")}'
 
-            command8 = f'mv {os.path.join(self.dir, f"{solvent2}_Solvent2", f"{solvent2}_Solvent2.pdb")} {os.path.join(self.dir, "InputGrofiles")} && mv {os.path.join(self.dir, f"{solvent2}_Solvent2", f"{solvent2}_Solvent2.gmx.itp")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
+            command8 = f'cp {os.path.join(self.dir, f"{solvent2}_Solvent2", f"{solvent2}_Solvent2.pdb")} {os.path.join(self.dir, "InputGrofiles")} && mv {os.path.join(self.dir, f"{solvent2}_Solvent2", f"{solvent2}_Solvent2.gmx.itp")} {os.path.join(self.dir, f"InputGrofiles{key}")}'
 
             command10 = f'rm -r {os.path.join(self.dir, f"{solvent2}_Solvent2")}'
 
@@ -58,23 +58,24 @@ class gro:
                 subprocess.run(command10, shell=True, check=True)
 
             for i in range(len(self.solute)):
-                com1 = f"mv {os.path.join(self.dir, f'{self.solute[i].strip()[:3]}_Solute{1}', f'{self.solute[i].strip()[:3]}_Solute{1}.pdb')} {os.path.join(self.dir, f'InputGrofiles{key}')}"
+                com1 = f"cp {os.path.join(self.dir, f'{self.solute[i].strip()[:3]}_Solute{1}', f'{self.solute[i].strip()[:3]}_Solute{1}.pdb')} {os.path.join(self.dir, f'InputGrofiles{key}')}"
+                
 
-                com2 = f'rm -r {os.path.join(self.dir, f"{self.solute[i].strip()[:3]}_Solute{1}")}'
+
 
                 subprocess.run(com1, shell=True, check=True)
 
-                subprocess.run(com2, shell=True, check=True)
+
 
             g.reorg(self.solvent + "_Solvent", os.path.join(self.dir, f"InputGrofiles{key}"), key)
 
             if len(self.solvent2) != 0:
                 g.reorg(self.solvent2 + "_Solvent2", os.path.join(self.dir, f"InputGrofiles{key}"))
 
-            for j in range(len(self.solute)):
-                print(f'ran solute{j + 1}')
+            for j in self.solute:
+                print(f'ran {j}')
 
-                g.reorg(self.solute[j].strip()[:3] + f"_Solute{j + 1}", os.path.join(self.dir, f"InputGrofiles{key}"), key)
+                g.reorg(j.strip()[:3] + f"_Solute1", os.path.join(self.dir, f"InputGrofiles{key}"), key)
 
             subprocess.run(self.command12, shell=True, check=True)
 

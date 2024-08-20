@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 
@@ -21,31 +22,43 @@ class reorg:
 
     def __init__(self, molecule, dir, key):
 
-
-
         self.moleclue = molecule
         self.dir = dir
-        subprocess.run(f"touch {self.dir}/{self.moleclue}.itp", shell=True)
-        subprocess.run(f'touch {self.dir}/{self.moleclue}_atomtype.itp', shell=True)
-        with open(f"{self.dir}/{self.moleclue}f.itp", 'r') as org, open(f"{self.dir}/{self.moleclue}.itp",
-                                                                        'a') as itp, open(
-                f'{self.dir}/{self.moleclue}_atomtype.itp', 'a') as type:
+        self.atomtype_is_present=True
+        
+        subprocess.run(f"touch {os.path.join(self.dir,f'{self.moleclue}.itp')}", shell=True)
+        if not os.path.isfile(os.path.join(self.dir,f'{self.moleclue}_atomtype.itp')):
+            print("atomtype not found")
+            
+            self.atomtype_is_present=False
+            subprocess.run(f'touch {os.path.join(self.dir,f"{self.moleclue}_atomtype.itp")}', shell=True)
+        with open(f"{os.path.join(self.dir,f'{self.moleclue}f.itp')}", 'r') as org:
             lines = org.readlines()
-            atomtype = 10
-            atomtype_lastline = 0
-            orginal = []
+            self.atomtype = 10
+            self.atomtype_lastline = 0
+            self.orginal = []
             for iteams in lines:
-                orginal.append(iteams)
-            orginal[6] = ";[ defaults ]" + "\n"
-            orginal[7] = "; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ" + "\n"
-            orginal[8] = ";    1               3              yes            0.5     0.5" + "\n"
-            for iteams in orginal:
+                self.orginal.append(iteams)
+            self.orginal[6] = ";[ defaults ]" + "\n"
+            self.orginal[7] = "; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ" + "\n"
+            self.orginal[8] = ";    1               3              yes            0.5     0.5" + "\n"
+            for iteams in self.orginal:
                 if iteams.strip() == "[ moleculetype ]":
-                    atomtype_lastline = orginal.index(iteams) - 2
-            for i in range(atomtype):
-                itp.writelines(orginal[i])
-            for j in range(atomtype_lastline + 2, len(orginal)):
-                itp.writelines(orginal[j])
-            type.writelines('\n')
-            for k in range(atomtype_lastline - atomtype + 1):
-                type.writelines(orginal[atomtype + k])
+                    self.atomtype_lastline = self.orginal.index(iteams) - 2
+            self.write_itp()
+            if self.atomtype_is_present:
+                self.write_type()
+
+
+    def write_itp(self):
+        with open(f'{os.path.join(self.dir,f"{self.moleclue}.itp")}','a') as itp:
+            for i in range(self.atomtype):
+                itp.writelines(self.orginal[i])
+            for j in range(self.atomtype_lastline + 2, len(self.orginal)):
+                itp.writelines(self.orginal[j])
+    def write_type(self):
+       with open(f'{os.path.join(self.dir,f"{self.moleclue}_atomtype.itp")}', 'a') as type:
+           type.writelines('\n')
+           for k in range(self.atomtype_lastline - self.atomtype + 1):
+               type.writelines(self.orginal[self.atomtype + k])
+
