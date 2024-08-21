@@ -387,6 +387,7 @@ class GUI:
         self.systems = []
         self.solute_titrants=[]
         self.solvent_titratnts=[]
+        self.string_of_solutes = []
 
         if self.check_titration.get() !=0:
             print("in the titration")
@@ -418,11 +419,12 @@ class GUI:
                         print("in loop 4")
                         self.solute_titrants.append(iteams.strip() + str(_))
                 self.systemNamemat.append(self.subnamemat)
+                self.string_of_solutes.append("_".join(self.subnamemat[1:]))
                 print(f"this is the subname mat at {i+1} iteration : {self.subnamemat}")
-
+            self.expanded_strings_of_solutes=[self.string_of_solutes[j]+f"{i}" for j in range(len(self.string_of_solutes)) for i in self.titration_list ]
             for i, iteams in enumerate(self.solvent_titratnts):
                 print("in loop 5")
-                self.systems.append(f"{iteams}_{self.solute_titrants[i]}")
+                self.systems.append(f"{iteams}_{self.expanded_strings_of_solutes[i]}")
             for _ in range(number):
                 self.submatsmiles = []
                 a = self.entries[f"solvetsmiles{_ + 1}"].get().strip()
@@ -437,6 +439,7 @@ class GUI:
 
             print(self.systems)
             print(self.nameMatrix)
+
 
 
 
@@ -483,7 +486,10 @@ class GUI:
 
             titration_list = []
             titration_list[:] = self.titration_list
-            titration_list.pop(self.titration_list.index(1.0))
+            try:
+                titration_list.pop(self.titration_list.index(1.0))
+            except:
+                pass
 
             global number_of_titration
             number_of_titration = len(self.titration_list)

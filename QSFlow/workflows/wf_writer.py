@@ -230,7 +230,8 @@ def d3tales_md_wf(param_file=None, **kwargs):
         molarmasses=[kwargs.get(f"MM{i + 1}") for i in range(outer_system) for _ in range(number_of_titrations)] #
 
         for i in range(number_of_systems):
-
+            print("this is key")
+            print(key_mat)
 
             fw_em_key = f"fw_em{i + 1}"
             fire_workdic[fw_em_key] = EM_FW(
