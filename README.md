@@ -24,12 +24,15 @@ To get started with QSolFlow, follow these steps:
    - If you are using the classic solver, switch to the new libmamba solver using the following command:
      ```bash
      conda update -n base conda --solver=classic
-     conda install -n base conda-libmamba-solver -y
+     y
+     conda install -n base conda-libmamba-solver
+     y
      conda config --set solver libmamba
      
      ```
    - Use the following commands to create the necessary conda environments:
      ```bash
+     conda install git
      git clone https://github.com/shasanka296/QSolFlow.git
      conda env create -f QSolFlow/launch/conda_env/main_env.yml
      conda env create -f QSolFlow/launch/conda_env/DFT.yml

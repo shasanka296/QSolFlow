@@ -13,6 +13,10 @@ class trans:
         self.smiles = smiles
         self.file_to_make = os.path.join(self.dir, f"InputGrofiles{key}", f"{name}f.itp")
         self.orignal_gro_outputfile = os.path.join(self.dir, name, f"{name}.gmx.itp")
+        self.atomtype_file = os.path.join(self.dir, name, f"{name}_atomtype.itp")
+        self.atomtype_file_final_location= os.path.join(self.dir, f"InputGrofiles{key}", f"{name}_atomtype.itp")
+
+
         chagreMatrix = []
         if not own:
             print("it is ran")
@@ -47,4 +51,9 @@ class trans:
             print("Itp file is made")
         if own:
             print("else is ran")
-            subprocess.run(f"mv {self.orignal_gro_outputfile} {self.file_to_make}",shell=True)
+            subprocess.run(f"cp {self.orignal_gro_outputfile} {self.file_to_make}",shell=True)
+            if os.path.isfile(self.atomtype_file):
+                subprocess.run(f"cp {self.atomtype_file} {self.atomtype_file_final_location}", shell=True)
+
+                
+

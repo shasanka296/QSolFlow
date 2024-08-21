@@ -63,11 +63,18 @@ class lig:
         subprocess.run([f'mkdir {os.path.join(self.dir,self.mol)}'], shell=True)
         path1=os.path.join(own_path, f"{regular_name}.pdb")
         path2=os.path.join(own_path, f"{regular_name}.itp")
+        path3 = os.path.join(own_path, f"{regular_name}_atomtype.itp")
         cmd1= f" cp  {path1} {os.path.join(self.dir, self.mol, f'{molecule}.pdb')}"
         cmd2 = f" cp {path2} {os.path.join(self.dir, self.mol, f'{molecule}.gmx.itp')} "
+        cmd3 = f" cp {path3} {os.path.join(self.dir, self.mol, f'{molecule}_atomtype.itp')} "
+
 
         subprocess.run([cmd1], shell=True)
         subprocess.run([cmd2], shell=True)
+        if os.path.isfile(path3):
+            subprocess.run([cmd3], shell=True)
+
+
 
 
 

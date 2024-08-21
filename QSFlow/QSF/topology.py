@@ -50,8 +50,8 @@ class toopol:
                     lines_atomtypes.append(f'#include "{self.solvent2}_Solvent2_atomtype.itp"')
                     lines_itp.append(f'#include "{self.solvent2}_Solvent2.itp"')
                 for i in range(len(self.solute1)):
-                    lines_atomtypes.append(f'#include "{self.solute1[i].strip()[:3]}_Solute{i + 1}_atomtype.itp"')
-                    lines_itp.append(f'#include "{self.solute1[i].strip()[:3]}_Solute{i + 1}.itp"')
+                    lines_atomtypes.append(f'#include "{self.solute1[i].strip()[:3]}_Solute{1}_atomtype.itp"')
+                    lines_itp.append(f'#include "{self.solute1[i].strip()[:3]}_Solute{1}.itp"')
 
                 for l in lines_atomtypes:
                     top.write(l + "\n")

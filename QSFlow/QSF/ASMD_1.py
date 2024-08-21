@@ -71,6 +71,7 @@ class ASMD:
     def count_warnings(self,filename):
         # Read the simulation output log file and count the number of warnings
         if os.path.isfile(self.output_dir + "/em.log") == True:
+            print("log is made")
             with open(filename, 'r') as file:
                 log_data = file.read()
 
@@ -89,7 +90,8 @@ class ASMD:
             max_warn *= 2  # Double the max_warn value
             print(f"Warning count ({warning_count}) exceeded threshold. Updating max_warn to: {max_warn}")
         else:
-            print(f"Simulation completed successfully with {warning_count} warnings.")
+            max_warn= self.threshold
+            print(f"Simulation running  with {warning_count} warnings.")
 
         return max_warn
 
@@ -116,19 +118,25 @@ class ASMD:
 
     def run_gromacs_simulation(self,command, max_warn, threshold):
         # Execute the GROMACS simulation command
-        subprocess.run(command + ["-maxwarn", str(max_warn)])
+        try:
+            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
+                           check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as E:
+            print("too many erors,updating maxwarn")
+            f = E.stderr.split("\n")
+            for i in f:
+                if "There were" in i:
+                    error_line = i.split()
+                    self.max_warn = int(error_line[2]) +10
+                    break
+            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
+                           check=True, capture_output=True, text=True)        
 
-        # Check the warning count and update max_warn if needed
-        while True:
-            max_warn = self.update_maxwarn(max_warn, threshold)
-            if self.count_warnings(os.path.join(self.output_dir, "em.log")) <= threshold:
-                break
-
-        return max_warn
+        return "updated maxwarn"
 #2
     def EnergyMin(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "em.mdp"), "-c", self.initial_coordinates, "-p", self.topology_file,
-                   "-o", os.path.join(self.output_dir, "em.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'em.mdp')} -c {self.initial_coordinates} -p {self.topology_file} -o {os.path.join(self.output_dir, 'em.tpr')}"
+
         print(command)
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
@@ -141,8 +149,8 @@ class ASMD:
         subprocess.run(command, cwd=self.output_dir)
 #3
     def NVT(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "nvt.mdp"), "-c", os.path.join(self.output_dir, "em.gro"), "-p",
-                   self.topology_file, "-o", os.path.join(self.output_dir, "nvt.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'nvt.mdp')} -c {os.path.join(self.output_dir, 'em.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'nvt.tpr')}"
+
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "nvt", "-v"]
@@ -151,9 +159,8 @@ class ASMD:
         subprocess.run(command, cwd=self.output_dir)
 #4
     def NPT(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "equilibration.mdp"), "-c",
-                   os.path.join(self.output_dir, "nvt.gro"), "-t", os.path.join(self.output_dir, "nvt.cpt"), "-p", self.topology_file, "-o",
-                   os.path.join(self.output_dir, "equilibration.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'equilibration.mdp')} -c {os.path.join(self.output_dir, 'nvt.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'equilibration.tpr')}"
+
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v"]
         # if available_gpus > 0:
@@ -215,10 +222,8 @@ class ASMD:
     def production_run(self,topology_file, output_dir):
         max_warn = 10
         threshold = 100
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "production.mdp"), "-c",
-                   os.path.join(output_dir, "equilibration.gro"), "-t", os.path.join(output_dir, "equilibration.cpt"), "-p",
-                   topology_file, "-o",
-                   os.path.join(output_dir, "production.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'production.mdp')} -c {os.path.join(self.output_dir, 'equilibration.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'production.tpr')}"
+
         self.run_gromacs_simulation(command, max_warn, threshold)
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "production", "-v"]
         # if available_gpus > 0:
@@ -313,6 +318,7 @@ class ASMD:
 
     # Function to count the number of atoms in a residue
     def count_atoms_in_residue(self, universe, resname):
+        print(resname)
         residue = universe.select_atoms(f"resname {resname}")[0].residue
         return len(residue.atoms)
 
@@ -366,6 +372,7 @@ class ASMD:
     def rdf(self, residue_names, rcut):
         universe = mda.Universe(self.gro_file, self.xtc_file)
         atoms_in_residues = {resname: self.count_atoms_in_residue(universe, resname) for resname in residue_names}
+        print(atoms_in_residues)
         with PdfPages(f'{self.output_dir}/RDF_plots2CordinationNum.pdf') as pdf:
             coordination_numbers = {}
             # Calculate RDF for each residue type as reference
