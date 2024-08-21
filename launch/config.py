@@ -40,7 +40,7 @@ envlines = [
 to_write = [f'source {os.path.join(path_to_conda, "bin", "activate")}\n',
              'conda activate ASMD\n',
              'lpad reset\n',
-             'y\n',
+             'n\n',
             f'{loading_command if  is_this_HPC.strip() =="y" else ""}\n',
             f'source {gmx_source}\n',
             f'export PYTHONPATH={os.path.join(QSOl_flow_dir,"QSolFlow")}:$PYTHONPATH']

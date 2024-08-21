@@ -29,7 +29,6 @@ class reorg:
         subprocess.run(f"touch {os.path.join(self.dir,f'{self.moleclue}.itp')}", shell=True)
         if not os.path.isfile(os.path.join(self.dir,f'{self.moleclue}_atomtype.itp')):
             print("atomtype not found")
-            
             self.atomtype_is_present=False
             subprocess.run(f'touch {os.path.join(self.dir,f"{self.moleclue}_atomtype.itp")}', shell=True)
         with open(f"{os.path.join(self.dir,f'{self.moleclue}f.itp')}", 'r') as org:
@@ -46,7 +45,7 @@ class reorg:
                 if iteams.strip() == "[ moleculetype ]":
                     self.atomtype_lastline = self.orginal.index(iteams) - 2
             self.write_itp()
-            if self.atomtype_is_present:
+            if not self.atomtype_is_present:
                 self.write_type()
 
 

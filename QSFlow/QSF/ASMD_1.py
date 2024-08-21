@@ -118,21 +118,25 @@ class ASMD:
 
     def run_gromacs_simulation(self,command, max_warn, threshold):
         # Execute the GROMACS simulation command
-        subprocess.run(command + ["-maxwarn", str(self.threshold)]) ############## CHANGE THISSS!!!!
-        print("executed run command")
+        try:
+            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
+                           check=True, capture_output=True, text=True)
+        except subprocess.CalledProcessError as E:
+            print("too many erors,updating maxwarn")
+            f = E.stderr.split("\n")
+            for i in f:
+                if "There were" in i:
+                    error_line = i.split()
+                    self.max_warn = int(error_line[2]) +10
+                    break
+            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
+                           check=True, capture_output=True, text=True)        
 
-        # Check the warning count and update max_warn if needed
-        while True:
-            print("trying to update max war")
-            max_warn = self.update_maxwarn(max_warn, threshold)
-            if self.count_warnings(os.path.join(self.output_dir, "em.log")) <= threshold:
-                break
-
-        return max_warn
+        return "updated maxwarn"
 #2
     def EnergyMin(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "em.mdp"), "-c", self.initial_coordinates, "-p", self.topology_file,
-                   "-o", os.path.join(self.output_dir, "em.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'em.mdp')} -c {self.initial_coordinates} -p {self.topology_file} -o {os.path.join(self.output_dir, 'em.tpr')}"
+
         print(command)
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
@@ -145,8 +149,8 @@ class ASMD:
         subprocess.run(command, cwd=self.output_dir)
 #3
     def NVT(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "nvt.mdp"), "-c", os.path.join(self.output_dir, "em.gro"), "-p",
-                   self.topology_file, "-o", os.path.join(self.output_dir, "nvt.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'nvt.mdp')} -c {os.path.join(self.output_dir, 'em.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'nvt.tpr')}"
+
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
 
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "nvt", "-v"]
@@ -155,9 +159,8 @@ class ASMD:
         subprocess.run(command, cwd=self.output_dir)
 #4
     def NPT(self):
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "equilibration.mdp"), "-c",
-                   os.path.join(self.output_dir, "nvt.gro"), "-t", os.path.join(self.output_dir, "nvt.cpt"), "-p", self.topology_file, "-o",
-                   os.path.join(self.output_dir, "equilibration.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'equilibration.mdp')} -c {os.path.join(self.output_dir, 'nvt.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'equilibration.tpr')}"
+
         self.run_gromacs_simulation(command, self.max_warn, self.threshold)
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v"]
         # if available_gpus > 0:
@@ -219,10 +222,8 @@ class ASMD:
     def production_run(self,topology_file, output_dir):
         max_warn = 10
         threshold = 100
-        command = [f'{self.GMX_prefix}', "grompp", "-f", os.path.join(self.mdp_dir, "production.mdp"), "-c",
-                   os.path.join(output_dir, "equilibration.gro"), "-t", os.path.join(output_dir, "equilibration.cpt"), "-p",
-                   topology_file, "-o",
-                   os.path.join(output_dir, "production.tpr")]
+        command = f"{self.GMX_prefix} grompp -f {os.path.join(self.mdp_dir, 'production.mdp')} -c {os.path.join(self.output_dir, 'equilibration.gro')} -p {self.topology_file} -o {os.path.join(self.output_dir, 'production.tpr')}"
+
         self.run_gromacs_simulation(command, max_warn, threshold)
         command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "production", "-v"]
         # if available_gpus > 0:
