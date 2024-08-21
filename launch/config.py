@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 config_solflow_file="CONFIG"
 path_to_conda= input("Path to the miniconda directory (input as: path/miniconda_dir_name): ")
@@ -39,8 +40,6 @@ envlines = [
 ]
 to_write = [f'source {os.path.join(path_to_conda, "bin", "activate")}\n',
              'conda activate ASMD\n',
-             'lpad reset\n',
-             'n\n',
             f'{loading_command if  is_this_HPC.strip() =="y" else ""}\n',
             f'source {gmx_source}\n',
             f'export PYTHONPATH={os.path.join(QSOl_flow_dir,"QSolFlow")}:$PYTHONPATH']
@@ -158,7 +157,13 @@ os.chmod(desktop_file_path, 0o755)
 print(f'Desktop launcher created at {QSOl_flow_dir}')
 
 
-
+command = """
+source CONFIG
+lpad reset <<EOF
+y
+EOF
+"""
+subprocess.run(command, shell=True, executable="/bin/bash")
 
 
 
