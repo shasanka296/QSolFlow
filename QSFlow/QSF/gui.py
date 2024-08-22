@@ -12,6 +12,9 @@ import ASMD_1 as ASMD
 
 
 class GUI:
+    """
+    OLD GUI NO LONGER IN USE
+    """
     def __init__(self):
         self.window = tk.Tk()
 
@@ -255,7 +258,7 @@ class GUI:
         SoluteConetrationMatrix = self.Concentrations.get().split(",")
         pack.Solvate(self.Solname.get()[:3], solutes, SoluteConetrationMatrix, self.Density.get(), self.solventname2.get()[:3], self.Density2.get(), self.xdim.get(), self.ydim.get(), self.zdim.get(), self.curentDirectory, self.ratio.get())
         self.update_progress("Packmol done, creating gro file and cleaing up",10)
-        gro.gro(self.Solname.get()[:3], solutes,self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
+        gro.Gro(self.Solname.get()[:3], solutes, self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(), self.ydim.get(), self.zdim.get())
         self.update_progress("starting simulation",0)
         runer=ASMD.ASMD()
         a=runer.EnergyMin()
@@ -273,13 +276,13 @@ class GUI:
         self.update_progress(f"PBC correction complete: e",0)
         f=runer.index_file()
         self.update_progress(f"Index file made exited with:{f}",0)
-        g=runer.msd_mkaer()
+        g=runer.msd_maker()
         self.update_progress(f"MSD file made exited wiht:{g}",0)
         residues=runer.extract_residues_from_itp()
         self.update_progress(f"Residue names: {residues}",0)
         cord=runer.rdf(residues,5)
         self.update_progress(f"cordiantion numer{cord}",0)
-        h=runer.cordination_number(cord)
+        h=runer.coordination_number(cord)
         self.update_progress(f"Program finished exited wiht:{h} ", 100)
         self.stop()
 
