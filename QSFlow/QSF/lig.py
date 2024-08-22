@@ -1,6 +1,5 @@
 import os
 import subprocess
-import time
 import rdkit as rd
 from rdkit.Chem import AllChem
 from QSFlow.workflows.envwf import BOSSDIR, CONDAPATH, SINGPATH
@@ -36,7 +35,7 @@ class lig:
                 print(cmd)
                 subprocess.Popen(cmd).wait()
 
-            except:
+            except subprocess.CalledProcessError:
                 print(
                     f'Ligpargen was not able to find a parameter, user input files is being used. Please rerun with your own itp and pdb files. This is passed for smiles, regular_name, molecule, charge, dir {(smiles, regular_name, molecule, charge, dir)}')
             self.PDBMAKER(self.mol, self.smiles)

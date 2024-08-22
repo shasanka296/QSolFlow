@@ -94,7 +94,7 @@ class MDPrep(FiretaskBase):
                     transfer.trans(f"{name[:3]}_Solvent", iteams, key, self.is_own, self.dir, charge, self.titration,
                                    mult=mul)
                 i += 1
-        gro.gro(self.Solname, self.solute_name, '', self.dir, self.xdim, self.ydim, self.zdim, key, self.initial_system,
+        gro.Gro(self.Solname, self.solute_name, '', self.dir, self.xdim, self.ydim, self.zdim, key, self.initial_system,
                 self.path_inital)
         return FWAction(update_spec={})
 

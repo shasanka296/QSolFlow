@@ -5,7 +5,7 @@ import QSFlow.QSF.topology as top
 from QSFlow.workflows.envwf import MDP_Location
 
 
-class gro:
+class Gro:
     def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system, path_to_file):
         self.dir = di
         self.x = x

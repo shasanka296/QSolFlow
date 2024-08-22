@@ -1,4 +1,3 @@
-import rdkit.Chem as Chem
 from rdkit.Chem import AllChem, Descriptors
 import rdkit as rd
 import subprocess
@@ -6,7 +5,7 @@ import os
 from QSFlow.workflows.envwf import CONDAPATH
 
 
-def run_on_terminla(name, q, smiles, direc=None, mul=None):
+def run_on_terminal(name, q, smiles, direc=None, mul=None):
     charge_mat = []
     command = (
         f"source {CONDAPATH} && "
@@ -26,7 +25,7 @@ def get_charge(name, ch, smiles, direc=None, mul=None):
     q = ch if ch else 0
     try:
         import veloxchem as vlx
-    except:
+    except ModuleNotFoundError:
         raise Exception("cannot load the module")
     path_to_xyz = f"{name}.xyz"
     tr_mol = rd.Chem.MolFromSmiles(smiles)

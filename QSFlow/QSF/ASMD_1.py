@@ -51,7 +51,6 @@ class ASMD:
         self.threshold = 100
 
     def count_warnings(self, filename):
-        # Read the simulation output log file and count the number of warnings
         if os.path.isfile(self.output_dir + "/em.log"):
             print("log is made")
             with open(filename, 'r') as file:
@@ -78,13 +77,11 @@ class ASMD:
 
     @staticmethod
     def get_available_gpus():
-        # Get the number of available GPUs
         gpu_info = os.popen('nvidia-smi --list-gpus').read()
         gpu_count = len(re.findall(r'GPU\s\d:', gpu_info))
         return gpu_count
 
     def run_gromacs_simulation(self, command):
-        # Execute the GROMACS simulation command
         try:
             subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
                            check=True, capture_output=True, text=True)

@@ -255,7 +255,7 @@ class GUI:
         SoluteConetrationMatrix = self.Concentrations.get().split(",")
         pack.Solvate(self.Solname.get()[:3], solutes, SoluteConetrationMatrix, self.Density.get(), self.solventname2.get()[:3], self.Density2.get(), self.xdim.get(), self.ydim.get(), self.zdim.get(), self.curentDirectory, self.ratio.get())
         self.update_progress("Packmol done, creating gro file and cleaing up",10)
-        gro.gro(self.Solname.get()[:3], solutes,self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(),self.ydim.get(),self.zdim.get())
+        gro.Gro(self.Solname.get()[:3], solutes, self.solventname2.get()[:3], self.curentDirectory, self.xdim.get(), self.ydim.get(), self.zdim.get())
         self.update_progress("starting simulation",0)
         runer=ASMD.ASMD()
         a=runer.EnergyMin()
