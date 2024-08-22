@@ -6,32 +6,25 @@ class reorg:
     """
     A class for reorganizing the itp files in preparation for simulations.
 
-    Args:
-    - molecule (str): The name of the molecule.
-    - dir (str): The directory path where reorganized files will be stored.
-    - key (str): A key identifier.
-
-    Attributes:
-    - molecule (str): The name of the molecule.
-    - dir (str): The directory path.
-    - moleclue (str): A processed version of the molecule name.
-
-    Methods:
-    - __init__(self, molecule, dir, key): Initializes the reorg object, creates necessary files, and reorganizes the ITP files.
     """
 
-    def __init__(self, molecule, dir, key):
+    def __init__(self, molecule, direc, key):
+        """
+        :param molecule: The name of the molecule.
+        :param direc: The directory path where reorganized files will be stored.
+        :param key: A key identifier.
+        """
 
         self.moleclue = molecule
-        self.dir = dir
-        self.atomtype_is_present=True
-        
-        subprocess.run(f"touch {os.path.join(self.dir,f'{self.moleclue}.itp')}", shell=True)
-        if not os.path.isfile(os.path.join(self.dir,f'{self.moleclue}_atomtype.itp')):
+        self.dir = direc
+        self.atomtype_is_present = True
+
+        subprocess.run(f"touch {os.path.join(self.dir, f'{self.moleclue}.itp')}", shell=True)
+        if not os.path.isfile(os.path.join(self.dir, f'{self.moleclue}_atomtype.itp')):
             print("atomtype not found")
-            self.atomtype_is_present=False
-            subprocess.run(f'touch {os.path.join(self.dir,f"{self.moleclue}_atomtype.itp")}', shell=True)
-        with open(f"{os.path.join(self.dir,f'{self.moleclue}f.itp')}", 'r') as org:
+            self.atomtype_is_present = False
+            subprocess.run(f'touch {os.path.join(self.dir, f"{self.moleclue}_atomtype.itp")}', shell=True)
+        with open(f"{os.path.join(self.dir, f'{self.moleclue}f.itp')}", 'r') as org:
             lines = org.readlines()
             self.atomtype = 10
             self.atomtype_lastline = 0
@@ -48,16 +41,15 @@ class reorg:
             if not self.atomtype_is_present:
                 self.write_type()
 
-
     def write_itp(self):
-        with open(f'{os.path.join(self.dir,f"{self.moleclue}.itp")}','a') as itp:
+        with open(f'{os.path.join(self.dir, f"{self.moleclue}.itp")}', 'a') as itp:
             for i in range(self.atomtype):
                 itp.writelines(self.orginal[i])
             for j in range(self.atomtype_lastline + 2, len(self.orginal)):
                 itp.writelines(self.orginal[j])
-    def write_type(self):
-       with open(f'{os.path.join(self.dir,f"{self.moleclue}_atomtype.itp")}', 'a') as type:
-           type.writelines('\n')
-           for k in range(self.atomtype_lastline - self.atomtype + 1):
-               type.writelines(self.orginal[self.atomtype + k])
 
+    def write_type(self):
+        with open(f'{os.path.join(self.dir, f"{self.moleclue}_atomtype.itp")}', 'a') as a_type:
+            a_type.writelines('\n')
+            for k in range(self.atomtype_lastline - self.atomtype + 1):
+                a_type.writelines(self.orginal[self.atomtype + k])

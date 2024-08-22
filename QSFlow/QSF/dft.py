@@ -2,6 +2,11 @@ import os
 import subprocess
 import time
 class sumbit:
+
+    """
+    OLD CODE NO LONGER IN USE
+
+    """
     def __init__(self, mole, userid, multicharge, dir):
         self.dir = dir
         self.mol = mole

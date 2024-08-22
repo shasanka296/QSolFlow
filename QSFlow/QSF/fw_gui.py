@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import argparse
 import random
 from fireworks import LaunchPad
 import datetime as dat
@@ -10,42 +9,41 @@ import sys
 from pathlib import Path
 
 
-
-
 class GUI:
-
     """
     A graphical user interface for setting up and launching Molecular Dynamics (MD) calculations.
 
-    Attributes:
-    - window (tk.Tk): The main application window.
-    - nameMatrix (list): List to store system names.
-    - systemNamemat (list): List to store system names in a matrix.
-    - systemsmilesmat (list): List to store SMILES codes for systems in a matrix.
-    - entries (dict): Dictionary to store tkinter Entry widgets for user input.
-    - smilesMatrix (list): List to store SMILES codes for all components.
-    - typematrix (list): List to store the types of components (Solvent/Solute).
-    - canvas (tk.Canvas): Canvas for scrollable frame.
-    - scrollbar (ttk.Scrollbar): Scrollbar for canvas.
-    - frame (ttk.Frame): Frame containing the widgets.
-    - frame_id (int): ID of the frame in the canvas.
-    - numsys (tk.Entry): Entry widget for the number of systems.
-    - numsysL (tk.Label): Label for the number of systems.
-    - numsysB (tk.Button): Button to create systems based on user input.
-    - email (tk.Entry): Entry widget for user email.
-    - emailLable (tk.Label): Label for user email.
+        Attributes:
+            - window (tk.Tk): The main application window.
+            - nameMatrix (list): List to store system names.
+            - systemNamemat (list): List to store system names in a matrix.
+            - systemsmilesmat (list): List to store SMILES codes for systems in a matrix.
+            - entries (dict): Dictionary to store tkinter Entry widgets for user input.
+            - smilesMatrix (list): List to store SMILES codes for all components.
+            - typematrix (list): List to store the types of components (Solvent/Solute).
+            - canvas (tk.Canvas): Canvas for scrollable frame.
+            - scrollbar (ttk.Scrollbar): Scrollbar for canvas.
+            - frame (ttk.Frame): Frame containing the widgets.
+            - frame_id (int): ID of the frame in the canvas.
+            - numsys (tk.Entry): Entry widget for the number of systems.
+            - numsysL (tk.Label): Label for the number of systems.
+            - numsysB (tk.Button): Button to create systems based on user input.
+            - email (tk.Entry): Entry widget for user email.
+            - emailLable (tk.Label): Label for user email.
 
-    Methods:
-    - on_frame_configure(event): Adjusts the canvas scroll region based on the frame size.
-    - on_canvas_configure(event): Adjusts the canvas width based on the window size.
-    - add_widgets(): Adds widgets (Entry, Label, Button) to the frame.
-    - make(): Dynamically creates Entry widgets based on the number of systems entered by the user.
-    - run(): Initiates MD calculations using user-inputted data.
+        Methods:
+            - on_frame_configure(event): Adjusts the canvas scroll region based on the frame size.
+            - on_canvas_configure(event): Adjusts the canvas width based on the window size.
+            - add_widgets(): Adds widgets (Entry, Label, Button) to the frame.
+            - make(): Dynamically creates Entry widgets based on the number of systems entered by the user.
+            - run(): Initiates MD calculations using user-inputted data.
+            - populate_md_wf(): Calls wf_writer.md_fws() to populate MD calculations.
 
     Note: The GUI is currently in development and new features may be added while the old ones are dropped
     """
+
     def __init__(self):
-        self.meta_dir=meta_dir
+        self.meta_dir = meta_dir
         self.window = tk.Tk()
         self.window.title('QSolFlow')
         self.window.geometry('850x650')
@@ -70,7 +68,6 @@ class GUI:
 
         self.add_widgets()
 
-
         self.frame_id = self.canvas.create_window((0, 0), window=self.frame, anchor=tk.NW)
 
         self.frame.bind("<Configure>", self.on_frame_configure)
@@ -88,13 +85,14 @@ class GUI:
     def add_widgets(self):
         self.numsys = tk.Entry(self.frame, fg="black", bg="white", width=10)
         self.numsysL = tk.Label(self.frame, text="number of systems")
-        self.sumbit_button = tk.Button(self.frame, text="create sys", command= self.charge_titration_or_not)
+        self.sumbit_button = tk.Button(self.frame, text="create sys", command=self.charge_titration_or_not)
         self.entry_path = tk.Entry(self.frame, fg="black", bg="white", width=50)
         self.check_titration = tk.IntVar()
-        self.intial=tk.IntVar()
-        self.charge_tittration_promt=tk.Checkbutton(self.frame, text=f"Is this a charge titration?",variable=self.check_titration)
-        self.path_to_user_input= tk.Label(self.frame, text="Path to inputfiles if providing own param: ".ljust(20))
-        self.check_if_inital_conf=tk.Checkbutton(self.frame, text="initial system", variable=self.intial)
+        self.intial = tk.IntVar()
+        self.charge_tittration_promt = tk.Checkbutton(self.frame, text=f"Is this a charge titration?",
+                                                      variable=self.check_titration)
+        self.path_to_user_input = tk.Label(self.frame, text="Path to inputfiles if providing own param: ".ljust(20))
+        self.check_if_inital_conf = tk.Checkbutton(self.frame, text="initial system", variable=self.intial)
         self.path_to_user_input.grid(row=2, column=0)
         self.entry_path.grid(row=2, column=1)
         self.check_if_inital_conf.grid(row=2, column=2)
@@ -104,26 +102,27 @@ class GUI:
         self.charge_tittration_promt.grid(row=3, column=0)
 
     def charge_titration_or_not(self):
-        if len(self.entry_path.get().strip()) !=0:
+        if len(self.entry_path.get().strip()) != 0:
             self.path_to_user_input = self.entry_path.get()
             print(self.path_to_user_input)
             self.own = True
-        if self.check_titration.get() !=0:
+        if self.check_titration.get():
             self.charge_titartion_setup()
         else:
             self.make()
+
     def charge_titartion_setup(self):
 
-        self.Titration_start= tk.Entry(self.frame, fg="black", bg="white", width=50)
-        self.Titration_start_promt=tk.Label(self.frame, text="Titration start")
+        self.Titration_start = tk.Entry(self.frame, fg="black", bg="white", width=50)
+        self.Titration_start_promt = tk.Label(self.frame, text="Titration start")
 
-        self.Titration_finish= tk.Entry(self.frame, fg="black", bg="white", width=50)
-        self.Titration_finish_promt=tk.Label(self.frame, text="Titration finish")
+        self.Titration_finish = tk.Entry(self.frame, fg="black", bg="white", width=50)
+        self.Titration_finish_promt = tk.Label(self.frame, text="Titration finish")
 
-        self.Titration_steps= tk.Entry(self.frame, fg="black", bg="white", width=50)
-        self.Titration_steps_promt=tk.Label(self.frame, text="delta_steps")
+        self.Titration_steps = tk.Entry(self.frame, fg="black", bg="white", width=50)
+        self.Titration_steps_promt = tk.Label(self.frame, text="delta_steps")
 
-        self.charge_sumbit_button=tk.Button(self.frame, text="Next", command= self.charge_titration_maker)
+        self.charge_sumbit_button = tk.Button(self.frame, text="Next", command=self.charge_titration_maker)
 
         self.Titration_start.grid(row=4, column=1)
         self.Titration_start_promt.grid(row=4, column=0)
@@ -135,22 +134,24 @@ class GUI:
         self.Titration_steps_promt.grid(row=6, column=0)
 
         self.charge_sumbit_button.grid(row=7, column=0)
-    def charge_titration_maker(self):
-        self.number_of_titrationsneeded= 1 + ((1*float(self.Titration_finish.get()) -  float(self.Titration_start.get()))/float(self.Titration_steps.get()))
-        self.iterator = int((round(self.number_of_titrationsneeded, 4)))
-        self.titration_list = [float(self.Titration_finish.get()) - (i * float(self.Titration_steps.get())) for i in
-                          range(self.iterator)]
 
-        print(round(self.number_of_titrationsneeded,4))
-        if round(self.number_of_titrationsneeded,4)%1 != 0.0:
-            raise(ValueError("titration inputs are not valid"))
+    def charge_titration_maker(self):
+        self.number_of_titrations_needed = 1 + (
+                (1 * float(self.Titration_finish.get()) - float(self.Titration_start.get())) / float(
+            self.Titration_steps.get()))
+        self.Titration_iterator = int((round(self.number_of_titrations_needed, 4)))
+        self.titration_list = [float(self.Titration_finish.get()) - (i * float(self.Titration_steps.get())) for i in
+                               range(self.Titration_iterator)]
+
+        if round(self.number_of_titrations_needed, 4) % 1 != 0.0:
+            raise (ValueError("titration inputs are not valid"))
 
         for i in range(int(self.numsys.get())):
-            offset=14
+            offset = 14
             global number
-            global Tnumber
+            global Titration_numbers
             number = int(self.numsys.get())
-            Tnumber = int(self.numsys.get()) * self.iterator
+            Titration_numbers = int(self.numsys.get()) * self.Titration_iterator
 
             self.button = tk.Button(self.frame,
                                     text="Submit",
@@ -217,7 +218,7 @@ class GUI:
             self.SolventSmiles.grid(row=12 + (offset * i), column=1)
             self.entries[f"solvetsmiles{i + 1}"] = self.SolventSmiles
 
-            self.labelSolute.grid(row=13+ (offset * i), column=0)
+            self.labelSolute.grid(row=13 + (offset * i), column=0)
             self.SoluteName.grid(row=13 + (offset * i), column=1)
             self.entries[f"solutename{i + 1}"] = self.SoluteName
 
@@ -246,11 +247,11 @@ class GUI:
             self.entries[f"zdim{i + 1}"] = self.zdim
 
             self.chargeCheck.grid(row=20 + (offset * i), column=0)
-            self.chargeMatrix.grid(row=20+ (offset * i), column=1)
+            self.chargeMatrix.grid(row=20 + (offset * i), column=1)
             self.entries[f"charges{i + 1}"] = self.chargeMatrix
 
-            self.multiplicity.grid(row=21+ (offset * i), column=1)
-            self.multiplicity_lable.grid(row=21+ (offset * i), column=0)
+            self.multiplicity.grid(row=21 + (offset * i), column=1)
+            self.multiplicity_lable.grid(row=21 + (offset * i), column=0)
             self.entries[f"multiplicity{i + 1}"] = self.multiplicity
 
             self.molarMass.grid(row=22 + (offset * i), column=1)
@@ -259,12 +260,9 @@ class GUI:
 
         return
 
-
-
-
     def make(self):
         global number
-        offset=14
+        offset = 14
         number = int(self.numsys.get())
         self.button = tk.Button(self.frame,
                                 text="Submit",
@@ -372,24 +370,13 @@ class GUI:
             self.molarlabel.grid(row=22 + (offset * i), column=0)
             self.entries[f"molarmass{i + 1}"] = self.molarMass
 
-
     def run(self):
-        BASE_DIR = Path(__file__).resolve().parent.parent
-
-        def populate_md_wf(**kwargs):
-
-            lpad_file = os.path.join(BASE_DIR.parent, 'launch', 'md_launchpad.yaml')
-            wf = d3tales_md_wf(**kwargs)
-            info = LaunchPad().from_file(lpad_file).add_wf(wf)
-            fw_id = list(info.values())[0]
-            return fw_id
-
         self.systems = []
-        self.solute_titrants=[]
-        self.solvent_titratnts=[]
+        self.repeated_solutes_for_titration_system = []
+        self.repeated_solvents_for_titration_systems = []
         self.string_of_solutes = []
 
-        if self.check_titration.get() !=0:
+        if self.check_titration.get():
             print("in the titration")
 
             for i in range(number):
@@ -405,8 +392,8 @@ class GUI:
                 print(self.titration_list)
                 for _ in self.titration_list:
                     print("in loop 2")
-                    titration_name= solvent
-                    self.solvent_titratnts.append(titration_name)
+                    titration_name = solvent
+                    self.repeated_solvents_for_titration_systems.append(titration_name)
 
                 for iteams in self.solute_matrix:
                     print(self.solute_matrix)
@@ -417,12 +404,13 @@ class GUI:
 
                     for _ in self.titration_list:
                         print("in loop 4")
-                        self.solute_titrants.append(iteams.strip() + str(_))
+                        self.repeated_solutes_for_titration_system.append(iteams.strip() + str(_))
                 self.systemNamemat.append(self.subnamemat)
                 self.string_of_solutes.append("_".join(self.subnamemat[1:]))
-                print(f"this is the subname mat at {i+1} iteration : {self.subnamemat}")
-            self.expanded_strings_of_solutes=[self.string_of_solutes[j]+f"{i}" for j in range(len(self.string_of_solutes)) for i in self.titration_list ]
-            for i, iteams in enumerate(self.solvent_titratnts):
+                print(f"this is the subname mat at {i + 1} iteration : {self.subnamemat}")
+            self.expanded_strings_of_solutes = [self.string_of_solutes[j] + f"{i}" for j in
+                                                range(len(self.string_of_solutes)) for i in self.titration_list]
+            for i, iteams in enumerate(self.repeated_solvents_for_titration_systems):
                 print("in loop 5")
                 self.systems.append(f"{iteams}_{self.expanded_strings_of_solutes[i]}")
             for _ in range(number):
@@ -435,7 +423,6 @@ class GUI:
                     self.submatsmiles.append(iteams.strip())
                     self.smilesMatrix.append(iteams.strip())
                 self.systemsmilesmat.append(self.submatsmiles)
-
 
             print(self.systems)
             print(self.nameMatrix)
@@ -473,10 +460,8 @@ class GUI:
                 print(f"submat: {self.submatsmiles}")
                 print(f'systemmat: {self.systemsmilesmat}')
 
-
-
-        if self.check_titration.get() !=0:
-
+        if self.check_titration.get():
+            global number_of_titration
             number_sys = len(self.systems)
             key_dic = {}
             darte = (str(dat.datetime.now()).split()[0]).split("-")
@@ -488,29 +473,30 @@ class GUI:
             titration_list[:] = self.titration_list
             try:
                 titration_list.pop(self.titration_list.index(1.0))
-            except:
+            except ValueError:
                 pass
 
-            global number_of_titration
             number_of_titration = len(self.titration_list)
-            outer_system=number_sys/(number_of_titration)
+            outer_system = number_sys / (number_of_titration)
             print(int(outer_system))
             for j in range(int(outer_system)):
-                current_index=j*number_of_titration
+                current_index = j * number_of_titration
                 print(current_index)
-                key_number=random.randint(1, 30000000)
+                key_number = random.randint(1, 30000000)
                 key_dic[self.systems[current_index]] = key_number
-                for i in range(number_of_titration-1):
-                    key_dic[self.systems[current_index+(i+1)]] = f'{key_number}_{titration_list[i]}'
+                for i in range(number_of_titration - 1):
+                    key_dic[self.systems[current_index + (i + 1)]] = f'{key_number}_{titration_list[i]}'
 
             print(f"the key looks like this:{key_dic} ")
 
-            md_kwargs = {"date_sumbit":date,
-                "smiles_list": self.smilesMatrix,
-                "name_list": self.nameMatrix,  # "cons": 0,
-                "type_list": self.typematrix,
-                "dir": self.meta_dir,
-                "num_systems": f"{number_sys}", "titartion_list":self.titration_list, "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":True, "own":False, "inital_sys":False}
+            md_kwargs = {"date_sumbit": date,
+                         "smiles_list": self.smilesMatrix,
+                         "name_list": self.nameMatrix,  # "cons": 0,
+                         "type_list": self.typematrix,
+                         "dir": self.meta_dir,
+                         "num_systems": f"{number_sys}", "titartion_list": self.titration_list,
+                         "populate_name": "MD_FIREWORK", "key_dic": key_dic, "is_titration": True, "own": False,
+                         "inital_sys": False}
             print(f"The titrationlist:{self.titration_list}")
         else:
             number_sys = number
@@ -521,31 +507,28 @@ class GUI:
             for iteams in darte:
                 date += f"_{str(iteams)}"
             for _ in range(number_sys):
-                 key_dic[self.systems[_]] = random.randint(1, 3000000000)
-
-
-
+                key_dic[self.systems[_]] = random.randint(1, 3000000000)
 
             md_kwargs = {"date_sumbit": date,
                          "smiles_list": self.smilesMatrix,
                          "name_list": self.nameMatrix,  # "cons": 0,
                          "type_list": self.typematrix,
                          "dir": self.meta_dir,
-                         "num_systems": f"{number_sys}", "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":False, "own":False, "inital_sys":False}
-        if self.check_titration.get() !=0:
+                         "num_systems": f"{number_sys}", "populate_name": "MD_FIREWORK", "key_dic": key_dic,
+                         "is_titration": False, "own": False, "inital_sys": False}
+        if self.check_titration.get():
 
-            self.iterator_for_wf = Tnumber
+            self.iterator_for_wf = Titration_numbers
         else:
 
-
-            self.iterator_for_wf=  number
+            self.iterator_for_wf = number
 
         for _ in range(self.iterator_for_wf):
             md_kwargs[f"WF_name{_ + 1}"] = self.systems[_]
-        if self.check_titration.get() !=0:
+        if self.check_titration.get():
             for a in range(number):
-                md_kwargs[f"Average_den{list(key_dic.values())[a*number_of_titration]}"] = []
-        if self.check_titration.get() ==0:
+                md_kwargs[f"Average_den{list(key_dic.values())[a * number_of_titration]}"] = []
+        if not self.check_titration.get():
             for a in range(number):
                 md_kwargs[f"Average_den{list(key_dic.values())[a]}"] = []
         for _ in range(number):
@@ -562,42 +545,43 @@ class GUI:
         for _ in range(number):
             spliter = lambda x: [i.strip() for i in x.split(",")]
             conamt = spliter(self.entries[f'concentration{_ + 1}'].get())
-            multi_mat=spliter( self.entries[f'multiplicity{_ + 1}'].get())
+            multi_mat = spliter(self.entries[f'multiplicity{_ + 1}'].get())
             le = len(self.entries[f"charges{_ + 1}"].get())
-            number_of_molecules=len(spliter(self.entries[f'multiplicity{_ + 1}'].get()))
-            self.charge=[]
+            number_of_molecules = len(spliter(self.entries[f'multiplicity{_ + 1}'].get()))
+            self.charge = []
             self.charge.extend(
                 ['0'] + [j for j in spliter(self.entries[f"charges{_ + 1}"].get())] if le != 0 else ['0' for _ in
                                                                                                      range(
                                                                                                          number_of_molecules)])
-            md_kwargs[f"charge{_+1}"] = self.charge
+            md_kwargs[f"charge{_ + 1}"] = self.charge
             md_kwargs[f'multiplicity{_ + 1}'] = multi_mat
             md_kwargs[f'conmatrix{_ + 1}'] = conamt
 
         index = 0
         for j in self.systemNamemat:
-
             solventmat = []
             solutemat = j[1:]
             solventmat.append(j[0])
             md_kwargs[f'solvent_name{index + 1}'] = solventmat
             md_kwargs[f'solute_name{index + 1}'] = solutemat
             index += 1
-        index=0
+        index = 0
         for j in self.systemsmilesmat:
             solventmat = []
             solutemat = j[1:]
             solventmat.append(j[0])
             md_kwargs[f'solvent_smiles{index + 1}'] = solventmat
             md_kwargs[f'solute_smiles{index + 1}'] = solutemat
-            print(index,solutemat,solventmat)
-            index +=1
-        spliter= lambda x: [i.strip() for i in x.split(',')]
+            print(index, solutemat, solventmat)
+            index += 1
+        spliter = lambda x: [i.strip() for i in x.split(',')]
         self.charge = []
         for i in range(number):
-            le= len(self.entries[f"charges{i + 1}"].get())
-            number_of_molecules=len(spliter(self.entries[f'multiplicity{i + 1}'].get()))
-            self.charge.extend(['0']+[j for j in spliter( self.entries[f"charges{i + 1}"].get())] if le != 0 else ['0' for _ in range(number_of_molecules)])
+            le = len(self.entries[f"charges{i + 1}"].get())
+            number_of_molecules = len(spliter(self.entries[f'multiplicity{i + 1}'].get()))
+            self.charge.extend(
+                ['0'] + [j for j in spliter(self.entries[f"charges{i + 1}"].get())] if le != 0 else ['0' for _ in range(
+                    number_of_molecules)])
         md_kwargs["charge_list"] = self.charge
         print(md_kwargs)
 
@@ -605,14 +589,21 @@ class GUI:
             md_kwargs["own_path"] = self.path_to_user_input
             md_kwargs["own"] = True
             print("User provided the parameters")
-        if self.intial.get() !=0:
+        if self.intial.get() != 0:
             md_kwargs["own_path"] = self.path_to_user_input
             md_kwargs["inital_sys"] = True
             print("User provided the inital system")
 
-        all_ids = {"test_md_fw": populate_md_wf(**md_kwargs)}
+        all_ids = {"test_md_fw": self.populate_md_wf(**md_kwargs)}
         sys.exit()
 
+    def populate_md_wf(self, **kwargs):
+        BASE_DIR = Path(__file__).resolve().parent.parent
+        lpad_file = os.path.join(BASE_DIR.parent, 'launch', 'md_launchpad.yaml')
+        wf = md_wf(**kwargs)
+        info = LaunchPad().from_file(lpad_file).add_wf(wf)
+        fw_id = list(info.values())[0]
+        return fw_id
 
 
 GUI()

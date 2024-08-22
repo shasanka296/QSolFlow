@@ -2,6 +2,9 @@ import subprocess
 
 
 class FIdel:
+    """
+    OLD CODE NO LONGER IN USE
+    """
     def __init__(self, name, email,dir):
         self.dir = dir
         self.email=email

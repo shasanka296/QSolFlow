@@ -2,6 +2,9 @@ import time
 
 
 class waiting:
+    """
+    OLD CODE NO LONGER IN USE
+    """
     def __init__(self, name,dir):
         self.dir = dir
         self.name = name
