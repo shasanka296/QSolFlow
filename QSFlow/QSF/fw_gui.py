@@ -260,6 +260,7 @@ class GUI:
         return
 
     def make(self):
+        global number
         offset = 14
         number = int(self.numsys.get())
         self.button = tk.Button(self.frame,
@@ -459,7 +460,7 @@ class GUI:
                 print(f'systemmat: {self.systemsmilesmat}')
 
         if self.check_titration.get():
-
+            global number_of_titration
             number_sys = len(self.systems)
             key_dic = {}
             darte = (str(dat.datetime.now()).split()[0]).split("-")

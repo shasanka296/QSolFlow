@@ -1,5 +1,5 @@
 import subprocess
-from QSFlow.QSF.new_dft import run_on_terminla
+from QSFlow.QSF.new_dft import run_on_terminal
 import os
 
 
@@ -17,7 +17,7 @@ class trans:
 
         chagreMatrix = []
         if not own:
-            charges = run_on_terminla(name, charg, smiles, direc=di, mul=mult)
+            charges = run_on_terminal(name, charg, smiles, direc=di, mul=mult)
             if len(charges) == 0:
                 raise Exception("Unable to get the charges")
             print("it is ran")
