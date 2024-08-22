@@ -3,7 +3,7 @@ import os
 import multiprocessing
 import datetime
 import QSFlow.QSF.ASMD_1 as run
-import QSFlow.QSF.lig as l
+import QSFlow.QSF.lig as param_generator
 import QSFlow.QSF.chargeTrasnfer as transfer
 import QSFlow.QSF.packmol as pack
 import QSFlow.QSF.make_gro as gro
@@ -11,9 +11,9 @@ import QSFlow.QSF.titration as titrate
 import QSFlow.QSF.titrationPlotter as plotter
 from QSFlow.workflows.envwf import meta_dir
 
-
 from atomate.utils.utils import get_logger
 from fireworks import FiretaskBase, explicit_serialize, FWAction
+
 logger = get_logger(__name__)
 cpus = [multiprocessing.cpu_count() if multiprocessing.cpu_count() < 16 else 16]
 nprocs = str(cpus[0])
@@ -31,32 +31,27 @@ class Ligpargen(FiretaskBase):
         self.smiles = self.get("smile") or fw_spec.get("smile")
         self.charge = self.get("charge") or fw_spec.get("charge")
         self.names = self.get("name") or fw_spec.get("name")
-        self.type = self.get("Type") or fw_spec.get("TYPE","")
+        self.type = self.get("Type") or fw_spec.get("TYPE", "")
         self.own = self.get("own") or fw_spec.get("own")
-        self.own_path= self.get("own_path") or fw_spec.get("own_path")
-        self.mult= self.get("mult") or fw_spec.get("mult")
+        self.own_path = self.get("own_path") or fw_spec.get("own_path")
+        self.mult = self.get("mult") or fw_spec.get("mult")
 
-        l.lig(self.smiles, self.names ,self.names[:3] + f"_{self.type}", self.charge, self.dir,self.own, self.own_path)
+        param_generator.lig(self.smiles, self.names, self.names[:3] + f"_{self.type}", self.charge, self.dir, self.own, self.own_path)
 
         return FWAction(update_spec={})
-
-
-
-
-
 
 
 @explicit_serialize
 class MDPrep(FiretaskBase):
 
     def run_task(self, fw_spec):
-        self.initial_system= self["inital_sys"]
-        self.own=self.get("own_path") or fw_spec.get("own_path")
-        self.is_own= True if self.own else False
+        self.initial_system = self["inital_sys"]
+        self.own = self.get("own_path") or fw_spec.get("own_path")
+        self.is_own = True if self.own else False
         print(self.initial_system)
         print(self["inital_sys"])
         print(self.get("inital_sys"))
-        self.path_inital= self.get("own_path") or fw_spec.get("own_path")
+        self.path_inital = self.get("own_path") or fw_spec.get("own_path")
         self.dir = self.get("dir") or fw_spec.get("dir")
         self.titration = self.get("titration_constant")
         self.charge = self.get("charge") or fw_spec.get("charge")
@@ -64,14 +59,14 @@ class MDPrep(FiretaskBase):
             raise Exception("no charge found")
         self.solvent_name = self.get("solvent_name") or fw_spec.get("solvent_name")
         self.Solname = self.solvent_name[0]
-        self.solute_smiles= self.get("solute_smiles")
-        self.solvent_smiles= self.get("solvent_smiles")
+        self.solute_smiles = self.get("solute_smiles")
+        self.solvent_smiles = self.get("solvent_smiles")
         self.solute_name = self.get("solute_name") or fw_spec.get("solute_name")
         self.xdim = float(self.get("x") or fw_spec.get("x"))
         self.ydim = float(self.get("y") or fw_spec.get("y"))
         self.zdim = float(self.get("z") or fw_spec.get("z"))
         self.conmatrix = self.get("conmatrix") or fw_spec.get("conmatrix")
-        self.multipicity=self.get("multi") or None
+        self.multipicity = self.get("multi") or None
         key = self.get("key")
         if self.conmatrix == None:
             print("did not work")
@@ -82,39 +77,45 @@ class MDPrep(FiretaskBase):
         print(self.initial_system is None)
         if self.initial_system == False:
             print("in the if")
-            pack.Solvate(self.Solname[:3], self.solute_name, self.conmatrix, self.Density, '', None, self.xdim, self.ydim,
+            pack.Solvate(self.Solname[:3], self.solute_name, self.conmatrix, self.Density, '', None, self.xdim,
+                         self.ydim,
                          self.zdim, self.dir, None, key)
-            names=[]+ self.solvent_name+self.solute_name
-            smiles=[] + self.solvent_smiles + self.solute_smiles
-            key=self.get("key")
+            names = [] + self.solvent_name + self.solute_name
+            smiles = [] + self.solvent_smiles + self.solute_smiles
+            key = self.get("key")
             print(smiles)
             print(names)
             i = 0
-            for iteams, name,mul,charge in zip(smiles,names,self.multipicity, self.charge):
-                if i >=1:
-                        transfer.trans(f"{name[:3]}_Solute1",iteams,key,self.is_own,self.dir,charge,self.titration,mult=mul )
+            for iteams, name, mul, charge in zip(smiles, names, self.multipicity, self.charge):
+                if i >= 1:
+                    transfer.trans(f"{name[:3]}_Solute1", iteams, key, self.is_own, self.dir, charge, self.titration,
+                                   mult=mul)
                 else:
-                        transfer.trans(f"{name[:3]}_Solvent",iteams,key,self.is_own,self.dir,charge, self.titration, mult=mul)
-                i+=1
-        gro.gro(self.Solname, self.solute_name, '', self.dir, self.xdim, self.ydim, self.zdim, key, self.initial_system, self.path_inital)
+                    transfer.trans(f"{name[:3]}_Solvent", iteams, key, self.is_own, self.dir, charge, self.titration,
+                                   mult=mul)
+                i += 1
+        gro.gro(self.Solname, self.solute_name, '', self.dir, self.xdim, self.ydim, self.zdim, key, self.initial_system,
+                self.path_inital)
         return FWAction(update_spec={})
+
 
 @explicit_serialize
 class TitrationChargeScaler(FiretaskBase):
 
     def run_task(self, fw_spec):
-        self.titration_matrix=fw_spec.get("titration_list") or self.get("titration_list")
-        self.initial_system= self.get("inital_sys") or fw_spec.get("inital_sys")
-        self.path_inital= self.get("own_path") or fw_spec.get("own_path")
+        self.titration_matrix = fw_spec.get("titration_list") or self.get("titration_list")
+        self.initial_system = self.get("inital_sys") or fw_spec.get("inital_sys")
+        self.path_inital = self.get("own_path") or fw_spec.get("own_path")
         self.dir = self.get("dir") or fw_spec.get("dir")
         self.key = self.get("key")
         self.solvent_name = self.get("solvent_name") or fw_spec.get("solvent_name")
         self.solvent = self.solvent_name[0]
         self.solute_name = self.get("solute_name") or fw_spec.get("solute_name")
-        titrate.titration(self.titration_matrix, self.key, self.dir, self.solvent, self.solute_name,self.path_inital, intial=self.initial_system )
-
+        titrate.titration(self.titration_matrix, self.key, self.dir, self.solvent, self.solute_name, self.path_inital,
+                          intial=self.initial_system)
 
         return FWAction(update_spec={})
+
 
 @explicit_serialize
 class EnergyMinimization(FiretaskBase):
@@ -146,30 +147,30 @@ class NPT(FiretaskBase):
 
 
 @explicit_serialize
-class Density(FiretaskBase): ### need to fix this block later
+class Density(FiretaskBase):  ### need to fix this block later
 
     def run_task(self, fw_spec):
         b = run.ASMD(self.get("key"))
-        key=self.get("key")
-        density_key=int(str(key).split("_")[0])
+        key = self.get("key")
+        density_key = int(str(key).split("_")[0])
         print(f"the key in denisty is {key}")
         output_density = b.calculate_density()
-        average=0.0
+        average = 0.0
         for i in output_density:
-            average = average+float(i)
-        average= average/(float(len(output_density)))
-        subprocess.run([f" touch {os.path.join(meta_dir,f'InputGrofiles{density_key}','data')}"], shell=True)
-        print(f"{os.path.join(meta_dir,f'InputGrofiles{density_key}','data')}")
-        with open(f"{os.path.join(meta_dir,f'InputGrofiles{density_key}','data')}",'a') as file:
+            average = average + float(i)
+        average = average / (float(len(output_density)))
+        subprocess.run([f" touch {os.path.join(meta_dir, f'InputGrofiles{density_key}', 'data')}"], shell=True)
+        print(f"{os.path.join(meta_dir, f'InputGrofiles{density_key}', 'data')}")
+        with open(f"{os.path.join(meta_dir, f'InputGrofiles{density_key}', 'data')}", 'a') as file:
             file.write(f"{average},")
 
-        density_mat=fw_spec.get(f"Average_den{density_key}")
+        density_mat = fw_spec.get(f"Average_den{density_key}")
         print(f"Average_den{density_key}")
         density_mat.append(average)
         print(f"updated denmat{density_mat}")
 
+        return FWAction(update_spec={f"Average_den{density_key}": density_mat, "outputden": output_density})
 
-        return FWAction(update_spec={f"Average_den{density_key}": density_mat, "outputden":output_density})
 
 @explicit_serialize
 class Den_checker(FiretaskBase):
@@ -233,27 +234,25 @@ class cord(FiretaskBase):
         cord = fw_spec.get("rdf") or self.get("rdf")
 
         b = run.ASMD(self.get("key"))
-        b.cordination_number(cord)
+        b.coordination_number(cord)
 
         return FWAction(update_spec={})
 
 
 @explicit_serialize
-
-
 class key_gen(FiretaskBase):
 
     def run_task(self, fw_spec):
-        self.own= self.get("own_path" ) or fw_spec.get("own_path") or ""
-        self.names= self.get("name_list") or fw_spec.get("name_list")
-        self.type=self.get("type_list") or fw_spec.get("type_list")
+        self.own = self.get("own_path") or fw_spec.get("own_path") or ""
+        self.names = self.get("name_list") or fw_spec.get("name_list")
+        self.type = self.get("type_list") or fw_spec.get("type_list")
         key = fw_spec.get("key_dic")
         self.dir = self.get("dir") or fw_spec.get("dir")
         with open(f"{self.dir}/key", 'a') as k:
             for i, j in key.items():
                 k.writelines(f'{i}: {j} \n   ')
         print(f'{key},{fw_spec.get("date_sumbit")},{self.dir}')
-        self.organize(key,fw_spec.get("date_sumbit"),self.dir)
+        self.organize(key, fw_spec.get("date_sumbit"), self.dir)
 
         return FWAction(update_spec={})
 
@@ -267,13 +266,13 @@ class key_gen(FiretaskBase):
         os.makedirs(run_dir, exist_ok=True)
 
         subprocess.run([f"mv {os.path.join(dir, 'key')} {run_dir}"], shell=True, check=True)
-        for i,j in zip(self.names,self.type):
-            repeat=0
+        for i, j in zip(self.names, self.type):
+            repeat = 0
             try:
                 subprocess.run([f"rm -rf {os.path.join(dir, f'{i[:3]}_{j}')}"], shell=True, check=True)
             except subprocess.CalledProcessError as E:
-                repeat+=1
-                print(f"{repeat} name and type combination is repeated: {(i,j)}")
+                repeat += 1
+                print(f"{repeat} name and type combination is repeated: {(i, j)}")
         print(key)
         for iteam in key:
             subprocess.run([f"mv {os.path.join(dir, f'InputGrofiles{key[iteam]}')} {run_dir}"], shell=True)
@@ -297,24 +296,23 @@ class key_gen(FiretaskBase):
 #         return FWAction(update_spec={})
 
 
-
 @explicit_serialize
 class Graph_plotter(FiretaskBase):
 
     def run_task(self, fw_spec):
-        key=self.get("This_key")
-        path=os.path.join(meta_dir,f'InputGrofiles{key}','data')
-        titration_list=fw_spec.get("titartion_list") or self.get("titartion_list")
-        Average_simulation_density=[]
+        key = self.get("This_key")
+        path = os.path.join(meta_dir, f'InputGrofiles{key}', 'data')
+        titration_list = fw_spec.get("titartion_list") or self.get("titartion_list")
+        Average_simulation_density = []
         with open(path, 'r') as file:
             a = file.readlines()
             for iteams in a:
                 for t in iteams.split(","):
-                    if len(t) !=0:
+                    if len(t) != 0:
                         Average_simulation_density.append(t)
 
-        Average_simulation_density_dic={i:j for i,j in zip(titration_list,Average_simulation_density) }
-        plotter.TitrationPlotter( Average_simulation_density_dic, key)
+        Average_simulation_density_dic = {i: j for i, j in zip(titration_list, Average_simulation_density)}
+        plotter.TitrationPlotter(Average_simulation_density_dic, key)
 
         return FWAction(update_spec={})
 

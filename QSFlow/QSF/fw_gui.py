@@ -136,21 +136,20 @@ class GUI:
 
         self.charge_sumbit_button.grid(row=7, column=0)
     def charge_titration_maker(self):
-        self.number_of_titrationsneeded= 1 + ((1*float(self.Titration_finish.get()) -  float(self.Titration_start.get()))/float(self.Titration_steps.get()))
-        self.iterator = int((round(self.number_of_titrationsneeded, 4)))
+        self.number_of_titrations_needed= 1 + ((1 * float(self.Titration_finish.get()) - float(self.Titration_start.get())) / float(self.Titration_steps.get()))
+        self.Titration_iterator = int((round(self.number_of_titrations_needed, 4)))
         self.titration_list = [float(self.Titration_finish.get()) - (i * float(self.Titration_steps.get())) for i in
-                          range(self.iterator)]
+                               range(self.Titration_iterator)]
 
-        print(round(self.number_of_titrationsneeded,4))
-        if round(self.number_of_titrationsneeded,4)%1 != 0.0:
+        if round(self.number_of_titrations_needed, 4)%1 != 0.0:
             raise(ValueError("titration inputs are not valid"))
 
         for i in range(int(self.numsys.get())):
             offset=14
             global number
-            global Tnumber
+            global Titration_numbers
             number = int(self.numsys.get())
-            Tnumber = int(self.numsys.get()) * self.iterator
+            Titration_numbers = int(self.numsys.get()) * self.Titration_iterator
 
             self.button = tk.Button(self.frame,
                                     text="Submit",
@@ -379,14 +378,14 @@ class GUI:
         def populate_md_wf(**kwargs):
 
             lpad_file = os.path.join(BASE_DIR.parent, 'launch', 'md_launchpad.yaml')
-            wf = d3tales_md_wf(**kwargs)
+            wf = md_wf(**kwargs)
             info = LaunchPad().from_file(lpad_file).add_wf(wf)
             fw_id = list(info.values())[0]
             return fw_id
 
         self.systems = []
-        self.solute_titrants=[]
-        self.solvent_titratnts=[]
+        self.repeated_solutes_for_titration_system=[]
+        self.repeated_solvents_for_titration_systems=[]
         self.string_of_solutes = []
 
         if self.check_titration.get() !=0:
@@ -406,7 +405,7 @@ class GUI:
                 for _ in self.titration_list:
                     print("in loop 2")
                     titration_name= solvent
-                    self.solvent_titratnts.append(titration_name)
+                    self.repeated_solvents_for_titration_systems.append(titration_name)
 
                 for iteams in self.solute_matrix:
                     print(self.solute_matrix)
@@ -417,12 +416,12 @@ class GUI:
 
                     for _ in self.titration_list:
                         print("in loop 4")
-                        self.solute_titrants.append(iteams.strip() + str(_))
+                        self.repeated_solutes_for_titration_system.append(iteams.strip() + str(_))
                 self.systemNamemat.append(self.subnamemat)
                 self.string_of_solutes.append("_".join(self.subnamemat[1:]))
                 print(f"this is the subname mat at {i+1} iteration : {self.subnamemat}")
             self.expanded_strings_of_solutes=[self.string_of_solutes[j]+f"{i}" for j in range(len(self.string_of_solutes)) for i in self.titration_list ]
-            for i, iteams in enumerate(self.solvent_titratnts):
+            for i, iteams in enumerate(self.repeated_solvents_for_titration_systems):
                 print("in loop 5")
                 self.systems.append(f"{iteams}_{self.expanded_strings_of_solutes[i]}")
             for _ in range(number):
@@ -534,7 +533,7 @@ class GUI:
                          "num_systems": f"{number_sys}", "populate_name": "MD_FIREWORK", "key_dic": key_dic,"is_titration":False, "own":False, "inital_sys":False}
         if self.check_titration.get() !=0:
 
-            self.iterator_for_wf = Tnumber
+            self.iterator_for_wf = Titration_numbers
         else:
 
 

@@ -2,18 +2,19 @@ import subprocess
 import os
 import QSFlow.QSF.reorg as g
 import QSFlow.QSF.topology as top
-from QSFlow.workflows.envwf import MDP_Location,meta_dir,CONDAPATH
+from QSFlow.workflows.envwf import MDP_Location
+
 
 class gro:
-    def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system,path_to_file):
+    def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system, path_to_file):
         self.dir = di
         self.x = x
         self.y = y
         self.z = z
-        self.fullname_solvent=solvent
+        self.fullname_solvent = solvent
         self.solvent = solvent[:3]
-        self.key=key
-        self.command12 = f'cp -r {MDP_Location} {os.path.join(self.dir,f"InputGrofiles{self.key}")}'
+        self.key = key
+        self.command12 = f'cp -r {MDP_Location} {os.path.join(self.dir, f"InputGrofiles{self.key}")}'
         self.solute = solute
         self.solvent2 = solvent2
         self.initla_system = initla_system
@@ -27,10 +28,10 @@ class gro:
             command_main = f'gmx_mpi editconf -f {os.path.join(self.dir, f"Packmol{key}", "Mixture.pdb")} -box {self.x} {self.y} {self.z} -o {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")}'
             command_alt = f'gmx editconf -f {os.path.join(self.dir, f"Packmol{key}", "Mixture.pdb")} -box {self.x} {self.y} {self.z} -o {os.path.join(self.dir, f"Packmol{key}", "solvated.gro")}'
             try:
-               subprocess.run(command_main, shell=True, check=True)
-            except subprocess.CalledProcessError as E:
-               print("Looks like there is no MPI")
-               subprocess.run(command_alt, shell=True, check=True)
+                subprocess.run(command_main, shell=True, check=True)
+            except subprocess.CalledProcessError:
+                print("Looks like there is no MPI")
+                subprocess.run(command_alt, shell=True, check=True)
 
             print("gro file made")
 
@@ -59,18 +60,10 @@ class gro:
 
             for i in range(len(self.solute)):
                 com1 = f"cp {os.path.join(self.dir, f'{self.solute[i].strip()[:3]}_Solute{1}', f'{self.solute[i].strip()[:3]}_Solute{1}.pdb')} {os.path.join(self.dir, f'InputGrofiles{key}')}"
-                
-
-
 
                 subprocess.run(com1, shell=True, check=True)
 
-
-
             g.reorg(self.solvent + "_Solvent", os.path.join(self.dir, f"InputGrofiles{key}"), key)
-
-            if len(self.solvent2) != 0:
-                g.reorg(self.solvent2 + "_Solvent2", os.path.join(self.dir, f"InputGrofiles{key}"))
 
             for j in self.solute:
                 print(f'ran {j}')
