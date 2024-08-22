@@ -1,5 +1,5 @@
 meta_dir= "/mnt/gpfs2_4m/scratch/sla296/test_run/output_of_runs"
 BOSSDIR= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/boss"
 CONDAPATH= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/miniconda3/bin/activate"
-SINGPATH= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/QSF/f.sif"
-MDP_Location= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/QSF/MDP"
+SINGPATH= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/Fastrlaun/f.sif"
+MDP_Location= "/project/cmri235_uksr/shasanka_conda_boss/sla296/singularity/Fast/MDP"
