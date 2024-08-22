@@ -6,21 +6,14 @@ class reorg:
     """
     A class for reorganizing the itp files in preparation for simulations.
 
-    Args:
-    - molecule (str): The name of the molecule.
-    - dir (str): The directory path where reorganized files will be stored.
-    - key (str): A key identifier.
-
-    Attributes:
-    - molecule (str): The name of the molecule.
-    - dir (str): The directory path.
-    - moleclue (str): A processed version of the molecule name.
-
-    Methods:
-    - __init__(self, molecule, dir, key): Initializes the reorg object, creates necessary files, and reorganizes the ITP files.
     """
 
     def __init__(self, molecule, direc, key):
+        """
+        :param molecule: The name of the molecule.
+        :param direc: The directory path where reorganized files will be stored.
+        :param key: A key identifier.
+        """
 
         self.moleclue = molecule
         self.dir = direc

@@ -5,7 +5,25 @@ import QSFlow.QSF.topology as top
 
 
 class Solvate:
+    """
+    A class to create mixture.inp file and create initial coordinate files for the simulation using packmol.
+    """
     def __init__(self, solvent, solute, con, density, solvent2, den2, x, y, z, di, ratio, key):
+        """
+
+        :param solvent: Solvent name.
+        :param solute: Solutes name matrix.
+        :param con: Concentration matrix.
+        :param density: Density of solvent.
+        :param solvent2: Second solvent name. For future use.
+        :param den2: Density of second solvent. For future use.
+        :param x: X-length of the topology.
+        :param y: Y-length of the topology.
+        :param z: Z-length of the topology.
+        :param di: The output directory.
+        :param ratio: Ratio between solvent and second solvent. For future use.
+        :param key: Key of the current system.
+        """
         self.dir = di
         self.solvent = solvent
         self.solvent2 = ''

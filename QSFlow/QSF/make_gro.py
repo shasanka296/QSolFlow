@@ -6,7 +6,29 @@ from QSFlow.workflows.envwf import MDP_Location
 
 
 class Gro:
+    """
+    A class to manage Gro files out of the packmol output and clean up the file system to feed to the simulation code.
+        Methods:
+            - initial(): Moves itps and initial files to run the simulation code, and cleans up the file system for
+              simulation.
+
+    """
     def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system, path_to_file):
+        """
+
+        :param solvent: The full name of the solvent.
+        :param solute: The full name of the solute.
+        :param solvent2: The full name of the second solvent. For future use.
+        :param di: Directory where QSF outputs are located.
+        :param x: X-length of the topology.
+        :param y: Y-length of the topology.
+        :param z: Z-length of the topology.
+        :param key: Key to the current system.
+        :param initla_system: Boolean to specify if initial params are given.
+        :param path_to_file: Path to inital files.
+
+
+        """
         self.dir = di
         self.x = x
         self.y = y

@@ -2,8 +2,25 @@ import subprocess
 import os
 
 
-class titration:
+class Titration:
+    """
+    A class to duplicate the input files and scale the charges on the input files by the titration constants the in
+    the titration matrix.
+
+    """
     def __init__(self, titration_matrix, key, outputdir, solvent, solute, path_inital, intial=False):
+        """
+
+        :param titration_matrix: List of charge constant.
+        :param key: The key to the current system.
+        :param outputdir: The directory where the input files are stored.
+        :param solvent: The solvent name, passed for future implementations.
+        :param solute: The solute name.
+        :param path_inital: The path of the initial params, passed for future implementations.
+        :param inital: Boolean to specify if own parameters are used.
+
+
+        """
         titration_list = []
         titration_list[:] = titration_matrix
         titration_list.pop(titration_matrix.index(1.0))

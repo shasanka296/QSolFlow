@@ -13,30 +13,31 @@ class GUI:
     """
     A graphical user interface for setting up and launching Molecular Dynamics (MD) calculations.
 
-    Attributes:
-    - window (tk.Tk): The main application window.
-    - nameMatrix (list): List to store system names.
-    - systemNamemat (list): List to store system names in a matrix.
-    - systemsmilesmat (list): List to store SMILES codes for systems in a matrix.
-    - entries (dict): Dictionary to store tkinter Entry widgets for user input.
-    - smilesMatrix (list): List to store SMILES codes for all components.
-    - typematrix (list): List to store the types of components (Solvent/Solute).
-    - canvas (tk.Canvas): Canvas for scrollable frame.
-    - scrollbar (ttk.Scrollbar): Scrollbar for canvas.
-    - frame (ttk.Frame): Frame containing the widgets.
-    - frame_id (int): ID of the frame in the canvas.
-    - numsys (tk.Entry): Entry widget for the number of systems.
-    - numsysL (tk.Label): Label for the number of systems.
-    - numsysB (tk.Button): Button to create systems based on user input.
-    - email (tk.Entry): Entry widget for user email.
-    - emailLable (tk.Label): Label for user email.
+        Attributes:
+            - window (tk.Tk): The main application window.
+            - nameMatrix (list): List to store system names.
+            - systemNamemat (list): List to store system names in a matrix.
+            - systemsmilesmat (list): List to store SMILES codes for systems in a matrix.
+            - entries (dict): Dictionary to store tkinter Entry widgets for user input.
+            - smilesMatrix (list): List to store SMILES codes for all components.
+            - typematrix (list): List to store the types of components (Solvent/Solute).
+            - canvas (tk.Canvas): Canvas for scrollable frame.
+            - scrollbar (ttk.Scrollbar): Scrollbar for canvas.
+            - frame (ttk.Frame): Frame containing the widgets.
+            - frame_id (int): ID of the frame in the canvas.
+            - numsys (tk.Entry): Entry widget for the number of systems.
+            - numsysL (tk.Label): Label for the number of systems.
+            - numsysB (tk.Button): Button to create systems based on user input.
+            - email (tk.Entry): Entry widget for user email.
+            - emailLable (tk.Label): Label for user email.
 
-    Methods:
-    - on_frame_configure(event): Adjusts the canvas scroll region based on the frame size.
-    - on_canvas_configure(event): Adjusts the canvas width based on the window size.
-    - add_widgets(): Adds widgets (Entry, Label, Button) to the frame.
-    - make(): Dynamically creates Entry widgets based on the number of systems entered by the user.
-    - run(): Initiates MD calculations using user-inputted data.
+        Methods:
+            - on_frame_configure(event): Adjusts the canvas scroll region based on the frame size.
+            - on_canvas_configure(event): Adjusts the canvas width based on the window size.
+            - add_widgets(): Adds widgets (Entry, Label, Button) to the frame.
+            - make(): Dynamically creates Entry widgets based on the number of systems entered by the user.
+            - run(): Initiates MD calculations using user-inputted data.
+            - populate_md_wf(): Calls wf_writer.md_fws() to populate MD calculations.
 
     Note: The GUI is currently in development and new features may be added while the old ones are dropped
     """

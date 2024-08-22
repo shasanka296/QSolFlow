@@ -12,6 +12,9 @@ import ASMD_1 as ASMD
 
 
 class GUI:
+    """
+    OLD GUI NO LONGER IN USE
+    """
     def __init__(self):
         self.window = tk.Tk()
 

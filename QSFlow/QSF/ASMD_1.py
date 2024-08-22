@@ -14,7 +14,7 @@ from QSFlow.workflows.envwf import meta_dir
 class ASMD:
     """A class that uses the GROMACS wrapper along with subprocess to create and run simulation using GROMACS 2020
     software package to find energies and uses pandas, NumPy and matplotlib to store and visualize data, as well as
-    to generate  RDF plots. A density check function is built into the class though, it is disabled due to lack of
+    to generate  RDF plots. A density check function is built into the class, though it is disabled due to lack of
     reliable data about solution densities for arbitrary mixtures. The order of function class for the standard
     simulation is as follows: count_warnings, EnergyMin, NVT, NPT, calculate_density, check_density_accuracy (NOTE:
     CURRENTLY THE FUNCTION IS CALLED FOR THE SAKE OF CONSISTENCY, IT DOES NOT ACTUALLY VERIFY THE DENSITY), correct,
@@ -23,6 +23,12 @@ class ASMD:
     """
 
     def __init__(self, key):
+        """
+
+        :param key: Key to the system.
+
+
+        """
 
         self.current_dir = meta_dir
         self.input_dir = os.path.join(self.current_dir, f"InputGrofiles{key}")

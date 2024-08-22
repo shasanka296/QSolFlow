@@ -6,7 +6,26 @@ from QSFlow.workflows.envwf import BOSSDIR, CONDAPATH, SINGPATH
 
 
 class lig:
+    """
+    A class to generate ligpargen parameters. Ligpargen is run inside the f.sif singularity container.
+        Methods:
+             -PDBMAKER(): Changes the name of the molecule in the output file by the provided name[:3]
+             -own(): Copies the user provided params to a directory named after formated name
+
+    """
     def __init__(self, smiles, regular_name, molecule, charge, di, own, own_path):
+        """
+
+        :param smiles: SMILES of the molecule.
+        :param regular_name: Full name of the molecule.
+        :param molecule: Formated name of the molecule.
+        :param charge: Charge of the molecule.
+        :param di: Directory for the output.
+        :param own: Boolean to specify whether to generate ligpargen parameters.
+        :param own_path: Directory with user params.
+
+
+        """
         self.dir = di
         self.smiles = smiles
         self.mol = molecule

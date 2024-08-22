@@ -6,6 +6,15 @@ from QSFlow.workflows.envwf import CONDAPATH
 
 
 def run_on_terminal(name, q, smiles, direc=None, mul=None):
+    """
+    Runs get_charge() on the terminal and creates a file called charge.txt with the output charges.
+            Parameters:
+            - name: The name of the molecule.
+            - q: The charge on the molecule.
+            - smiles: SMILES of the molecule.
+            - direc: The direction of the output files.
+            - mul: The multiplicity of the molecule.
+    """
     charge_mat = []
     command = (
         f"source {CONDAPATH} && "
@@ -22,6 +31,16 @@ def run_on_terminal(name, q, smiles, direc=None, mul=None):
 
 
 def get_charge(name, ch, smiles, direc=None, mul=None):
+    """
+    DFT code using velox chem for ESP charge derivation.
+        Parameters:
+            - name: The name of the molecule.
+            - ch: The charge on the molecule.
+            - smiles: SMILES of the molecule.
+            - direc: The direction of the output files.
+            - mul: The multiplicity of the molecule.
+
+    """
     q = ch if ch else 0
     try:
         import veloxchem as vlx

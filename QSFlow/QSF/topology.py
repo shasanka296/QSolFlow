@@ -3,8 +3,31 @@ import os
 
 
 class toopol:
+    """
+    A class to create topol.top and nmol.top files for the MD calculation.
+
+    """
     def __init__(self, solvent1=None, solvent1N=None, solvent2='', solvent2N=None, solute=None, con=None,
                  currentdir=None, x=None, y=None, z=None, key=None, inital=False):
+        """
+
+        :param solvent1: Name of solvent 1.
+        :param solvent1N: Name of solvent 1.
+        :param solvent2: NOT IN USE, will be used in the future.
+        Name of the second solvent for multi solvent simulations.
+        :param solvent2N: NOT IN USE, will be used in the future.
+        Number of the second solvent for multi solvent simulations.
+        :param solute: Solute matrix.
+        :param con: Solute concentration matrix.
+        :param currentdir: Current directory of input files.
+        :param x: X-length of topology.
+        :param y:  Y-length of topology.
+        :param z:  Z-length of topology.
+        :param key: Key to the current system.
+        :param inital: If initial system is given or not.
+
+
+        """
         self.solvent = solvent1
         self.solvent2 = solvent2
         self.solute1 = solute
@@ -25,7 +48,7 @@ class toopol:
                         os.path.join(self.dir, f'Old_InputGrofiles_Output', f'InputGrofiles{folder_number + 1}{key}')):
                     folder_number += 1
                 else:
-                    move = f'mv {os.path.join(self.dir, "InputGrofiles")} {os.path.join(self.dir, f"Old_InputGrofiles_Output", f"InputGrofiles{folder_number + 1}{key}")}'
+                    move = f'mv {os.path.join(self.dir, f"InputGrofiles{key}")} {os.path.join(self.dir, f"Old_InputGrofiles_Output", f"InputGrofiles{folder_number + 1}{key}")}'
                     subprocess.run(move, shell=True, check=True)
                     break
         if os.path.isdir(os.path.join(self.dir, f'Output{key}')):
@@ -35,7 +58,7 @@ class toopol:
                         os.path.join(self.dir, f'Old_InputGrofiles_Output', f'Output{folder_number + 1}{key}')):
                     folder_number += 1
                 else:
-                    move = f'mv {os.path.join(self.dir, "Output")} {os.path.join(self.dir, f"Old_InputGrofiles_Output", f"Output{folder_number + 1}{key}")}'
+                    move = f'mv {os.path.join(self.dir, f"Output{key}")} {os.path.join(self.dir, f"Old_InputGrofiles_Output", f"Output{folder_number + 1}{key}")}'
                     subprocess.run(move, shell=True, check=True)
                     break
         subprocess.run(command2, shell=True, check=True)
