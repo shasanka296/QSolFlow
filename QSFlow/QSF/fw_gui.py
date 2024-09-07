@@ -715,4 +715,3 @@ class GUI:
 
 if __name__ == "__main__":
     GUI()
-print("__name__" == "__main__")

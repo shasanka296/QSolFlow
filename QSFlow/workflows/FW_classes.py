@@ -38,7 +38,7 @@ class Ligpargen_FW(Firework):
                 **kwargs,
             }
         )  # # this is passed in as fw_spec when you do fw_spec.get()
-        # this is retrived
+        # this is retrieved
         t = [Ligpargen(name=name, smile=smiles, charge=con, Type=Type, **kwargs)]
         super(Ligpargen_FW, self).__init__(t, parents=parents, spec=spec, name=name)
 

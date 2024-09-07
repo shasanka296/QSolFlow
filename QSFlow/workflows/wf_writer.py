@@ -242,7 +242,7 @@ def make_cord(number_of_systems, name_dic, firework_dic, rdf_key, key_mat, **kwa
         )
 
 
-def matrix_of_titration_mker(
+def matrix_of_titration_maker(
     titration_matrix,
     name_dic,
     outer_sys,
@@ -372,7 +372,7 @@ def md_wf(**kwargs):
         pack_key = make_pac(
             number_of_systems, name_dic, ligpargen_fws, key_mat, **kwargs
         )
-        matrix_of_titration_mker(
+        matrix_of_titration_maker(
             matrix_of_titration,
             name_dic,
             outer_system,
