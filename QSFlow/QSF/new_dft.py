@@ -19,10 +19,11 @@ def run_on_terminal(name, q, smiles, direc=None, mul=None):
     command = (
         f"source {CONDAPATH} && "
         f"conda activate vlxenv && "
-        f"python -c \"import QSFlow.QSF.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\"")
+        f"python -c \"import QSFlow.QSF.new_dft as a; a.get_charge('{name}', {q}, '{smiles}', direc= '{direc}', mul = {mul})\""
+    )
 
     subprocess.run([command], shell=True, executable="/bin/bash", check=True)
-    with open(f"{os.path.join(direc, 'charge.txt')}", 'r') as file:
+    with open(f"{os.path.join(direc, 'charge.txt')}", "r") as file:
         lines = file.readlines()
         for a in lines:
             charge_mat.append(float(a))
@@ -53,9 +54,13 @@ def get_charge(name, ch, smiles, direc=None, mul=None):
     if direc:
         path_to_xyz = os.path.join(direc, name, f"{name}.xyz")
     print(path_to_xyz)
-    molecule = vlx.Molecule.read_xyz_file(path_to_xyz)  # Loading Molecule into veloxchem
+    molecule = vlx.Molecule.read_xyz_file(
+        path_to_xyz
+    )  # Loading Molecule into veloxchem
     basis = vlx.MolecularBasis.read(molecule, "cc-pVDZ")  # setting up for calc
-    unpaired = Descriptors.NumRadicalElectrons(tr_mol)  # finding num of unpaired e for multiplicity calc
+    unpaired = Descriptors.NumRadicalElectrons(
+        tr_mol
+    )  # finding num of unpaired e for multiplicity calc
     multiplicity = mul
     if not mul:
         multiplicity = unpaired + 1 + int(q) % 2  # 2S+1+charge mod 2
@@ -81,9 +86,11 @@ def get_charge(name, ch, smiles, direc=None, mul=None):
         esp_drv = vlx.RespChargesDriver()  # restraied ESP calc driver
         esp_charges = esp_drv.compute(molecule, basis, scf_results, "esp")  # calc
     except AssertionError:
-        print(f" Error in DFT clac, please recheck the inputs and try again or manually create the parameters")
+        print(
+            f" Error in DFT clac, please recheck the inputs and try again or manually create the parameters"
+        )
         return None
-    with open(f"{os.path.join(direc, 'charge.txt')}", 'a') as file:
+    with open(f"{os.path.join(direc, 'charge.txt')}", "a") as file:
         print(esp_charges.tolist())
         for i in esp_charges.tolist():
             file.write(f"{str(i)}\n")

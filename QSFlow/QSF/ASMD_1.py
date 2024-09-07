@@ -45,7 +45,7 @@ class ASMD:
         self.edr_file = os.path.join(self.output_dir, f"equilibration.edr")
         self.MPI = True
         try:
-            subprocess.run(['gmx_mpi'], shell=True, check=True)
+            subprocess.run(["gmx_mpi"], shell=True, check=True)
         except subprocess.CalledProcessError:
             self.MPI = False
 
@@ -59,10 +59,10 @@ class ASMD:
     def count_warnings(self, filename):
         if os.path.isfile(self.output_dir + "/em.log"):
             print("log is made")
-            with open(filename, 'r') as file:
+            with open(filename, "r") as file:
                 log_data = file.read()
 
-            warning_pattern = r'WARNING'
+            warning_pattern = r"WARNING"
             warning_count = len(re.findall(warning_pattern, log_data))
         else:
             warning_count = 100
@@ -71,8 +71,8 @@ class ASMD:
 
     @staticmethod
     def get_available_cpu_threads():
-        cpu_info = os.popen('lscpu').read()
-        threads_pattern = r'Thread\(s\) per core:\s+(\d+)'
+        cpu_info = os.popen("lscpu").read()
+        threads_pattern = r"Thread\(s\) per core:\s+(\d+)"
         result = re.search(threads_pattern, cpu_info)
         if result:
             threads_per_core = int(result.group(1))
@@ -83,14 +83,19 @@ class ASMD:
 
     @staticmethod
     def get_available_gpus():
-        gpu_info = os.popen('nvidia-smi --list-gpus').read()
-        gpu_count = len(re.findall(r'GPU\s\d:', gpu_info))
+        gpu_info = os.popen("nvidia-smi --list-gpus").read()
+        gpu_count = len(re.findall(r"GPU\s\d:", gpu_info))
         return gpu_count
 
     def run_gromacs_simulation(self, command):
         try:
-            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
-                           check=True, capture_output=True, text=True)
+            subprocess.run(
+                f"{command} -maxwarn {str(self.max_warn)}",
+                shell=True,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
         except subprocess.CalledProcessError as E:
             print("too many errors,updating maxwarn")
             f = E.stderr.split("\n")
@@ -99,8 +104,13 @@ class ASMD:
                     error_line = i.split()
                     self.max_warn = int(error_line[2]) + 10
                     break
-            subprocess.run(f'{command} -maxwarn {str(self.max_warn)}', shell=True,
-                           check=True, capture_output=True, text=True)
+            subprocess.run(
+                f"{command} -maxwarn {str(self.max_warn)}",
+                shell=True,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
 
         return "updated maxwarn"
 
@@ -119,7 +129,7 @@ class ASMD:
         available_threads = self.get_available_cpu_threads()
         # available_gpus = self.get_available_gpus()
 
-        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "em", "-v"]
+        command = [f"{self.GMX_prefix}", "mdrun", "-deffnm", "em", "-v"]
         if available_threads is not None:
             command += ["-ntomp", str(available_threads)]
         subprocess.run(command, cwd=self.output_dir)
@@ -135,7 +145,7 @@ class ASMD:
 
         self.run_gromacs_simulation(command)
 
-        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "nvt", "-v"]
+        command = [f"{self.GMX_prefix}", "mdrun", "-deffnm", "nvt", "-v"]
         if self.get_available_cpu_threads() is not None:
             command += ["-ntomp", str(self.get_available_cpu_threads())]
         subprocess.run(command, cwd=self.output_dir)
@@ -150,7 +160,7 @@ class ASMD:
         )
 
         self.run_gromacs_simulation(command)
-        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v"]
+        command = [f"{self.GMX_prefix}", "mdrun", "-deffnm", "equilibration", "-v"]
         # if available_gpus > 0:
         # command = ["mpirun", "-np", str(available_gpus), f'{self.GMX_prefix}', "mdrun", "-deffnm", "equilibration", "-v", "-nb", "gpu"]
         if self.get_available_cpu_threads() is not None:
@@ -162,13 +172,17 @@ class ASMD:
 
         density_xvg_file = f"{self.output_dir}/density.xvg"
         try:
-            energy = gromacs.tools.Energy_mpi(s=os.path.abspath(self.eqtpr_file),
-                                              f=os.path.abspath(self.edr_file),
-                                              o=f'{density_xvg_file}')
+            energy = gromacs.tools.Energy_mpi(
+                s=os.path.abspath(self.eqtpr_file),
+                f=os.path.abspath(self.edr_file),
+                o=f"{density_xvg_file}",
+            )
         except AttributeError:
-            energy = gromacs.tools.Energy(s=os.path.abspath(self.eqtpr_file),
-                                          f=os.path.abspath(self.edr_file),
-                                          o=f'{density_xvg_file}')
+            energy = gromacs.tools.Energy(
+                s=os.path.abspath(self.eqtpr_file),
+                f=os.path.abspath(self.edr_file),
+                o=f"{density_xvg_file}",
+            )
 
         energy.run(input="Density")
 
@@ -207,7 +221,7 @@ class ASMD:
         )
 
         self.run_gromacs_simulation(command)
-        command = [f'{self.GMX_prefix}', "mdrun", "-deffnm", "production", "-v"]
+        command = [f"{self.GMX_prefix}", "mdrun", "-deffnm", "production", "-v"]
 
         if self.get_available_cpu_threads() is not None:
             command += ["-ntomp", str(self.get_available_cpu_threads())]
@@ -220,25 +234,51 @@ class ASMD:
         upper_limit = 1.3 * mean_density
         self.production_run()
         if lower_limit <= x <= upper_limit:
-            print(f"The given value x = {x} is within 10% accuracy of the mean density y = {mean_density:.2f}.")
+            print(
+                f"The given value x = {x} is within 10% accuracy of the mean density y = {mean_density:.2f}."
+            )
             return True
         else:
-            print(f"The given value x = {x} is not within 10% accuracy of the mean density y = {mean_density:.2f}.")
+            print(
+                f"The given value x = {x} is not within 10% accuracy of the mean density y = {mean_density:.2f}."
+            )
             return False
 
     def correct(self):
-        trjconv = gromacs.tools.Trjconv(s=self.tpr_file, f=self.trr_file, o=self.xtc_file, pbc="mol", ur="compact")
+        trjconv = gromacs.tools.Trjconv(
+            s=self.tpr_file, f=self.trr_file, o=self.xtc_file, pbc="mol", ur="compact"
+        )
         trjconv.run(input="System")
 
     def index_file(self):
-        subprocess.run([f'{self.GMX_prefix}', "make_ndx", "-f", self.gro_file, "-o", f"{self.output_dir}/index.ndx"],
-                       input=b"q\n")
+        subprocess.run(
+            [
+                f"{self.GMX_prefix}",
+                "make_ndx",
+                "-f",
+                self.gro_file,
+                "-o",
+                f"{self.output_dir}/index.ndx",
+            ],
+            input=b"q\n",
+        )
 
     def msd_maker(self):
         subprocess.run(
-            [f'{self.GMX_prefix}', "msd", "-f", self.xtc_file, "-s", self.tpr_file, "-n",
-             f"{self.output_dir}/index.ndx", "-o", f"{self.output_dir}/msd.xvg"],
-            input=b"0\n")
+            [
+                f"{self.GMX_prefix}",
+                "msd",
+                "-f",
+                self.xtc_file,
+                "-s",
+                self.tpr_file,
+                "-n",
+                f"{self.output_dir}/index.ndx",
+                "-o",
+                f"{self.output_dir}/msd.xvg",
+            ],
+            input=b"0\n",
+        )
 
     def extract_residues_from_itp(self):
         residues = []
@@ -246,7 +286,7 @@ class ASMD:
         with open(self.nmol_itp, "r") as f:
             lines = f.readlines()
 
-            for line in lines[lines.index("[ molecules ]\n") + 1:]:
+            for line in lines[lines.index("[ molecules ]\n") + 1 :]:
                 if line.strip() == "" or line.startswith(";"):
                     continue
                 residues.append(line.split()[0])
@@ -261,36 +301,59 @@ class ASMD:
 
     @staticmethod
     def calculate_coordination_number(rdf_analysis, rcut):
-        cn = np.trapz(rdf_analysis.rdf[rdf_analysis.bins <= rcut], x=rdf_analysis.bins[rdf_analysis.bins <= rcut])
+        cn = np.trapz(
+            rdf_analysis.rdf[rdf_analysis.bins <= rcut],
+            x=rdf_analysis.bins[rdf_analysis.bins <= rcut],
+        )
         return cn
 
     def rdf(self, residue_names, rcut):
         universe = mda.Universe(self.gro_file, self.xtc_file)
-        atoms_in_residues = {resname: self.count_atoms_in_residue(universe, resname) for resname in residue_names}
+        atoms_in_residues = {
+            resname: self.count_atoms_in_residue(universe, resname)
+            for resname in residue_names
+        }
         print(atoms_in_residues)
 
-        with PdfPages(f'{os.path.join(self.output_dir,"RDF_plots2CoordinationNum.pdf")}') as pdf:
+        with PdfPages(
+            f'{os.path.join(self.output_dir,"RDF_plots2CoordinationNum.pdf")}'
+        ) as pdf:
             coordination_numbers = {}
             for reference_residue in residue_names:
                 plt.figure(figsize=(8, 6))
                 coordination_numbers[reference_residue] = {}
                 for target_residue in residue_names:
-                    reference_group = universe.select_atoms(f"resname {reference_residue}")
+                    reference_group = universe.select_atoms(
+                        f"resname {reference_residue}"
+                    )
                     target_group = universe.select_atoms(f"resname {target_residue}")
 
-                    exclusion_block = (atoms_in_residues[reference_residue],
-                                       atoms_in_residues[
-                                           target_residue]) if reference_residue == target_residue else None
+                    exclusion_block = (
+                        (
+                            atoms_in_residues[reference_residue],
+                            atoms_in_residues[target_residue],
+                        )
+                        if reference_residue == target_residue
+                        else None
+                    )
 
-                    rdf_analysis = rdf.InterRDF(reference_group, target_group, nbins=75, range=(0.0, 15.0),
-                                                exclusion_block=exclusion_block)
+                    rdf_analysis = rdf.InterRDF(
+                        reference_group,
+                        target_group,
+                        nbins=75,
+                        range=(0.0, 15.0),
+                        exclusion_block=exclusion_block,
+                    )
                     rdf_analysis.run()
 
                     cn = self.calculate_coordination_number(rdf_analysis, rcut)
                     coordination_numbers[reference_residue][target_residue] = cn
 
-                    plt.plot(rdf_analysis.bins, rdf_analysis.rdf,
-                             label=f"{reference_residue}-{target_residue} (CN={cn:.2f})")
+                    plt.plot(
+                        rdf_analysis.bins,
+                        rdf_analysis.rdf,
+                        label=f"{reference_residue}-{target_residue} (CN={cn:.2f})",
+                    )
 
                 plt.xlabel("Distance (angstroms)")
                 plt.ylabel("RDF")
@@ -309,7 +372,9 @@ class ASMD:
             for target_residue, cn in target_residues.items():
                 coordination_numbers_list.append([ref_residue, target_residue, cn])
 
-        coordination_numbers_df = pd.DataFrame(coordination_numbers_list,
-                                               columns=['Reference_Residue', 'Target_Residue', 'Coordination_Number'])
+        coordination_numbers_df = pd.DataFrame(
+            coordination_numbers_list,
+            columns=["Reference_Residue", "Target_Residue", "Coordination_Number"],
+        )
 
         print(coordination_numbers_df)

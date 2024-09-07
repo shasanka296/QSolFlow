@@ -13,7 +13,10 @@ class Gro:
               simulation.
 
     """
-    def __init__(self, solvent, solute, solvent2, di, x, y, z, key, initla_system, path_to_file):
+
+    def __init__(
+        self, solvent, solute, solvent2, di, x, y, z, key, initla_system, path_to_file
+    ):
         """
 
         :param solvent: The full name of the solvent.
@@ -36,7 +39,9 @@ class Gro:
         self.fullname_solvent = solvent
         self.solvent = solvent[:3]
         self.key = key
-        self.command12 = f'cp -r {MDP_Location} {os.path.join(self.dir, f"InputGrofiles{self.key}")}'
+        self.command12 = (
+            f'cp -r {MDP_Location} {os.path.join(self.dir, f"InputGrofiles{self.key}")}'
+        )
         self.solute = solute
         self.solvent2 = solvent2
         self.initla_system = initla_system
@@ -85,12 +90,20 @@ class Gro:
 
                 subprocess.run(com1, shell=True, check=True)
 
-            g.reorg(self.solvent + "_Solvent", os.path.join(self.dir, f"InputGrofiles{key}"), key)
+            g.reorg(
+                self.solvent + "_Solvent",
+                os.path.join(self.dir, f"InputGrofiles{key}"),
+                key,
+            )
 
             for j in self.solute:
-                print(f'ran {j}')
+                print(f"ran {j}")
 
-                g.reorg(j.strip()[:3] + f"_Solute1", os.path.join(self.dir, f"InputGrofiles{key}"), key)
+                g.reorg(
+                    j.strip()[:3] + f"_Solute1",
+                    os.path.join(self.dir, f"InputGrofiles{key}"),
+                    key,
+                )
 
             subprocess.run(self.command12, shell=True, check=True)
 
@@ -136,7 +149,9 @@ class Gro:
 
         except subprocess.CalledProcessError:
 
-            print("Looks like you did not provide the atomtypes for your solvent. The system continued without it.")
+            print(
+                "Looks like you did not provide the atomtypes for your solvent. The system continued without it."
+            )
 
         for i in self.solute:
 
@@ -154,4 +169,6 @@ class Gro:
 
             except subprocess.CalledProcessError:
 
-                print(f"Looks like you did not provide the atomtypes for {i}. The system continued without it.")
+                print(
+                    f"Looks like you did not provide the atomtypes for {i}. The system continued without it."
+                )

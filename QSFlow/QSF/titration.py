@@ -8,7 +8,17 @@ class Titration:
     the titration matrix.
 
     """
-    def __init__(self, titration_matrix, key, outputdir, solvent, solute, path_inital, intial=False):
+
+    def __init__(
+        self,
+        titration_matrix,
+        key,
+        outputdir,
+        solvent,
+        solute,
+        path_inital,
+        intial=False,
+    ):
         """
 
         :param titration_matrix: List of charge constant.
@@ -31,14 +41,17 @@ class Titration:
 
                 subprocess.run(
                     [
-                        f"cp -r {os.path.join(outputdir, f'InputGrofiles{key}')} {os.path.join(outputdir, f'InputGrofiles{key}_{titration_list[i]}')}"],
-                    shell=True)
+                        f"cp -r {os.path.join(outputdir, f'InputGrofiles{key}')} {os.path.join(outputdir, f'InputGrofiles{key}_{titration_list[i]}')}"
+                    ],
+                    shell=True,
+                )
 
                 for iteams in solute:
                     chargeMatrix = []
                     with open(
-                            f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
-                            'r') as gmx:
+                        f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
+                        "r",
+                    ) as gmx:
                         lines = gmx.readlines()
 
                         index_GMXESP = 0
@@ -52,23 +65,31 @@ class Titration:
                                 index_lastGMXESP = lines.index(line) - 2
 
                         for a in range(index_lastGMXESP - index_GMXESP + 1):
-                            charge_int = float(lines[index_GMXESP + a].split()[6]) * float(titration_list[i])
-                            charge = f'{charge_int:.4f}'.rjust(11)
+                            charge_int = float(
+                                lines[index_GMXESP + a].split()[6]
+                            ) * float(titration_list[i])
+                            charge = f"{charge_int:.4f}".rjust(11)
 
                             chargeMatrix.append(charge)
                         for char in range(index_lastGMXESP - index_GMXESP + 1):
                             chargeIndexGmx = lines[index_GMXESP - 1].index("charge") - 6
 
-                            lines[index_GMXESP + char] = lines[index_GMXESP + char][0:chargeIndexGmx] + str(
-                                chargeMatrix[char]) + lines[index_GMXESP + char][chargeIndexGmx + 11:]
+                            lines[index_GMXESP + char] = (
+                                lines[index_GMXESP + char][0:chargeIndexGmx]
+                                + str(chargeMatrix[char])
+                                + lines[index_GMXESP + char][chargeIndexGmx + 11 :]
+                            )
                         subprocess.run(
                             [
-                                f'rm {os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}'],
-                            shell=True)
+                                f'rm {os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}'
+                            ],
+                            shell=True,
+                        )
 
                     with open(
-                            f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
-                            'a') as itp:
+                        f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
+                        "a",
+                    ) as itp:
                         for line in lines:
                             itp.writelines(line)
 
@@ -76,14 +97,17 @@ class Titration:
             for i in range(len(titration_list)):
                 subprocess.run(
                     [
-                        f"cp -r {os.path.join(outputdir, f'InputGrofiles{key}')} {os.path.join(outputdir, f'InputGrofiles{key}_{titration_list[i]}')}"],
-                    shell=True)
+                        f"cp -r {os.path.join(outputdir, f'InputGrofiles{key}')} {os.path.join(outputdir, f'InputGrofiles{key}_{titration_list[i]}')}"
+                    ],
+                    shell=True,
+                )
 
                 for iteams in solute:
                     chargeMatrix = []
                     with open(
-                            f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
-                            'r') as gmx:
+                        f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
+                        "r",
+                    ) as gmx:
                         lines = gmx.readlines()
 
                         index_GMXESP = 0
@@ -97,22 +121,30 @@ class Titration:
                                 index_lastGMXESP = lines.index(line) - 2
 
                         for a in range(index_lastGMXESP - index_GMXESP + 1):
-                            charge_int = float(lines[index_GMXESP + a].split()[6]) * float(titration_list[i])
-                            charge = f'{charge_int:.4f}'.rjust(11)
+                            charge_int = float(
+                                lines[index_GMXESP + a].split()[6]
+                            ) * float(titration_list[i])
+                            charge = f"{charge_int:.4f}".rjust(11)
 
                             chargeMatrix.append(charge)
                         for char in range(index_lastGMXESP - index_GMXESP + 1):
                             chargeIndexGmx = lines[index_GMXESP - 1].index("charge") - 6
 
-                            lines[index_GMXESP + char] = lines[index_GMXESP + char][0:chargeIndexGmx] + str(
-                                chargeMatrix[char]) + lines[index_GMXESP + char][chargeIndexGmx + 11:]
+                            lines[index_GMXESP + char] = (
+                                lines[index_GMXESP + char][0:chargeIndexGmx]
+                                + str(chargeMatrix[char])
+                                + lines[index_GMXESP + char][chargeIndexGmx + 11 :]
+                            )
                         subprocess.run(
                             [
-                                f'rm {os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}'],
-                            shell=True)
+                                f'rm {os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}'
+                            ],
+                            shell=True,
+                        )
 
                     with open(
-                            f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
-                            'a') as itp:
+                        f'{os.path.join(outputdir, f"InputGrofiles{key}_{titration_list[i]}", f"{iteams[:3]}_Solute1.itp")}',
+                        "a",
+                    ) as itp:
                         for line in lines:
                             itp.writelines(line)
