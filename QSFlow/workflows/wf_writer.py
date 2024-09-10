@@ -5,7 +5,7 @@ from QSFlow.workflows.envwf import meta_dir
 
 # Copyright 2021, University of Kentucky
 
-global regula
+
 regula=[]
 
 def Gen_name_dic(number_of_systems, **kwargs):
@@ -43,6 +43,7 @@ def gen_ligpargen(number_of_systems, name_dic, **kwargs):
                 name_dic[f"names{i + 1}"] = name_dic[f"names{i + 1}"] + f"_{name}"
     print(f"in the fuction lig_fws{ligpargen_fws}")
     return ligpargen_fws, name_dic
+
 
 
 def edit_name_dic(name_dic, number_of_systems, **kwargs):
@@ -234,7 +235,7 @@ def make_cord(number_of_systems, name_dic, firework_dic, rdf_key, key_mat, **kwa
     fw_cord_keys = []
     for i in range(number_of_systems):
         fw_cord_key = f"fw_rdf_{i + 1}"
-        fw_cord_keys.append(fw_cord_keys)
+        fw_cord_keys.append(fw_cord_key)
         fw_rdf_key = rdf_key[i]
         firework_dic[fw_cord_key] = CORD_FW(
             name=name_dic[f"names{i + 1}"] + "CORD",
@@ -242,7 +243,7 @@ def make_cord(number_of_systems, name_dic, firework_dic, rdf_key, key_mat, **kwa
             key=key_mat[i],
             **kwargs,
         )
-        regula.append(firework_dic[fw_cord_key])
+    return fw_cord_keys
 
 
 def matrix_of_titration_maker(
@@ -343,7 +344,9 @@ def make_the_simulation(
     rdf_key = make_rdf(
         number_of_systems, name_dic, fire_workdir, resi_key, key_mat, **kwargs
     )
-    make_cord(number_of_systems, name_dic, fire_workdir, rdf_key, key_mat, **kwargs)
+    cord_key = make_cord(number_of_systems, name_dic, fire_workdir, rdf_key, key_mat, **kwargs)
+    regula.extend(fire_workdir.values())
+
 
 
 def md_wf(**kwargs):
@@ -427,7 +430,6 @@ def md_wf(**kwargs):
                     **kwargs,
                 )
             )
-
 
     key_fw = key_GEN(**kwargs, parents=fw_for_plotting if titration else regula)
     fws = [key_fw] + ligpargen_fws + regula
