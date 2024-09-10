@@ -8,6 +8,7 @@ from QSFlow.workflows.envwf import meta_dir
 
 regula = []
 
+
 def Gen_name_dic(number_of_systems, **kwargs):
     names = {}
     for i in range(number_of_systems):
@@ -45,7 +46,6 @@ def gen_ligpargen(number_of_systems, name_dic, **kwargs):
     return ligpargen_fws, name_dic
 
 
-
 def edit_name_dic(name_dic, number_of_systems, **kwargs):
     name_dic = name_dic
     for name in kwargs.get("name_list"):
@@ -56,11 +56,17 @@ def edit_name_dic(name_dic, number_of_systems, **kwargs):
 
 
 def make_pac(
-    number_of_systems, name_dic, firework_dic, ligpargen_fws, key_mat,number_T=None, **kwargs
+    number_of_systems,
+    name_dic,
+    firework_dic,
+    ligpargen_fws,
+    key_mat,
+    number_T=None,
+    **kwargs,
 ):
     fw_pack_keys = []
     for i in range(number_of_systems):
-        j= i*int(number_T) if number_T else i
+        j = i * int(number_T) if number_T else i
         fw_pack_key = f"fw_pack{i + 1}"
         fw_pack_keys.append(fw_pack_key)
         firework_dic[fw_pack_key] = Pack_FW(
@@ -76,7 +82,7 @@ def make_pac(
             di=meta_dir,
             conmatrix=kwargs.get(f"conmatrix{i + 1}"),
             den=kwargs.get(f"den{i + 1}"),
-            key=key_mat[i],
+            key=key_mat[j],
             intial=kwargs.get("inital_sys"),
             own_path=kwargs.get("own_path"),
             multi=kwargs.get(f"multiplicity{i + 1}"),
@@ -86,7 +92,15 @@ def make_pac(
     return fw_pack_keys
 
 
-def make_em(number_of_systems, name_dic, firework_dic, pack_keys_or_titration, key_mat,IST=False, **kwargs):
+def make_em(
+    number_of_systems,
+    name_dic,
+    firework_dic,
+    pack_keys_or_titration,
+    key_mat,
+    IST=False,
+    **kwargs,
+):
     fw_em_keys = []
     for i in range(number_of_systems):
         fw_pack_key = pack_keys_or_titration if IST else pack_keys_or_titration[i]
@@ -94,7 +108,7 @@ def make_em(number_of_systems, name_dic, firework_dic, pack_keys_or_titration, k
         fw_em_keys.append(fw_em_key)
         firework_dic[fw_em_key] = EM_FW(
             name=name_dic[f"names{i + 1}"] + "EM",
-            parents=fw_pack_key if IST else firework_dic[fw_pack_key] ,
+            parents=fw_pack_key if IST else firework_dic[fw_pack_key],
             key=key_mat[i],
             **kwargs,
         )
@@ -281,8 +295,6 @@ def matrix_of_titration_maker(
         )
 
 
-
-
 def make_the_simulation(
     number_of_systems,
     name_dic,
@@ -298,7 +310,13 @@ def make_the_simulation(
     **kwargs,
 ):
     fw_pack_keys = make_pac(
-        outer_system if ist else number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, number_T=number_of_titrations if ist else None, **kwargs
+        outer_system if ist else number_of_systems,
+        name_dic,
+        fire_workdir,
+        ligpargen_fws,
+        key_mat,
+        number_T=number_of_titrations if ist else None,
+        **kwargs,
     )
     if ist:
         matrix_of_titration_maker(
@@ -312,7 +330,13 @@ def make_the_simulation(
             **kwargs,
         )
     em_keys = make_em(
-        number_of_systems, name_dic, fire_workdir, titration_mat if ist else fw_pack_keys , key_mat,IST=ist, **kwargs
+        number_of_systems,
+        name_dic,
+        fire_workdir,
+        titration_mat if ist else fw_pack_keys,
+        key_mat,
+        IST=ist,
+        **kwargs,
     )
     nvt_key = make_nvt(
         number_of_systems, name_dic, fire_workdir, em_keys, key_mat, **kwargs
@@ -345,9 +369,10 @@ def make_the_simulation(
     rdf_key = make_rdf(
         number_of_systems, name_dic, fire_workdir, resi_key, key_mat, **kwargs
     )
-    cord_key = make_cord(number_of_systems, name_dic, fire_workdir, rdf_key, key_mat, **kwargs)
+    cord_key = make_cord(
+        number_of_systems, name_dic, fire_workdir, rdf_key, key_mat, **kwargs
+    )
     regula.extend(fire_workdir.values())
-
 
 
 def md_wf(**kwargs):
@@ -394,7 +419,6 @@ def md_wf(**kwargs):
         if kwargs.get("inital_sys"):
             name_dic = edit_name_dic(name_dic, number_of_systems, **kwargs)
 
-
         densities = [
             kwargs.get(f"den{i + 1}")
             for i in range(outer_system)
@@ -416,7 +440,7 @@ def md_wf(**kwargs):
             ist=True,
             outer_system=outer_system,
             number_of_titrations=number_of_titrations,
-            titration_mat=matrix_of_titration, 
+            titration_mat=matrix_of_titration,
             **kwargs,
         )
         for i in range(outer_system):
