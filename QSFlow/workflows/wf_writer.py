@@ -5,6 +5,8 @@ from QSFlow.workflows.envwf import meta_dir
 
 # Copyright 2021, University of Kentucky
 
+global regula
+regula=[]
 
 def Gen_name_dic(number_of_systems, **kwargs):
     names = {}
@@ -82,15 +84,15 @@ def make_pac(
     return fw_pack_keys
 
 
-def make_em(number_of_systems, name_dic, firework_dic, pack_keys, key_mat, **kwargs):
+def make_em(number_of_systems, name_dic, firework_dic, pack_keys_or_titration, key_mat,IST=False, **kwargs):
     fw_em_keys = []
     for i in range(number_of_systems):
-        fw_pack_key = pack_keys[i]
+        fw_pack_key = pack_keys_or_titration if IST else pack_keys_or_titration[i]
         fw_em_key = f"fw_em{i + 1}"
         fw_em_keys.append(fw_em_key)
         firework_dic[fw_em_key] = EM_FW(
             name=name_dic[f"names{i + 1}"] + "EM",
-            parents=firework_dic[fw_pack_key],
+            parents=fw_pack_key if IST else firework_dic[fw_pack_key] ,
             key=key_mat[i],
             **kwargs,
         )
@@ -101,8 +103,8 @@ def make_nvt(number_of_systems, name_dic, firework_dic, em_key, key_mat, **kwarg
     fw_nvt_keys = []
     for i in range(number_of_systems):
         fw_em_key = em_key[i]
-        fw_nvt_keys.append(fw_em_key)
         fw_nvt_key = f"fw_nvt{i + 1}"
+        fw_nvt_keys.append(fw_nvt_key)
         firework_dic[fw_nvt_key] = NVT_FW(
             name=name_dic[f"names{i + 1}"] + "NVT",
             parents=firework_dic[fw_em_key],
@@ -116,8 +118,8 @@ def make_npt(number_of_systems, name_dic, firework_dic, nvt_key, key_mat, **kwar
     fw_npt_keys = []
     for i in range(number_of_systems):
         fw_nvt_key = nvt_key[i]
-        fw_npt_keys.append(fw_nvt_key)
         fw_npt_key = f"fw_npt{i + 1}"
+        fw_npt_keys.append(fw_npt_key)
         firework_dic[fw_npt_key] = NPT_FW(
             name=name_dic[f"names{i + 1}"] + "NPT",
             parents=firework_dic[fw_nvt_key],
@@ -240,6 +242,7 @@ def make_cord(number_of_systems, name_dic, firework_dic, rdf_key, key_mat, **kwa
             key=key_mat[i],
             **kwargs,
         )
+        regula.append(firework_dic[fw_cord_key])
 
 
 def matrix_of_titration_maker(
@@ -276,6 +279,8 @@ def matrix_of_titration_maker(
         )
 
 
+
+
 def make_the_simulation(
     number_of_systems,
     name_dic,
@@ -284,13 +289,28 @@ def make_the_simulation(
     molarmasses,
     densities,
     ligpargen_fws,
+    ist=False,
+    outer_system=None,
+    number_of_titrations=None,
+    titration_mat=None,
     **kwargs,
 ):
     fw_pack_keys = make_pac(
         number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, **kwargs
     )
+    if ist:
+        matrix_of_titration_maker(
+            titration_mat,
+            name_dic,
+            outer_system,
+            key_mat,
+            number_of_titrations,
+            fire_workdir,
+            fw_pack_keys,
+            **kwargs,
+        )
     em_keys = make_em(
-        number_of_systems, name_dic, fire_workdir, fw_pack_keys, key_mat, **kwargs
+        number_of_systems, name_dic, fire_workdir, titration_mat if ist else fw_pack_keys , key_mat,IST=ist, **kwargs
     )
     nvt_key = make_nvt(
         number_of_systems, name_dic, fire_workdir, em_keys, key_mat, **kwargs
@@ -358,7 +378,7 @@ def md_wf(**kwargs):
             ligpargen_fws,
             **kwargs,
         )
-    regula = []
+
     fw_for_plotting = []
     if titration:
         number_of_titrations = len(kwargs.get("titartion_list"))
@@ -369,19 +389,8 @@ def md_wf(**kwargs):
             )
         if kwargs.get("inital_sys"):
             name_dic = edit_name_dic(name_dic, number_of_systems, **kwargs)
-        pack_key = make_pac(
-            number_of_systems, name_dic, ligpargen_fws, key_mat, **kwargs
-        )
-        matrix_of_titration_maker(
-            matrix_of_titration,
-            name_dic,
-            outer_system,
-            key_dic,
-            number_of_titrations,
-            fire_workdir,
-            pack_key,
-            **kwargs,
-        )
+
+
         densities = [
             kwargs.get(f"den{i + 1}")
             for i in range(outer_system)
@@ -400,6 +409,10 @@ def md_wf(**kwargs):
             molarmasses,
             densities,
             ligpargen_fws,
+            ist=True,
+            outer_system=outer_system,
+            number_of_titrations=number_of_titrations,
+            titration_mat=matrix_of_titration, 
             **kwargs,
         )
         for i in range(outer_system):
@@ -414,15 +427,14 @@ def md_wf(**kwargs):
                     **kwargs,
                 )
             )
-    for fw, values in fire_workdir.items():
-        regula.append(values)
+
 
     key_fw = key_GEN(**kwargs, parents=fw_for_plotting if titration else regula)
     fws = [key_fw] + ligpargen_fws + regula
     fws.extend(matrix_of_titration)
     fws.extend(fw_for_plotting)
     print(fws)
-
+    print(f"this is regular {regula}")
     wf = Workflow(fws, name=kwargs.get("populate_name"))
 
     return wf
