@@ -6,7 +6,7 @@ from QSFlow.workflows.envwf import meta_dir
 # Copyright 2021, University of Kentucky
 
 
-regula=[]
+regula = []
 
 def Gen_name_dic(number_of_systems, **kwargs):
     names = {}
@@ -36,7 +36,7 @@ def gen_ligpargen(number_of_systems, name_dic, **kwargs):
         )
         print(f"appending {typ, name, smiles, charge}")
         print(
-            f'the total shit{kwargs.get("type_list"), kwargs.get("name_list"),kwargs.get("smiles_list"), kwargs.get("charge_list")}'
+            f'the total {kwargs.get("type_list"), kwargs.get("name_list"),kwargs.get("smiles_list"), kwargs.get("charge_list")}'
         )
         for i in range(number_of_systems):
             if str((i + 1)) in name:
@@ -56,10 +56,11 @@ def edit_name_dic(name_dic, number_of_systems, **kwargs):
 
 
 def make_pac(
-    number_of_systems, name_dic, firework_dic, ligpargen_fws, key_mat, **kwargs
+    number_of_systems, name_dic, firework_dic, ligpargen_fws, key_mat,number_T=None, **kwargs
 ):
     fw_pack_keys = []
     for i in range(number_of_systems):
+        i= i*int(number_T) if number_T else i
         fw_pack_key = f"fw_pack{i + 1}"
         fw_pack_keys.append(fw_pack_key)
         firework_dic[fw_pack_key] = Pack_FW(
@@ -297,7 +298,7 @@ def make_the_simulation(
     **kwargs,
 ):
     fw_pack_keys = make_pac(
-        outer_system if ist else number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, **kwargs
+        outer_system if ist else number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, number_T=number_of_titrations if ist else None, **kwargs
     )
     if ist:
         matrix_of_titration_maker(
