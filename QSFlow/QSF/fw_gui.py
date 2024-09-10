@@ -605,5 +605,5 @@ class GUI:
         fw_id = list(info.values())[0]
         return fw_id
 
-if "__name__" == "__main__":
+if __name__ == "__main__":
     GUI()
