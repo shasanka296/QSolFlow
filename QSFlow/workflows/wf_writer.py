@@ -297,7 +297,7 @@ def make_the_simulation(
     **kwargs,
 ):
     fw_pack_keys = make_pac(
-        number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, **kwargs
+        outer_system if ist else number_of_systems, name_dic, fire_workdir, ligpargen_fws, key_mat, **kwargs
     )
     if ist:
         matrix_of_titration_maker(
