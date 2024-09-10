@@ -60,11 +60,11 @@ def make_pac(
 ):
     fw_pack_keys = []
     for i in range(number_of_systems):
-        i= i*int(number_T) if number_T else i
+        j= i*int(number_T) if number_T else i
         fw_pack_key = f"fw_pack{i + 1}"
         fw_pack_keys.append(fw_pack_key)
         firework_dic[fw_pack_key] = Pack_FW(
-            name=name_dic[f"names{i + 1}"] + "pack",
+            name=name_dic[f"names{j + 1}"] + "pack",
             parents=ligpargen_fws,
             solute_name=kwargs.get(f"solute_name{i + 1}"),
             solvent_name=kwargs.get(f"solvent_name{i + 1}"),
