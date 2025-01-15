@@ -26,8 +26,29 @@ class reorg:
             subprocess.run(f'touch {os.path.join(self.dir, f"{self.moleclue}_atomtype.itp")}', shell=True)
         with open(f"{os.path.join(self.dir, f'{self.moleclue}f.itp')}", 'r') as org:
             lines = org.readlines()
+            self.sections=[]
             self.atomtype = 10
-            self.atomtype_lastline = 0
+            for i in lines:
+                if i.startswith("[") and ";" not in i:
+                    self.sections.append(i)
+
+            for i in self.sections:
+                match i:
+                    case "[atomtypes]":
+                        next_section = self.sections[
+                            self.sections.index("[atomtypes]") + 1]
+                        if i == "[atomtypes]" or i == "[ atomtypes ]":
+                            self.atomtype = lines.index(i)
+                    case "[ atomtypes ]":
+                        next_section = self.sections[
+                            self.sections.index("[ atomtypes ]") + 1]
+                        if i == "[ atomtypes ]":
+                            self.atomtype = lines.index(i)
+                    case _:
+                        pass
+
+
+            self.atomtype_lastline = lines.index(next_section)
             self.orginal = []
             for iteams in lines:
                 self.orginal.append(iteams)
