@@ -29,26 +29,26 @@ class reorg:
             self.sections=[]
             self.atomtype = 10
             for i in lines:
-                if i.startswith("[") and ";" not in i:
+
+                print(i.strip().startswith("["))
+                if i.strip().startswith("["):
                     self.sections.append(i)
-
+            print(f"this is the sections {self.sections}")
             for i in self.sections:
-                match i:
+                match i.strip():
                     case "[atomtypes]":
-                        next_section = self.sections[
-                            self.sections.index("[atomtypes]") + 1]
-                        if i == "[atomtypes]" or i == "[ atomtypes ]":
-                            self.atomtype = lines.index(i)
+                        self.next_section = self.sections[
+                            self.sections.index(i) + 1]
+                        self.atomtype = lines.index(i)
                     case "[ atomtypes ]":
-                        next_section = self.sections[
-                            self.sections.index("[ atomtypes ]") + 1]
-                        if i == "[ atomtypes ]":
-                            self.atomtype = lines.index(i)
+                        print("in case 2")
+                        self.next_section = self.sections[
+                            self.sections.index(i) + 1]
+                        self.atomtype = lines.index(i)
                     case _:
-                        pass
+                        print(i)
 
-
-            self.atomtype_lastline = lines.index(next_section)
+            self.atomtype_lastline = lines.index(self.next_section)
             self.orginal = []
             for iteams in lines:
                 self.orginal.append(iteams)
